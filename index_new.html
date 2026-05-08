@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NutriVision - Controle de Progresso Cyber-Estoico</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@1,400;1,600&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Lucide Icons (CDN) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    /* ==========================================================================
+       Design System & Tokens (Cyber-Estoico)
+       ========================================================================== */
+    :root {
+      --bg-dark: #0A0E27;
+      --bg-card: #141835;
+      --bg-card-hover: #1C2145;
+      --text-main: #FFFFFF;
+      --text-muted: #8E9AAF;
+      
+      --primary: #00C853; /* Verde Vibrante */
+      --primary-glow: rgba(0, 200, 83, 0.4);
+      --secondary: #D4AF37; /* Dourado Antigo */
+      --secondary-glow: rgba(212, 175, 55, 0.4);
+      --accent-blue: #2196F3;
+      --accent-blue-glow: rgba(33, 150, 243, 0.4);
+      
+      --status-empty: rgba(255, 255, 255, 0.15);
+      --status-low: #78909C;
+      --status-warning: #FFB300;
+      --status-ideal: #00C853;
+      --status-excess: #FF1744;
+      --status-excess-glow: rgba(255, 23, 68, 0.3);
+
+      --font-sans: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-serif: 'Crimson Pro', Georgia, serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px 20px;
+      overflow-y: auto;
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(0, 200, 83, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(212, 175, 55, 0.05) 0px, transparent 50%);
+      background-attachment: fixed;
+    }
+
+    /* Ambient Glow Effects */
+    .ambient-glow-1 {
+      position: fixed;
+      top: 20%;
+      left: 10%;
+      width: 300px;
+      height: 300px;
+      background: var(--primary-glow);
+      filter: blur(150px);
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.5;
+    }
+
+    .ambient-glow-2 {
+      position: fixed;
+      bottom: 20%;
+      right: 10%;
+      width: 350px;
+      height: 350px;
+      background: var(--secondary-glow);
+      filter: blur(180px);
+      pointer-events: none;
+      z-index: -1;
+      opacity: 0.4;
+    }
+
+    /* Main Container Dashboard */
+    .dashboard-wrapper {
+      width: 100%;
+      max-width: 950px;
+      background: rgba(20, 24, 53, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ==========================================================================
+       1. Header Premium
+       ========================================================================== */
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 20px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      transform: translateX(-3px);
+    }
+
+    .title-box {
+      text-align: center;
+    }
+
+    .subtitle-badge {
+      font-size: 0.65rem;
+      font-weight: 800;
+      color: var(--secondary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      display: block;
+      text-shadow: 0 0 8px var(--secondary-glow);
+    }
+
+    .header-section h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .header-spacer {
+      width: 90px;
+    }
+
+    /* ==========================================================================
+       2. Navigation & Grid de Dias
+       ========================================================================== */
+    .calendar-navigation {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(20, 24, 53, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 10px 18px;
+    }
+
+    .nav-arrow {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .week-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .week-label i {
+      color: var(--secondary);
+    }
+
+    /* Grid de Dias */
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 12px;
+    }
+
+    .day-card {
+      background: rgba(20, 24, 53, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .day-card:hover {
+      background: rgba(28, 33, 69, 0.65);
+      border-color: rgba(255, 255, 255, 0.12);
+      transform: translateY(-4px);
+    }
+
+    /* Status de Borda */
+    .day-card.status-empty { border-left: 2px solid rgba(255, 255, 255, 0.1); }
+    .day-card.status-low { border-left: 2px solid var(--status-low); }
+    .day-card.status-warning { border-left: 2px solid var(--status-warning); }
+    .day-card.status-ideal { border-left: 2px solid var(--status-ideal); }
+    .day-card.status-excess { border-left: 2px solid var(--status-excess); }
+
+    /* Selecionado */
+    .day-card.active {
+      background: rgba(28, 33, 69, 0.85);
+      transform: scale(1.03) translateY(-4px);
+    }
+    .day-card.active.status-empty { border-color: #fff; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
+    .day-card.active.status-low { border-color: var(--status-low); box-shadow: 0 0 15px var(--status-low); }
+    .day-card.active.status-warning { border-color: var(--status-warning); box-shadow: 0 0 15px rgba(255, 179, 0, 0.2); }
+    .day-card.active.status-ideal { border-color: var(--status-ideal); box-shadow: 0 0 15px rgba(0, 200, 83, 0.2); }
+    .day-card.active.status-excess { border-color: var(--status-excess); box-shadow: 0 0 15px rgba(255, 23, 68, 0.2); }
+
+    .day-card.today {
+      border-bottom: 2px solid var(--secondary);
+    }
+
+    .today-tag {
+      position: absolute;
+      top: -8px;
+      background: linear-gradient(135deg, #d4af37, #b8860b);
+      color: #0a0e27;
+      font-size: 8px;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    .day-name {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .day-num {
+      font-family: var(--font-mono);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .day-progress-track {
+      width: 100%;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 4px;
+    }
+
+    .day-progress-fill {
+      height: 100%;
+      border-radius: 2px;
+    }
+
+    .status-low .day-progress-fill { background: var(--status-low); }
+    .status-warning .day-progress-fill { background: var(--status-warning); }
+    .status-ideal .day-progress-fill { background: var(--status-ideal); }
+    .status-excess .day-progress-fill { background: var(--status-excess); }
+
+    .day-cals {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .day-cals .kcal-lbl {
+      font-size: 0.6rem;
+      color: var(--text-muted);
+    }
+
+    .day-meals-count {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+
+    /* ==========================================================================
+       3. Cockpit de Análise Diária
+       ========================================================================== */
+    .analysis-cockpit {
+      background: linear-gradient(145deg, rgba(20, 24, 53, 0.8), rgba(10, 14, 39, 0.9));
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .cockpit-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 14px;
+    }
+
+    .cockpit-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cockpit-title i {
+      color: var(--secondary);
+      filter: drop-shadow(0 0 5px var(--secondary-glow));
+    }
+
+    .cockpit-header h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .cockpit-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cockpit-badge.empty { background: rgba(255,255,255,0.08); color: var(--text-muted); }
+    .cockpit-badge.low { background: rgba(120, 144, 156, 0.15); color: #90A4AE; border: 1px solid rgba(120, 144, 156, 0.3); }
+    .cockpit-badge.warning { background: rgba(255, 179, 0, 0.15); color: #FFCA28; border: 1px solid rgba(255, 179, 0, 0.3); }
+    .cockpit-badge.ideal { background: rgba(0, 200, 83, 0.15); color: #69F0AE; border: 1px solid rgba(0, 200, 83, 0.3); }
+    .cockpit-badge.excess { background: rgba(255, 23, 68, 0.15); color: #FF5252; border: 1px solid rgba(255, 23, 68, 0.3); }
+
+    /* Hero de Calorias */
+    .calorie-hero {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .calorie-hero-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .cals-large {
+      font-family: var(--font-mono);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .cals-target {
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .pct-bubble {
+      background: rgba(255,255,255,0.05);
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--secondary);
+      border-radius: 10px;
+      padding: 6px 12px;
+      border: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    .progress-bar-3d-track {
+      height: 10px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .progress-bar-3d-fill {
+      height: 100%;
+      border-radius: 10px;
+      position: relative;
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .progress-bar-3d-fill.low { background: var(--status-low); }
+    .progress-bar-3d-fill.warning { background: linear-gradient(90deg, #FFCA28, var(--status-warning)); box-shadow: 0 0 10px var(--status-warning-glow); }
+    .progress-bar-3d-fill.ideal { background: linear-gradient(90deg, #69F0AE, var(--status-ideal)); box-shadow: 0 0 12px var(--status-ideal-glow); }
+    .progress-bar-3d-fill.excess { background: linear-gradient(90deg, #FF5252, var(--status-excess)); box-shadow: 0 0 12px var(--status-excess-glow); }
+
+    .shimmer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
+      animation: shift-shimmer 2s infinite linear;
+    }
+
+    @keyframes shift-shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .hero-desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Grid de Macros */
+    .macros-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .macro-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 14px;
+      padding: 14px;
+      transition: all 0.25s ease;
+    }
+
+    .macro-card:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+
+    .macro-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .macro-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .macro-title i.p { color: var(--primary); }
+    .macro-title i.c { color: var(--secondary); }
+    .macro-title i.f { color: var(--accent-blue); }
+
+    .macro-pct {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .macro-vals {
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+      margin-bottom: 8px;
+    }
+
+    .macro-vals .cur {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .macro-vals .tgt {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .macro-track {
+      height: 4px;
+      background: rgba(0,0,0,0.35);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .macro-fill {
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    .protein .macro-fill { background: var(--primary); }
+    .carbs .macro-fill { background: var(--secondary); }
+    .fats .macro-fill { background: var(--accent-blue); }
+
+    /* ==========================================================================
+       4. Refeições do Dia
+       ========================================================================== */
+    .meals-section {
+      background: rgba(20, 24, 53, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .meals-sec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .meals-sec-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .meals-sec-title i {
+      color: var(--primary);
+    }
+
+    .meals-count-badge {
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .meals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .meal-row-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.25s ease;
+    }
+
+    .meal-row-card:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.1);
+      transform: translateX(3px);
+    }
+
+    .meal-img-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .meal-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .meal-img-box i {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--text-muted);
+    }
+
+    .meal-time {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: rgba(10, 14, 39, 0.85);
+      font-family: var(--font-mono);
+      font-size: 8px;
+      text-align: center;
+      padding: 1px 0;
+      color: #fff;
+    }
+
+    .meal-details {
+      flex-grow: 1;
+      min-width: 0;
+    }
+
+    .meal-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+    }
+
+    .meal-name-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .meal-kcal-value {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .meal-items-text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 8px;
+    }
+
+    .meal-pills-row {
+      display: flex;
+      gap: 8px;
+      font-family: var(--font-mono);
+    }
+
+    .meal-pill {
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .meal-pill.p { background: rgba(0, 200, 83, 0.08); color: #69F0AE; }
+    .meal-pill.c { background: rgba(255, 179, 0, 0.08); color: #FFCA28; }
+    .meal-pill.f { background: rgba(33, 150, 243, 0.08); color: #64B5F6; }
+
+    .meal-actions-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .act-btn {
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+
+    .act-btn.details {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 6px 12px;
+    }
+
+    .act-btn.details:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .act-btn.del {
+      background: rgba(255, 23, 68, 0.05);
+      border: 1px solid rgba(255, 23, 68, 0.15);
+      color: #FF5252;
+      width: 28px;
+      height: 28px;
+    }
+
+    .act-btn.del:hover {
+      background: #FF1744;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(255,23,68,0.4);
+    }
+
+    /* Empty state */
+    .empty-meals-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 30px 18px;
+      border: 1px dashed rgba(255,255,255,0.05);
+      border-radius: 16px;
+      background: rgba(255,255,255,0.005);
+    }
+
+    .empty-badge-circle {
+      width: 44px;
+      height: 44px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.04);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+      color: var(--text-muted);
+    }
+
+    .empty-meals-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .empty-meals-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      max-width: 280px;
+      margin-bottom: 16px;
+    }
+
+    .stoic-quote-empty {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 0.8rem;
+      color: var(--secondary);
+      border-left: 2px solid rgba(212, 175, 55, 0.2);
+      padding-left: 12px;
+      text-align: left;
+      line-height: 1.4;
+    }
+
+    .stoic-quote-empty cite {
+      display: block;
+      font-family: var(--font-sans);
+      font-style: normal;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* ==========================================================================
+       5. Resumo Semanal (3 Widgets)
+       ========================================================================== */
+    .summary-widgets-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .widget-box {
+      background: rgba(20, 24, 53, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: all 0.25s ease;
+    }
+
+    .widget-box:hover {
+      background: rgba(28, 33, 69, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .widget-ico {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .widget-ico.gold {
+      background: rgba(212,175,55,0.08);
+      color: var(--secondary);
+      border: 1px solid rgba(212,175,55,0.15);
+      box-shadow: 0 0 10px rgba(212,175,55,0.05);
+    }
+
+    .widget-ico.green {
+      background: rgba(0, 200, 83, 0.08);
+      color: var(--primary);
+      border: 1px solid rgba(0, 200, 83, 0.15);
+      box-shadow: 0 0 10px rgba(0,200,83,0.05);
+    }
+
+    .widget-ico.blue {
+      background: rgba(33, 150, 243, 0.08);
+      color: var(--accent-blue);
+      border: 1px solid rgba(33, 150, 243, 0.15);
+      box-shadow: 0 0 10px rgba(33,150,243,0.05);
+    }
+
+    .widget-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .widget-title {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .widget-val {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      margin: 2px 0;
+    }
+
+    .widget-sub {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       6. Citação Estoica de Encerramento
+       ========================================================================== */
+    .philosophical-quote-card {
+      background: linear-gradient(135deg, rgba(20, 24, 53, 0.65), rgba(10, 14, 39, 0.8));
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      border-radius: 20px;
+      padding: 24px 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    .philosophical-quote-card i.quote-bg {
+      position: absolute;
+      top: 14px; left: 24px;
+      color: rgba(255,255,255,0.025);
+      pointer-events: none;
+    }
+
+    .philosophy-text {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      margin-bottom: 10px;
+    }
+
+    .philosophy-author {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--secondary);
+      letter-spacing: 0.5px;
+    }
+
+    .philosophy-footer {
+      font-size: 8px;
+      font-weight: 800;
+      color: var(--text-muted);
+      opacity: 0.5;
+      letter-spacing: 1px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin-top: 16px;
+      padding-top: 8px;
+    }
+
+    /* ==========================================================================
+       7. Responsividade
+       ========================================================================== */
+    @media (max-width: 768px) {
+      body {
+        padding: 16px 8px;
+      }
+
+      .dashboard-wrapper {
+        padding: 16px;
+        gap: 20px;
+      }
+
+      .header-section h1 {
+        font-size: 1.25rem;
+      }
+
+      .back-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+
+      .header-spacer {
+        width: 60px;
+      }
+
+      .days-grid {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        gap: 8px;
+      }
+
+      .day-card {
+        width: 72px;
+        flex-shrink: 0;
+      }
+
+      .macros-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-widgets-row {
+        grid-template-columns: 1fr;
+      }
+
+      .meal-row-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .meal-img-box {
+        width: 100%;
+        height: 100px;
+      }
+
+      .meal-actions-box {
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 8px;
+      }
+
+      .act-btn.details {
+        flex-grow: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glow -->
+  <div class="ambient-glow-1"></div>
+  <div class="ambient-glow-2"></div>
+
+  <!-- Main Container -->
+  <div class="dashboard-wrapper">
+    
+    <!-- Header -->
+    <header class="header-section">
+      <button class="back-btn">
+        <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>
+        <span>Voltar</span>
+      </button>
+      <div class="title-box">
+        <span class="subtitle-badge">Histórico de Desempenho</span>
+        <h1>Controle Semanal</h1>
+      </div>
+      <div class="header-spacer"></div>
+    </header>
+
+    <!-- Navigation -->
+    <div class="calendar-navigation">
+      <button class="nav-arrow" id="btn-prev-week">
+        <i data-lucide="chevron-left" style="width: 18px; height: 18px;"></i>
+      </button>
+      <div class="week-label">
+        <i data-lucide="calendar-days" style="width: 18px; height: 18px;"></i>
+        <span id="week-dates-display">03 de Mai - 09 de Mai</span>
+      </div>
+      <button class="nav-arrow" id="btn-next-week">
+        <i data-lucide="chevron-right" style="width: 18px; height: 18px;"></i>
+      </button>
+    </div>
+
+    <!-- Day Cards Grid -->
+    <div class="days-grid" id="days-grid-container">
+      <!-- Generated dynamically by JS -->
+    </div>
+
+    <!-- COCKPIT DE ANÁLISE DIÁRIA -->
+    <section class="analysis-cockpit">
+      <div class="cockpit-header">
+        <div class="cockpit-title">
+          <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
+          <h2 id="selected-day-title">Análise de Quinta-feira, 7 de Maio</h2>
+        </div>
+        <span class="cockpit-badge ideal" id="selected-day-badge">Meta Atingida</span>
+      </div>
+
+      <!-- Hero de Calorias -->
+      <div class="calorie-hero">
+        <div class="calorie-hero-row">
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 0.8rem; font-weight: 500; color: var(--text-muted); text-transform: uppercase;">Energia Consumida</span>
+            <div style="display: flex; align-items: baseline; gap: 4px;">
+              <span class="cals-large" id="hero-cals-value">2025</span>
+              <span class="cals-target">/ 2500 kcal</span>
+            </div>
+          </div>
+          <div class="pct-bubble" id="hero-pct-value">81%</div>
+        </div>
+
+        <div class="progress-bar-3d-track">
+          <div class="progress-bar-3d-fill ideal" id="hero-progress-fill" style="width: 81%;">
+            <div class="shimmer"></div>
+          </div>
+        </div>
+
+        <p class="hero-desc" id="hero-status-desc">
+          <i data-lucide="check-circle-2" style="width: 14px; height: 14px; color: var(--primary);"></i>
+          <span>Foco perfeito! Meta estoica estabelecida e atingida.</span>
+        </p>
+      </div>
+
+      <!-- Grid de Macros -->
+      <div class="macros-grid">
+        <!-- Proteína -->
+        <div class="macro-card protein">
+          <div class="macro-title-row">
+            <div class="macro-title">
+              <i data-lucide="shield" class="p" style="width: 16px; height: 16px;"></i>
+              <span>Proteína</span>
+            </div>
+            <span class="macro-pct" id="macro-p-pct">93%</span>
+          </div>
+          <div class="macro-vals">
+            <span class="cur" id="macro-p-cur">140.2g</span>
+            <span class="tgt">/ 150g</span>
+          </div>
+          <div class="macro-track">
+            <div class="macro-fill" id="macro-p-fill" style="width: 93%;"></div>
+          </div>
+        </div>
+
+        <!-- Carboidratos -->
+        <div class="macro-card carbs">
+          <div class="macro-title-row">
+            <div class="macro-title">
+              <i data-lucide="zap" class="c" style="width: 16px; height: 16px;"></i>
+              <span>Carboidratos</span>
+            </div>
+            <span class="macro-pct" id="macro-c-pct">71%</span>
+          </div>
+          <div class="macro-vals">
+            <span class="cur" id="macro-c-cur">214.5g</span>
+            <span class="tgt">/ 300g</span>
+          </div>
+          <div class="macro-track">
+            <div class="macro-fill" id="macro-c-fill" style="width: 71%;"></div>
+          </div>
+        </div>
+
+        <!-- Gorduras -->
+        <div class="macro-card fats">
+          <div class="macro-title-row">
+            <div class="macro-title">
+              <i data-lucide="droplets" class="f" style="width: 16px; height: 16px;"></i>
+              <span>Gorduras</span>
+            </div>
+            <span class="macro-pct" id="macro-f-pct">82%</span>
+          </div>
+          <div class="macro-vals">
+            <span class="cur" id="macro-f-cur">57.8g</span>
+            <span class="tgt">/ 70g</span>
+          </div>
+          <div class="macro-track">
+            <div class="macro-fill" id="macro-f-fill" style="width: 82%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ALIMENTOS DO TEMPLO -->
+    <section class="meals-section">
+      <div class="meals-sec-header">
+        <div class="meals-sec-title">
+          <i data-lucide="utensils" style="width: 18px; height: 18px;"></i>
+          <h3>Alimentos do Templo</h3>
+        </div>
+        <span class="meals-count-badge" id="meals-count-lbl">2 registros</span>
+      </div>
+
+      <div class="meals-list" id="meals-list-container">
+        <!-- Generated dynamically by JS -->
+      </div>
+    </section>
+
+    <!-- RESUMO DE MÉTRICAS DA SEMANA -->
+    <section class="summary-widgets-row">
+      <div class="widget-box">
+        <div class="widget-ico gold">
+          <i data-lucide="flame" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="widget-details">
+          <span class="widget-title">Consistência</span>
+          <span class="widget-val">5 dias</span>
+          <span class="widget-sub">Sua sequência atual</span>
+        </div>
+      </div>
+
+      <div class="widget-box">
+        <div class="widget-ico green">
+          <i data-lucide="trending-up" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="widget-details">
+          <span class="widget-title">Média Semanal</span>
+          <span class="widget-val">1982 kcal</span>
+          <span class="widget-sub">4 dias monitorados</span>
+        </div>
+      </div>
+
+      <div class="widget-box">
+        <div class="widget-ico blue">
+          <i data-lucide="target" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="widget-details">
+          <span class="widget-title">Meta Calórica</span>
+          <span class="widget-val">2500 kcal</span>
+          <span class="widget-sub">Sua diretriz de foco</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sabedoria Estoica -->
+    <section class="philosophical-quote-card">
+      <i data-lucide="quote" class="quote-bg" style="width: 28px; height: 28px;"></i>
+      <p class="philosophy-text" id="philosophical-quote-text">
+        "A temperança reside em desfrutar do alimento sem ser escravizado por ele, pois o corpo é o servo da vontade."
+      </p>
+      <span class="philosophy-author" id="philosophical-quote-author">— Sêneca, Cartas a Lucílio</span>
+      <div class="philosophy-footer">
+        <i data-lucide="award" style="width: 12px; height: 12px; display: inline; vertical-align: middle;"></i>
+        <span>TEMPERANÇA E CONSISTÊNCIA</span>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // Mock Data representing calendar week
+    const MOCK_TARGETS = {
+      calories: 2500,
+      protein: 150,
+      carbs: 300,
+      fats: 70
+    };
+
+    const MOCK_DAYS = [
+      {
+        id: "day-03",
+        dateLabel: "03",
+        weekday: "DOM",
+        fullName: "Domingo, 3 de Maio",
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fats: 0,
+        meals: [],
+        status: "status-empty"
+      },
+      {
+        id: "day-04",
+        dateLabel: "04",
+        weekday: "SEG",
+        fullName: "Segunda-feira, 4 de Maio",
+        calories: 1240,
+        protein: 78.5,
+        carbs: 152.0,
+        fats: 35.6,
+        status: "status-low",
+        meals: [
+          {
+            type: "Café da Manhã",
+            time: "08:15",
+            calories: 450,
+            protein: 25,
+            carbs: 55,
+            fats: 14,
+            summary: "Pão integral, Ovos mexidos, Queijo minas frescal, Café"
+          },
+          {
+            type: "Almoço",
+            time: "12:30",
+            calories: 790,
+            protein: 53.5,
+            carbs: 97,
+            fats: 21.6,
+            summary: "Peito de Frango grelhado, Arroz integral, Feijão preto, Salada"
+          }
+        ]
+      },
+      {
+        id: "day-05",
+        dateLabel: "05",
+        weekday: "TER",
+        fullName: "Terça-feira, 5 de Maio",
+        calories: 2420,
+        protein: 142.0,
+        carbs: 280.5,
+        fats: 62.4,
+        status: "status-ideal",
+        meals: [
+          {
+            type: "Café da Manhã",
+            time: "07:50",
+            calories: 520,
+            protein: 28,
+            carbs: 65,
+            fats: 16,
+            summary: "Mamão, Aveia em flocos, Whey protein de chocolate, Leite desnatado"
+          },
+          {
+            type: "Almoço",
+            time: "13:00",
+            calories: 880,
+            protein: 58,
+            carbs: 110,
+            fats: 24,
+            summary: "Patinho moído grelhado, Purê de batata doce, Brócolis refogado"
+          },
+          {
+            type: "Jantar",
+            time: "19:45",
+            calories: 1020,
+            protein: 56,
+            carbs: 105.5,
+            fats: 22.4,
+            summary: "Filé de Salmão assado, Arroz sete grãos, Aspargos"
+          }
+        ]
+      },
+      {
+        id: "day-06",
+        dateLabel: "06",
+        weekday: "QUA",
+        fullName: "Quarta-feira, 6 de Maio",
+        calories: 3200,
+        protein: 182.3,
+        carbs: 395.0,
+        fats: 88.5,
+        status: "status-excess",
+        meals: [
+          {
+            type: "Almoço",
+            time: "12:15",
+            calories: 950,
+            protein: 62,
+            carbs: 120,
+            fats: 26,
+            summary: "Sobrecoxa de frango assada, Macarrão integral com molho vermelho, Salada"
+          },
+          {
+            type: "Lanche da Tarde",
+            time: "16:30",
+            calories: 650,
+            protein: 30,
+            carbs: 85,
+            fats: 21,
+            summary: "Iogurte grego natural, Banana fatiada, Pasta de amendoim, Granola"
+          },
+          {
+            type: "Jantar Especial",
+            time: "20:30",
+            calories: 1600,
+            protein: 90.3,
+            carbs: 190,
+            fats: 41.5,
+            summary: "Hambúrguer artesanal gourmet, Batata frita rústica, Suco de uva integral"
+          }
+        ]
+      },
+      {
+        id: "day-07",
+        dateLabel: "07",
+        weekday: "QUI",
+        fullName: "Quinta-feira, 7 de Maio",
+        calories: 2025,
+        protein: 140.2,
+        carbs: 214.5,
+        fats: 57.8,
+        status: "status-ideal",
+        isToday: true,
+        meals: [
+          {
+            type: "Café da Manhã",
+            time: "08:00",
+            calories: 410,
+            protein: 26.2,
+            carbs: 48,
+            fats: 11.8,
+            summary: "Omelete de 3 claras e 1 ovo inteiro, Torrada integral, Chá verde"
+          },
+          {
+            type: "Almoço do Guerreiro",
+            time: "12:50",
+            calories: 825,
+            protein: 59.0,
+            carbs: 95.5,
+            fats: 21.0,
+            summary: "Filé de tilápia grelhada, Arroz integral, Feijão carioca, Abobrinha refogada"
+          },
+          {
+            type: "Lanche de Treino",
+            time: "17:15",
+            calories: 340,
+            protein: 28.0,
+            carbs: 42.0,
+            fats: 6.0,
+            summary: "Shake com Whey Protein de Baunilha, Banana de terra cozida"
+          },
+          {
+            type: "Ceia Leve",
+            time: "22:00",
+            calories: 450,
+            protein: 27.0,
+            carbs: 29.0,
+            fats: 19.0,
+            summary: "Mix de castanhas de caju, Iogurte desnatado com morangos frescos"
+          }
+        ]
+      },
+      {
+        id: "day-08",
+        dateLabel: "08",
+        weekday: "SEX",
+        fullName: "Sexta-feira, 8 de Maio",
+        calories: 1045,
+        protein: 64.0,
+        carbs: 122.3,
+        fats: 32.5,
+        status: "status-low",
+        meals: [
+          {
+            type: "Café da Manhã",
+            time: "07:30",
+            calories: 395,
+            protein: 22,
+            carbs: 52,
+            fats: 11,
+            summary: "Panqueca de aveia com morangos, Pasta de amendoim integral"
+          },
+          {
+            type: "Almoço Rápido",
+            time: "13:10",
+            calories: 650,
+            protein: 42,
+            carbs: 70.3,
+            fats: 21.5,
+            summary: "Sobrecoxa de frango assada com purê de mandioca, Salada verde"
+          }
+        ]
+      },
+      {
+        id: "day-09",
+        dateLabel: "09",
+        weekday: "SÁB",
+        fullName: "Sábado, 9 de Maio",
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fats: 0,
+        meals: [],
+        status: "status-empty"
+      }
+    ];
+
+    const STOIC_QUOTES = [
+      { text: "Nenhum homem é livre se não for mestre de si mesmo.", author: "Epicteto" },
+      { text: "A autodisciplina é o maior império que se pode possuir.", author: "Sêneca" },
+      { text: "A temperança é o equilíbrio constante da alma frente aos impulsos mundanos.", author: "Marco Aurélio" },
+      { text: "Não consuma para saciar o tédio, mas para nutrir a virtude e o vigor do templo que habita.", author: "Marco Aurélio" },
+      { text: "A excelência não é um ato, mas um hábito de consistência.", author: "Aristóteles" },
+      { text: "Domine seus apetites antes que eles dominem você.", author: "Epicteto" },
+      { text: "Aquele que controla seus impulsos governa seu destino.", author: "Sêneca" }
+    ];
+
+    let activeDayIndex = 4; // Quinta-feira 07 por padrão
+
+    // Render Day Cards
+    function renderDayCards() {
+      const container = document.getElementById("days-grid-container");
+      container.innerHTML = "";
+
+      MOCK_DAYS.forEach((day, index) => {
+        const isActive = index === activeDayIndex;
+        const pct = day.calories > 0 ? (day.calories / MOCK_TARGETS.calories) * 100 : 0;
+        
+        const card = document.createElement("button");
+        card.className = `day-card ${day.status || 'status-empty'} ${isActive ? 'active' : ''} ${day.isToday ? 'today' : ''}`;
+        
+        card.innerHTML = `
+          ${day.isToday ? '<span class="today-tag">HOJE</span>' : ''}
+          <span class="day-name">${day.weekday}</span>
+          <span class="day-num">${day.dateLabel}</span>
+          
+          ${day.calories > 0 ? `
+            <div class="day-progress-track">
+              <div class="day-progress-fill" style="width: ${Math.min(pct, 100)}%;"></div>
+            </div>
+            <span class="day-cals">${day.calories.toFixed(0)} <span class="kcal-lbl">kcal</span></span>
+          ` : `
+            <span class="day-cals" style="color: var(--text-muted); font-weight: 400;">0 kcal</span>
+          `}
+          
+          <div class="day-meals-count">
+            <i data-lucide="utensils" style="width: 10px; height: 10px;"></i>
+            <span>${day.meals.length} ref.</span>
+          </div>
+        `;
+        
+        card.addEventListener("click", () => {
+          selectDay(index);
+        });
+
+        container.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // Selecionar um dia e atualizar cockpit
+    function selectDay(index) {
+      activeDayIndex = index;
+      renderDayCards();
+      updateCockpit(MOCK_DAYS[index]);
+    }
+
+    // Atualiza o cockpit de análise com dados do dia selecionado
+    function updateCockpit(day) {
+      document.getElementById("selected-day-title").innerText = `Análise de ${day.fullName}`;
+      
+      const badge = document.getElementById("selected-day-badge");
+      const fill = document.getElementById("hero-progress-fill");
+      const calsVal = document.getElementById("hero-cals-value");
+      const pctVal = document.getElementById("hero-pct-value");
+      const descText = document.getElementById("hero-status-desc").querySelector("span");
+      const descIcon = document.getElementById("hero-status-desc").querySelector("i");
+      
+      // Reset classes
+      badge.className = "cockpit-badge";
+      fill.className = "progress-bar-3d-fill";
+      
+      const dayCals = day.calories || 0;
+      const pct = (dayCals / MOCK_TARGETS.calories) * 100;
+      
+      calsVal.innerText = dayCals.toFixed(0);
+      pctVal.innerText = `${pct.toFixed(0)}%`;
+      fill.style.width = `${Math.min(pct, 100)}%`;
+
+      if (dayCals === 0) {
+        badge.innerText = "Sem registros";
+        badge.classList.add("empty");
+        fill.classList.add("low");
+        descText.innerText = "Nenhuma refeição registrada neste dia.";
+        descIcon.setAttribute("data-lucide", "alert-circle");
+        descIcon.style.color = "var(--text-muted)";
+      } else if (pct < 50) {
+        badge.innerText = "Foco Necessário";
+        badge.classList.add("low");
+        fill.classList.add("low");
+        descText.innerText = "Calorias muito abaixo da meta de desenvolvimento.";
+        descIcon.setAttribute("data-lucide", "alert-circle");
+        descIcon.style.color = "var(--status-low)";
+      } else if (pct < 80) {
+        badge.innerText = "Em Progresso";
+        badge.classList.add("warning");
+        fill.classList.add("warning");
+        descText.innerText = "Excelente esforço, continue mantendo a disciplina.";
+        descIcon.setAttribute("data-lucide", "sparkles");
+        descIcon.style.color = "var(--status-warning)";
+      } else if (pct <= 120) {
+        badge.innerText = "Meta Atingida";
+        badge.classList.add("ideal");
+        fill.classList.add("ideal");
+        descText.innerText = "Foco perfeito! Meta estoica estabelecida e atingida.";
+        descIcon.setAttribute("data-lucide", "check-circle-2");
+        descIcon.style.color = "var(--status-ideal)";
+      } else {
+        badge.innerText = "Excedido";
+        badge.classList.add("excess");
+        fill.classList.add("excess");
+        descText.innerText = "Atenção ao autocontrole. Procure equilibrar nos próximos dias.";
+        descIcon.setAttribute("data-lucide", "alert-circle");
+        descIcon.style.color = "var(--status-excess)";
+      }
+
+      // Atualiza os cards de macros
+      updateMacroCard("p", day.protein || 0, MOCK_TARGETS.protein);
+      updateMacroCard("c", day.carbs || 0, MOCK_TARGETS.carbs);
+      updateMacroCard("f", day.fats || 0, MOCK_TARGETS.fats);
+
+      // Atualiza lista de refeições
+      renderMealsList(day);
+      
+      // Atualiza Frase Estoica do Dia baseada no índice do dia
+      const quoteIndex = day.dateLabel % STOIC_QUOTES.length;
+      document.getElementById("philosophical-quote-text").innerText = `"${STOIC_QUOTES[quoteIndex].text}"`;
+      document.getElementById("philosophical-quote-author").innerText = `— ${STOIC_QUOTES[quoteIndex].author}`;
+
+      lucide.createIcons();
+    }
+
+    function updateMacroCard(type, cur, tgt) {
+      const pct = (cur / tgt) * 100;
+      document.getElementById(`macro-${type}-pct`).innerText = `${pct.toFixed(0)}%`;
+      document.getElementById(`macro-${type}-cur`).innerText = `${cur.toFixed(1)}g`;
+      document.getElementById(`macro-${type}-fill`).style.width = `${Math.min(pct, 100)}%`;
+    }
+
+    function renderMealsList(day) {
+      const container = document.getElementById("meals-list-container");
+      const countLbl = document.getElementById("meals-count-lbl");
+      
+      container.innerHTML = "";
+      
+      const count = day.meals ? day.meals.length : 0;
+      countLbl.innerText = `${count} ${count === 1 ? 'registro' : 'registros'}`;
+
+      if (count > 0) {
+        day.meals.forEach((meal, i) => {
+          const card = document.createElement("div");
+          card.className = "meal-row-card";
+          card.innerHTML = `
+            <div class="meal-img-box">
+              <i data-lucide="utensils" style="width: 18px; height: 18px;"></i>
+              <span class="meal-time">${meal.time}</span>
+            </div>
+            <div class="meal-details">
+              <div class="meal-header-line">
+                <h4 class="meal-name-title">${meal.type}</h4>
+                <span class="meal-kcal-value">${meal.calories} <span style="font-size: 0.7rem; color: var(--text-muted); font-weight: 400;">kcal</span></span>
+              </div>
+              <p class="meal-items-text">${meal.summary}</p>
+              <div class="meal-pills-row">
+                <span class="meal-pill p">P: ${meal.protein}g</span>
+                <span class="meal-pill c">C: ${meal.carbs}g</span>
+                <span class="meal-pill f">G: ${meal.fats}g</span>
+              </div>
+            </div>
+            <div class="meal-actions-box">
+              <button class="act-btn details">Ver detalhes</button>
+              <button class="act-btn del">
+                <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } else {
+        const card = document.createElement("div");
+        card.className = "empty-meals-card";
+        const randomQuote = STOIC_QUOTES[day.dateLabel % STOIC_QUOTES.length];
+        card.innerHTML = `
+          <div class="empty-badge-circle">
+            <i data-lucide="target" style="width: 20px; height: 20px;"></i>
+          </div>
+          <h4>Vazio e Ordenado</h4>
+          <p>Nenhuma refeição registrada neste dia do calendário.</p>
+          <blockquote class="stoic-quote-empty">
+            "${randomQuote.text}"
+            <cite>— ${randomQuote.author}</cite>
+          </blockquote>
+        `;
+        container.appendChild(card);
+      }
+    }
+
+    // Inicialização
+    document.addEventListener("DOMContentLoaded", () => {
+      renderDayCards();
+      updateCockpit(MOCK_DAYS[activeDayIndex]);
+      
+      // Adiciona interatividade aos botões de voltar e setas (efeito puramente visual)
+      document.querySelector(".back-btn").addEventListener("click", () => {
+        alert("Retornando ao Dashboard Principal do NutriVision!");
+      });
+      document.getElementById("btn-prev-week").addEventListener("click", () => {
+        alert("Navegando para a semana anterior (Simulação)");
+      });
+      document.getElementById("btn-next-week").addEventListener("click", () => {
+        alert("Navegando para a semana seguinte (Simulação)");
+      });
+    });
+  </script>
+</body>
+</html>
