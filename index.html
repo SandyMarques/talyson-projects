@@ -1,32 +1,1131 @@
 <!DOCTYPE html>
-<html lang="pt-br" class="dark">
+<html lang="pt-br" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talyson Marques | Portfolio IA</title>
+    <title>Talyson Marques | IA, Cloud & Automação de Infraestrutura</title>
+    
+    <!-- Meta Tags para SEO -->
+    <meta name="description" content="Portfolio de Talyson Marques. Engenheiro de Redes e Especialista em Automação e Inteligência Artificial. Soluções que integram LLMs, RAG e orquestração de infraestrutura de conectividade.">
+    <meta name="keywords" content="Talyson Marques, Redes de Computadores, Inteligência Artificial, LLM, RAG, Python, Automação, Cisco, Juniper, Engenheiro de Redes">
+    <meta name="author" content="Talyson Marques">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons (CDN) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        cyber: {
+                            bg: '#040811',
+                            card: '#0a101f',
+                            accent: '#06b6d4',
+                            purple: '#6366f1',
+                            glow: '#38bdf8',
+                            success: '#10b981',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-12px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style type="text/css">
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        
+        /* Glassmorphism Classes */
+        .glass {
+            background: rgba(10, 16, 31, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .glass-premium {
+            background: radial-gradient(120% 120% at 50% 10%, rgba(10, 16, 31, 0.8) 0%, rgba(3, 7, 18, 0.95) 100%);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+        }
+
+        .glass-card-glow:hover {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
+            border-color: rgba(6, 182, 212, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .glass-card-glow-purple:hover {
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+            transform: translateY(-4px);
+        }
+
+        /* Ambient Glow Blobs */
+        .glow-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            opacity: 0.25;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Tech Grid Background */
+        .tech-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+
+        /* Code input highlight animation */
+        @keyframes cursor-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        .cli-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 15px;
+            background-color: #06b6d4;
+            animation: cursor-blink 1s infinite;
+            vertical-align: middle;
+        }
+    </style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen">
-    <header class="max-w-4xl mx-auto px-6 pt-20 pb-12 text-center">
-        <h1 class="text-5xl font-extrabold mb-4 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">Talyson Marques</h1>
-        <p class="text-xl text-gray-400">Engenheiro de Redes transformando dados em solu��es com I.A.</p>
+<body class="tech-grid selection:bg-cyan-500/30 selection:text-cyan-200">
+
+    <!-- Ambient Blobs -->
+    <div class="glow-blob w-[500px] h-[500px] bg-cyan-600 top-[-100px] left-[-100px] animate-pulse-slow"></div>
+    <div class="glow-blob w-[600px] h-[600px] bg-indigo-600 top-[40%] right-[-150px] opacity-[0.2]"></div>
+    <div class="glow-blob w-[450px] h-[450px] bg-purple-600 bottom-[-100px] left-[20%] opacity-[0.15]"></div>
+
+    <!-- Header / Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-4">
+        <nav class="max-w-6xl mx-auto rounded-full glass px-6 py-3 flex items-center justify-between transition-all duration-300">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2 group">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center font-display font-bold text-white shadow-lg shadow-cyan-500/20 group-hover:scale-105 transition-transform">
+                    T
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-display font-bold tracking-wide text-white group-hover:text-cyan-400 transition-colors">TALYSON MARQUES</span>
+                    <span class="text-[9px] tracking-widest text-slate-400 font-mono">NETWORKING // AI // SEC</span>
+                </div>
+            </a>
+
+            <!-- Nav Links (Desktop) -->
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#sobre" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><i data-lucide="user" class="w-4 h-4"></i> Sobre</a>
+                <a href="#experiencia" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><i data-lucide="git-branch" class="w-4 h-4"></i> Jornada</a>
+                <a href="#projetos" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><i data-lucide="code-2" class="w-4 h-4"></i> Projetos</a>
+                <a href="#terminal" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><i data-lucide="terminal" class="w-4 h-4"></i> Terminal</a>
+                <a href="#habilidades" class="hover:text-cyan-400 transition-colors flex items-center gap-1.5"><i data-lucide="cpu" class="w-4 h-4"></i> Habilidades</a>
+            </div>
+
+            <!-- CTA / Contact Trigger -->
+            <div class="flex items-center gap-4">
+                <a href="#contato" class="hidden sm:inline-flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-full bg-slate-900 border border-slate-700 text-slate-100 hover:border-cyan-500 hover:text-cyan-400 transition-all duration-300 shadow-md">
+                    Fale Comigo <i data-lucide="send" class="w-3 h-3"></i>
+                </a>
+                
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white transition-colors" aria-label="Abrir Menu">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Panel -->
+        <div id="mobile-menu" class="hidden md:hidden absolute top-20 left-4 right-4 rounded-2xl glass p-6 flex flex-col gap-4 text-center mt-2 border border-slate-800 shadow-2xl">
+            <a href="#sobre" class="py-2.5 font-medium border-b border-slate-800 text-slate-300 hover:text-cyan-400">Sobre</a>
+            <a href="#experiencia" class="py-2.5 font-medium border-b border-slate-800 text-slate-300 hover:text-cyan-400">Jornada</a>
+            <a href="#projetos" class="py-2.5 font-medium border-b border-slate-800 text-slate-300 hover:text-cyan-400">Projetos</a>
+            <a href="#terminal" class="py-2.5 font-medium border-b border-slate-800 text-slate-300 hover:text-cyan-400">Terminal IA</a>
+            <a href="#habilidades" class="py-2.5 font-medium border-b border-slate-800 text-slate-300 hover:text-cyan-400">Habilidades</a>
+            <a href="#contato" class="py-3 mt-2 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 text-white font-bold text-sm">Fale Comigo</a>
+        </div>
     </header>
-    <section class="max-w-4xl mx-auto px-6 py-12">
-        <h2 class="text-3xl font-bold mb-6 border-l-4 border-blue-500 pl-4">Sobre</h2>
-        <p class="text-lg text-gray-300 leading-relaxed">Graduado em Redes de Computadores, focado em IA Generativa e Automa��o.</p>
-    </section>
-    <section class="max-w-4xl mx-auto px-6 py-12">
-        <h2 class="text-3xl font-bold mb-8 border-l-4 border-blue-500 pl-4">Projetos I.A.</h2>
-        <div class="grid md:grid-cols-2 gap-6">
-            <div class="bg-gray-900 p-6 rounded-xl border border-gray-800 hover:border-blue-500 transition-colors">
-                <h3 class="text-xl font-semibold mb-2">Automa��o de Logs</h3>
-                <p class="text-gray-400 text-sm mb-4">An�lise proativa de logs de rede com LLM.</p>
-                <a href="#" class="text-blue-400 font-semibold text-sm hover:underline">Ver C�digo ?</a>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center pt-32 pb-20 px-4">
+        <!-- Floating Visual Dots in Hero Background -->
+        <div class="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+            <div class="absolute top-[25%] left-[15%] w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></div>
+            <div class="absolute top-[70%] left-[80%] w-3 h-3 rounded-full bg-indigo-500 animate-ping opacity-75" style="animation-duration: 3s"></div>
+            <div class="absolute bottom-[20%] left-[10%] w-2.5 h-2.5 rounded-full bg-purple-500 animate-pulse" style="animation-duration: 4s"></div>
+        </div>
+
+        <div class="max-w-5xl mx-auto text-center z-10">
+            <!-- Active Status Badge -->
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-mono font-medium mb-8 animate-float shadow-[0_0_15px_rgba(6,182,212,0.1)]">
+                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                <span>SYSTEM STATUS: OPERATIONAL_</span>
+            </div>
+
+            <!-- Big Impact Title -->
+            <h1 class="text-4xl sm:text-5xl md:text-7xl font-display font-extrabold tracking-tight mb-6">
+                <span class="block text-white leading-tight">Orquestrando Conectividade</span>
+                <span class="block bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent pb-2 font-black">
+                    Automatizada por I.A.
+                </span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-base sm:text-lg md:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed mb-10 font-normal">
+                Especialista em Redes e Conectividade. Desenvolvo arquiteturas robustas unindo o rigor do 
+                <span class="text-cyan-400 font-semibold">networking corporativo</span> com a inteligência cognitiva de 
+                <span class="text-indigo-400 font-semibold">LLMs e agentes autônomos</span>.
+            </p>
+
+            <!-- Buttons -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                <a href="#projetos" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold tracking-wide transition-all duration-300 shadow-lg shadow-cyan-500/25 hover:scale-[1.02] text-center flex items-center justify-center gap-2">
+                    <i data-lucide="rocket" class="w-5 h-5"></i> Explorar Projetos
+                </a>
+                <a href="#terminal" class="w-full sm:w-auto px-8 py-4 rounded-xl glass hover:bg-slate-900 border border-slate-700 hover:border-slate-500 text-slate-100 font-bold tracking-wide transition-all duration-300 flex items-center justify-center gap-2">
+                    <i data-lucide="terminal" class="w-5 h-5 text-cyan-400"></i> Executar Terminal IA
+                </a>
+            </div>
+
+            <!-- Live Metrics Strip (Visual) -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-20 pt-8 border-t border-slate-900 max-w-4xl mx-auto text-left font-mono">
+                <div class="p-4 rounded-xl bg-slate-950/40 border border-slate-900/50">
+                    <div class="text-[10px] text-slate-500 uppercase tracking-widest">AUTOMAÇÃO</div>
+                    <div class="text-2xl font-bold text-cyan-400 mt-1">100%</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Pipeline em Python</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-950/40 border border-slate-900/50">
+                    <div class="text-[10px] text-slate-500 uppercase tracking-widest">NETWORKS</div>
+                    <div class="text-2xl font-bold text-indigo-400 mt-1">BGP/OSPF</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">L3 Core Orquestrado</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-950/40 border border-slate-900/50">
+                    <div class="text-[10px] text-slate-500 uppercase tracking-widest">AI INTEGRATION</div>
+                    <div class="text-2xl font-bold text-purple-400 mt-1">RAG / Agent</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Análise Inteligente</div>
+                </div>
+                <div class="p-4 rounded-xl bg-slate-950/40 border border-slate-900/50">
+                    <div class="text-[10px] text-slate-500 uppercase tracking-widest">latency saved</div>
+                    <div class="text-2xl font-bold text-emerald-400 mt-1">&lt; 150ms</div>
+                    <div class="text-[11px] text-slate-400 mt-0.5">Respostas por Voz</div>
+                </div>
             </div>
         </div>
     </section>
-    <footer class="text-center py-12 text-gray-500 text-sm">
-        <p>&copy; 2026 Talyson Marques.</p>
+
+    <!-- Section: Sobre -->
+    <section id="sobre" class="py-24 px-4 border-t border-slate-950 relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-12 gap-12 items-center">
+                <!-- Info Section Left (5 cols) -->
+                <div class="md:col-span-5 relative">
+                    <!-- Tech frame for a custom graphic -->
+                    <div class="relative w-full aspect-square rounded-2xl bg-gradient-to-tr from-cyan-900/20 to-indigo-900/20 border border-cyan-500/30 p-6 flex flex-col justify-between overflow-hidden shadow-2xl glass animate-float">
+                        <!-- Top header -->
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+                            <span class="text-xs font-mono text-cyan-400"># SYSTEM_INFO.SYS</span>
+                            <div class="flex gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-500/50"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-green-500/50"></span>
+                            </div>
+                        </div>
+                        
+                        <!-- Middle Graphic (Network Architecture concept) -->
+                        <div class="my-6 flex items-center justify-center relative flex-grow">
+                            <!-- Visual AI agent center node -->
+                            <div class="w-16 h-16 rounded-full bg-slate-900 border-2 border-cyan-400 flex items-center justify-center relative z-10 shadow-[0_0_20px_rgba(6,182,212,0.3)]">
+                                <i data-lucide="cpu" class="w-8 h-8 text-cyan-400 animate-pulse"></i>
+                            </div>
+                            <!-- Orbit nodes -->
+                            <div class="absolute w-36 h-36 border border-dashed border-slate-700 rounded-full animate-spin" style="animation-duration: 20s"></div>
+                            <div class="absolute w-44 h-44 border border-dashed border-slate-800 rounded-full animate-spin" style="animation-duration: 35s"></div>
+                            
+                            <!-- Node items connected -->
+                            <div class="absolute top-[10%] left-[20%] w-8 h-8 rounded-lg bg-indigo-950 border border-indigo-500 flex items-center justify-center text-indigo-300 z-10 text-xs font-mono font-bold shadow-md shadow-indigo-500/10">BGP</div>
+                            <div class="absolute bottom-[15%] right-[10%] w-8 h-8 rounded-lg bg-purple-950 border border-purple-500 flex items-center justify-center text-purple-300 z-10 text-xs font-mono font-bold shadow-md shadow-purple-500/10">LLM</div>
+                            <div class="absolute top-[60%] left-[5%] w-8 h-8 rounded-lg bg-teal-950 border border-teal-500 flex items-center justify-center text-teal-300 z-10 text-xs font-mono font-bold shadow-md shadow-teal-500/10">RAG</div>
+                            <div class="absolute top-[15%] right-[15%] w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-500 flex items-center justify-center text-cyan-300 z-10 text-xs font-mono font-bold shadow-md shadow-cyan-500/10">NOC</div>
+                        </div>
+
+                        <!-- Footer terminal lines -->
+                        <div class="border-t border-slate-800 pt-4 font-mono text-xs text-slate-400 space-y-1">
+                            <p class="flex justify-between"><span>TALYSON MARQUES</span> <span class="text-cyan-400">[ONLINE]</span></p>
+                            <p class="flex justify-between"><span>INFRASTRUCTURE</span> <span class="text-indigo-400">AUTOMATED</span></p>
+                            <p class="flex justify-between"><span>AI BRAIN COGNITIVE</span> <span class="text-purple-400">CONNECTED</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Section Right (7 cols) -->
+                <div class="md:col-span-7">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold mb-4">
+                        <i data-lucide="award" class="w-3.5 h-3.5"></i> PERFIL PROFISSIONAL
+                    </div>
+                    
+                    <h2 class="text-3xl md:text-4xl font-display font-extrabold text-white mb-6 leading-tight">
+                        A união entre a solidez das Redes e a inovação em IA
+                    </h2>
+                    
+                    <div class="space-y-4 text-slate-300 text-base md:text-lg leading-relaxed">
+                        <p>
+                            Sou formado em <strong class="text-cyan-400 font-semibold">Redes de Computadores</strong> e trago uma sólida base técnica em conectividade, segurança e configuração de infraestruturas críticas corporativas (Cisco, Huawei, Juniper).
+                        </p>
+                        <p>
+                            Percebendo as demandas crescentes do mercado tecnológico, dei um passo estratégico rumo ao universo de <strong class="text-indigo-400 font-semibold">Inteligência Artificial Generativa, Engenharia de Prompt, RAG (Retrieval-Augmented Generation)</strong> e automações de ponta a ponta com Python.
+                        </p>
+                        <p>
+                            Minha missão é construir ecossistemas de infraestrutura auto-gerenciáveis, onde o suporte ao cliente, a auditoria de logs de rede, as interfaces de usuário e as análises logísticas sejam processadas instantaneamente por sistemas cognitivos integrados de IA.
+                        </p>
+                    </div>
+
+                    <!-- Highlight Metrics Grid -->
+                    <div class="grid grid-cols-3 gap-6 mt-10">
+                        <div>
+                            <div class="text-3xl font-extrabold text-white font-display">100%</div>
+                            <div class="text-xs text-slate-400 mt-1 font-mono">Foco em Automação</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-extrabold text-white font-display">Python</div>
+                            <div class="text-xs text-slate-400 mt-1 font-mono">Core Backend</div>
+                        </div>
+                        <div>
+                            <div class="text-3xl font-extrabold text-white font-display">RAG</div>
+                            <div class="text-xs text-slate-400 mt-1 font-mono">Especialidade IA</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Jornada de Transição -->
+    <section id="experiencia" class="py-24 px-4 bg-slate-950/30 relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold mb-4">
+                    <i data-lucide="git-branch" class="w-3.5 h-3.5"></i> LINHA DO TEMPO TECNOLÓGICA
+                </div>
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-white">Evolução do Conhecimento</h2>
+                <p class="text-slate-400 mt-3 max-w-lg mx-auto">Como convergi de redes tradicionais para inteligência artificial avançada.</p>
+            </div>
+
+            <!-- Timeline Elements -->
+            <div class="relative border-l border-slate-800 ml-4 md:ml-32 pl-8 md:pl-16 space-y-16">
+                <!-- Node 1 -->
+                <div class="relative">
+                    <!-- Dot left positioning -->
+                    <div class="absolute -left-[41px] md:-left-[105px] top-1.5 w-6 h-6 rounded-full bg-slate-950 border-2 border-cyan-400 flex items-center justify-center shadow-[0_0_10px_rgba(6,182,212,0.4)] z-10">
+                        <div class="w-2.5 h-2.5 rounded-full bg-cyan-400"></div>
+                    </div>
+                    
+                    <!-- Date stamp for desktop -->
+                    <div class="hidden md:block absolute -left-[200px] top-1 font-mono text-sm text-cyan-400 font-bold text-right w-24">
+                        2020 - 2023
+                    </div>
+                    
+                    <!-- Mobile date representation -->
+                    <span class="inline-block md:hidden font-mono text-xs text-cyan-400 font-bold mb-1">2020 - 2023</span>
+                    
+                    <!-- Content Card -->
+                    <div class="glass p-6 rounded-2xl hover:border-slate-700 transition-colors">
+                        <span class="text-xs font-mono uppercase text-slate-500 font-bold tracking-widest">Base de Conectividade</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-2 flex items-center gap-2">
+                            Infraestrutura & Redes Corporativas <i data-lucide="network" class="w-5 h-5 text-cyan-400"></i>
+                        </h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Sólido aprendizado focado em arquiteturas L2/L3 de grande porte, protocolos de roteamento dinâmico (OSPF, BGP), subnetting complexo, segurança perimetral (Firewalls) e gerência de redes em datacenters.
+                        </p>
+                        <!-- Stack badges -->
+                        <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">Cisco CCNA</span>
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">Routing & Switching</span>
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">Firewalls & Security</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 2 -->
+                <div class="relative">
+                    <div class="absolute -left-[41px] md:-left-[105px] top-1.5 w-6 h-6 rounded-full bg-slate-950 border-2 border-indigo-500 flex items-center justify-center shadow-[0_0_10px_rgba(99,102,241,0.4)] z-10">
+                        <div class="w-2.5 h-2.5 rounded-full bg-indigo-500"></div>
+                    </div>
+                    <div class="hidden md:block absolute -left-[200px] top-1 font-mono text-sm text-indigo-400 font-bold text-right w-24">
+                        2023 - 2025
+                    </div>
+                    <span class="inline-block md:hidden font-mono text-xs text-indigo-400 font-bold mb-1">2023 - 2025</span>
+                    
+                    <div class="glass p-6 rounded-2xl hover:border-slate-700 transition-colors">
+                        <span class="text-xs font-mono uppercase text-slate-500 font-bold tracking-widest">Transição Lógica</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-2 flex items-center gap-2">
+                            Programação Python & Automações <i data-lucide="terminal" class="w-5 h-5 text-indigo-400"></i>
+                        </h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Migração da configuração manual em linha de comando para automação em larga escala. Escrita de scripts em Python de alto desempenho para auditorias de sistemas, coleta automatizada de logs e interação ativa com APIs REST de plataformas de nuvem.
+                        </p>
+                        <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">Python Scripting</span>
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">Ansible / Netmiko</span>
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">API Integration</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Node 3 -->
+                <div class="relative">
+                    <div class="absolute -left-[41px] md:-left-[105px] top-1.5 w-6 h-6 rounded-full bg-slate-950 border-2 border-purple-500 flex items-center justify-center shadow-[0_0_10px_rgba(168,85,247,0.4)] z-10">
+                        <div class="w-2.5 h-2.5 rounded-full bg-purple-500"></div>
+                    </div>
+                    <div class="hidden md:block absolute -left-[200px] top-1 font-mono text-sm text-purple-400 font-bold text-right w-24">
+                        PRESENTE
+                    </div>
+                    <span class="inline-block md:hidden font-mono text-xs text-purple-400 font-bold mb-1">PRESENTE</span>
+                    
+                    <div class="glass p-6 rounded-2xl hover:border-slate-700 transition-colors">
+                        <span class="text-xs font-mono uppercase text-slate-500 font-bold tracking-widest">Inteligência Operacional</span>
+                        <h3 class="text-xl font-bold text-white mt-1 mb-2 flex items-center gap-2">
+                            Integração de Modelos IA & LLMs <i data-lucide="brain-circuit" class="w-5 h-5 text-purple-400"></i>
+                        </h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Desenvolvimento de fluxos autônomos cognitivos. Aplicação de inteligência artificial em problemas do mundo real: bots de atendimento por voz (OmniVoice), sistemas inteligentes de análise nutricional (Nutrivision) e agentes especializados de suporte para redes de computadores com RAG e LangChain.
+                        </p>
+                        <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">LangChain</span>
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">OpenAI & Anthropic APIs</span>
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">Vector DBs / RAG</span>
+                            <span class="px-2 py-1 rounded bg-slate-900 border border-slate-800">Voice-to-Voice Pipelines</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Projetos Real-world Showcase -->
+    <section id="projetos" class="py-24 px-4 relative">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold mb-4">
+                    <i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i> CASES DE SUCESSO
+                </div>
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-white">Projetos em Destaque</h2>
+                <p class="text-slate-400 mt-3 max-w-lg mx-auto">Soluções inovadoras, focadas em automação extrema de processos e IA aplicada.</p>
+            </div>
+
+            <!-- Projects Grid -->
+            <div class="grid md:grid-cols-2 gap-8">
+                
+                <!-- Project Card 1 (OmniVoice) -->
+                <div class="glass rounded-3xl p-6 md:p-8 flex flex-col justify-between glass-card-glow transition-all duration-300 relative group">
+                    <div class="absolute top-4 right-4 text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded">VOICE + LLM</div>
+                    <div>
+                        <!-- Icon representation -->
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mb-6">
+                            <i data-lucide="mic" class="w-6 h-6 text-cyan-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white font-display mb-3 group-hover:text-cyan-400 transition-colors">OmniVoice AI Pipeline</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Arquitetura avançada de processamento de voz para conversas fluidas com agentes inteligentes de IA. Implementa conversão Speech-to-Text em tempo real, roteamento do fluxo de texto para LLMs otimizadas com prompts customizados e geração de áudio de alta fidelidade com baixíssima latência (TTS).
+                        </p>
+                    </div>
+                    <!-- Footer Info and Action Buttons -->
+                    <div class="border-t border-slate-800/60 pt-6 flex items-center justify-between mt-auto">
+                        <div class="flex flex-wrap gap-1.5 max-w-[70%]">
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Python</span>
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">FastAPI</span>
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Whisper</span>
+                        </div>
+                        <button onclick="openModal('omnicoice-modal')" class="text-xs font-semibold text-cyan-400 flex items-center gap-1 hover:underline">
+                            Specs <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 (Network AI Log Analyzer) -->
+                <div class="glass rounded-3xl p-6 md:p-8 flex flex-col justify-between glass-card-glow-purple transition-all duration-300 relative group">
+                    <div class="absolute top-4 right-4 text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded">NETWORKS + SEC</div>
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center mb-6">
+                            <i data-lucide="activity" class="w-6 h-6 text-indigo-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white font-display mb-3 group-hover:text-indigo-400 transition-colors">AI Syslog Intelligence</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Analisador de telemetria inteligente de ativos de rede. Capta logs brutos de switches e roteadores em tempo real, executa um pipeline de filtragem inteligente e usa modelos de linguagem para correlacionar eventos de falha e gerar scripts corretivos automaticamente (Cisco/Juniper commands).
+                        </p>
+                    </div>
+                    <div class="border-t border-slate-800/60 pt-6 flex items-center justify-between mt-auto">
+                        <div class="flex flex-wrap gap-1.5 max-w-[70%]">
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Syslog</span>
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">LangChain</span>
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Regex</span>
+                        </div>
+                        <button onclick="openModal('syslog-modal')" class="text-xs font-semibold text-indigo-400 flex items-center gap-1 hover:underline">
+                            Specs <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project Card 3 (Nutrivision Project) -->
+                <div class="glass rounded-3xl p-6 md:p-8 flex flex-col justify-between glass-card-glow-purple transition-all duration-300 relative group">
+                    <div class="absolute top-4 right-4 text-xs font-mono text-indigo-400 bg-indigo-500/10 px-2 py-1 rounded">COMPUTER VISION</div>
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center mb-6">
+                            <i data-lucide="eye" class="w-6 h-6 text-indigo-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white font-display mb-3 group-hover:text-indigo-400 transition-colors">Nutrivision Core</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Sistema avançado de análise dietética inteligente. Através da captura de fotos de pratos de comida, o modelo multimodal segmenta e identifica alimentos, calcula porções aproximadas e estima macronutrientes, gerando um diário nutricional completo com feedbacks construtivos via IA.
+                        </p>
+                    </div>
+                    <div class="border-t border-slate-800/60 pt-6 flex items-center justify-between mt-auto">
+                        <div class="flex flex-wrap gap-1.5 max-w-[70%]">
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Vision LLM</span>
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Python AI</span>
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Streamlit</span>
+                        </div>
+                        <button onclick="openModal('nutrivision-modal')" class="text-xs font-semibold text-indigo-400 flex items-center gap-1 hover:underline">
+                            Specs <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Project Card 4 (Dashboard Bonin) -->
+                <div class="glass rounded-3xl p-6 md:p-8 flex flex-col justify-between glass-card-glow transition-all duration-300 relative group">
+                    <div class="absolute top-4 right-4 text-xs font-mono text-cyan-400 bg-cyan-500/10 px-2 py-1 rounded">DATA VISUALIZATION</div>
+                    <div>
+                        <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mb-6">
+                            <i data-lucide="pie-chart" class="w-6 h-6 text-cyan-400"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white font-display mb-3 group-hover:text-cyan-400 transition-colors">Dashboard Bonin</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-6">
+                            Plataforma de alta performance para inteligência geográfica e de logística. Implementa importadores complexos de dados estruturados, mapeia rotas intermunicipais de distribuição em todo o território nacional através de mapas customizados e exibe gráficos gerenciais em tempo real.
+                        </p>
+                    </div>
+                    <div class="border-t border-slate-800/60 pt-6 flex items-center justify-between mt-auto">
+                        <div class="flex flex-wrap gap-1.5 max-w-[70%]">
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Leaflet JS</span>
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">Pandas</span>
+                            <span class="text-[10px] font-mono bg-slate-900 border border-slate-800 text-slate-400 px-2 py-0.5 rounded">ChartJS</span>
+                        </div>
+                        <button onclick="openModal('bonin-modal')" class="text-xs font-semibold text-cyan-400 flex items-center gap-1 hover:underline">
+                            Specs <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION: INTERACTIVE AI TERMINAL (WOW FACTOR) -->
+    <section id="terminal" class="py-24 px-4 bg-slate-950/40 border-t border-slate-900 relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold mb-4">
+                    <i data-lucide="terminal" class="w-3.5 h-3.5"></i> EXPERIÊNCIA DE TERMINAL INTERATIVA
+                </div>
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-white">Talyson AI Agent CLI</h2>
+                <p class="text-slate-400 mt-3">Execute comandos e converse diretamente com meu agente inteligente de infraestrutura de rede.</p>
+            </div>
+
+            <!-- Terminal Mock Wrapper -->
+            <div class="rounded-2xl glass-premium overflow-hidden border border-slate-800 shadow-2xl flex flex-col min-h-[480px]">
+                <!-- Terminal Header Bar -->
+                <div class="bg-slate-950/90 px-5 py-3.5 flex items-center justify-between border-b border-slate-800/80">
+                    <div class="flex items-center gap-2.5">
+                        <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                    </div>
+                    <div class="text-xs font-mono text-slate-400 font-medium flex items-center gap-1.5">
+                        <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-cyan-400"></i> guest@talyson-ai-shell: ~
+                    </div>
+                    <div class="text-xs font-mono text-slate-500">v1.2.4-stable</div>
+                </div>
+
+                <!-- Command Quick Buttons -->
+                <div class="bg-slate-900/40 border-b border-slate-800/50 p-3.5 flex flex-wrap gap-2 items-center text-xs font-mono text-slate-400">
+                    <span class="text-slate-500 select-none mr-1">Acesso Rápido:</span>
+                    <button onclick="runCommand('sobre')" class="px-2.5 py-1 rounded bg-slate-950/80 border border-slate-800 hover:border-cyan-400 hover:text-cyan-400 transition-colors">sobre</button>
+                    <button onclick="runCommand('projetos')" class="px-2.5 py-1 rounded bg-slate-950/80 border border-slate-800 hover:border-cyan-400 hover:text-cyan-400 transition-colors">projetos</button>
+                    <button onclick="runCommand('habilidades')" class="px-2.5 py-1 rounded bg-slate-950/80 border border-slate-800 hover:border-cyan-400 hover:text-cyan-400 transition-colors">habilidades</button>
+                    <button onclick="runCommand('ping talyson.ai')" class="px-2.5 py-1 rounded bg-slate-950/80 border border-slate-800 hover:border-cyan-400 hover:text-cyan-400 transition-colors">ping</button>
+                    <button onclick="runCommand('status')" class="px-2.5 py-1 rounded bg-slate-950/80 border border-slate-800 hover:border-cyan-400 hover:text-cyan-400 transition-colors">status</button>
+                    <button onclick="runCommand('clear')" class="px-2.5 py-1 rounded bg-slate-950/80 border border-slate-800 hover:border-red-400 hover:text-red-400 transition-colors">clear</button>
+                </div>
+
+                <!-- Terminal Output Display -->
+                <div id="terminal-screen" class="p-6 font-mono text-sm overflow-y-auto max-h-[350px] flex-grow space-y-4 text-cyan-200">
+                    <div class="space-y-1">
+                        <p class="text-slate-400">Iniciando protocolo de comunicação segura com talyson-ai-agent...</p>
+                        <p class="text-emerald-400 font-bold">Conectado com sucesso! IP local: 192.168.1.100</p>
+                        <p class="text-slate-500">Digite <span class="text-cyan-400 font-bold">help</span> para listar todos os comandos disponíveis no sistema.</p>
+                    </div>
+                </div>
+
+                <!-- Terminal Input Form -->
+                <form id="terminal-form" onsubmit="handleFormSubmit(event)" class="bg-slate-950/80 border-t border-slate-800 p-4 flex items-center gap-3">
+                    <span class="font-mono text-cyan-400 font-bold text-sm select-none">guest@talyson.ai:~$&nbsp;</span>
+                    <input id="terminal-input" type="text" autocomplete="off" placeholder="Digite um comando aqui..." class="bg-transparent border-none outline-none flex-grow text-cyan-300 font-mono text-sm focus:ring-0 placeholder-slate-700">
+                    <button type="submit" class="text-slate-400 hover:text-cyan-400 transition-colors">
+                        <i data-lucide="corner-down-left" class="w-5 h-5"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Habilidades -->
+    <section id="habilidades" class="py-24 px-4 bg-slate-950/20 relative">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-xs font-semibold mb-4">
+                    <i data-lucide="cpu" class="w-3.5 h-3.5"></i> CONHECIMENTO INTEGRADO
+                </div>
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-white">Domínio Tecnológico</h2>
+                <p class="text-slate-400 mt-3 max-w-lg mx-auto">As competências que utilizo para resolver problemas complexos com inovação.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                
+                <!-- Category 1 -->
+                <div class="glass p-6 md:p-8 rounded-3xl border-slate-850">
+                    <h3 class="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
+                        <i data-lucide="network" class="text-cyan-400 w-5 h-5"></i> Redes & Infra
+                    </h3>
+                    <div class="space-y-4">
+                        <!-- Skill 1 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>Core Routing & Protocols</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-cyan-400 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 2 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>Cisco iOS/Juniper JunOS</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-cyan-400 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 3 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>Segurança & Firewalls</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-cyan-400 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="glass p-6 md:p-8 rounded-3xl border-slate-850">
+                    <h3 class="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
+                        <i data-lucide="terminal" class="text-indigo-400 w-5 h-5"></i> Dev & Backend
+                    </h3>
+                    <div class="space-y-4">
+                        <!-- Skill 1 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>Python Backend</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-indigo-500 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 2 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>APIs & Microservices</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-indigo-500 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 3 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>Bancos de Dados</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-indigo-500 rounded-full" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="glass p-6 md:p-8 rounded-3xl border-slate-850">
+                    <h3 class="text-xl font-bold font-display text-white mb-6 flex items-center gap-2">
+                        <i data-lucide="brain-circuit" class="text-purple-400 w-5 h-5"></i> IA & Automação
+                    </h3>
+                    <div class="space-y-4">
+                        <!-- Skill 1 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>LangChain & Agentic Flow</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-purple-500 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 2 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>RAG Systems & Vector DBs</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-purple-500 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <!-- Skill 3 -->
+                        <div>
+                            <div class="flex justify-between text-sm font-mono text-slate-300 mb-1">
+                                <span>Prompt Engineering / LLM Fine-tuning</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="w-full h-2 rounded-full bg-slate-900 overflow-hidden border border-slate-800">
+                                <div class="h-full bg-purple-500 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Contato -->
+    <section id="contato" class="py-24 px-4 bg-slate-950/40 relative">
+        <div class="max-w-4xl mx-auto">
+            <div class="glass p-8 md:p-12 rounded-3xl border border-slate-800/80 shadow-2xl relative overflow-hidden">
+                <div class="absolute -top-10 -right-10 w-44 h-44 rounded-full bg-cyan-500/10 filter blur-2xl"></div>
+                <div class="absolute -bottom-10 -left-10 w-44 h-44 rounded-full bg-indigo-500/10 filter blur-2xl"></div>
+                
+                <div class="grid md:grid-cols-2 gap-10 items-center">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 text-xs font-semibold mb-4">
+                            <i data-lucide="mail" class="w-3.5 h-3.5"></i> CONTATO DIRETO
+                        </div>
+                        <h2 class="text-3xl font-display font-extrabold text-white leading-tight">
+                            Vamos construir algo fantástico juntos?
+                        </h2>
+                        <p class="text-slate-400 mt-4 text-sm leading-relaxed">
+                            Estou altamente disponível para conversar sobre orquestração de rede automatizada com IA, novos pipelines de dados cognitivos, serviços em nuvem ou oportunidades em aberto.
+                        </p>
+                        
+                        <!-- Details -->
+                        <div class="mt-8 space-y-4">
+                            <div class="flex items-center gap-3 text-slate-300 text-sm">
+                                <div class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800 text-cyan-400">
+                                    <i data-lucide="mail" class="w-4 h-4"></i>
+                                </div>
+                                <span>talyson.developer@gmail.com</span>
+                            </div>
+                            <div class="flex items-center gap-3 text-slate-300 text-sm">
+                                <div class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center border border-slate-800 text-indigo-400">
+                                    <i data-lucide="github" class="w-4 h-4"></i>
+                                </div>
+                                <a href="https://github.com/SandyMarques" target="_blank" class="hover:underline">github.com/SandyMarques</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form (Visual / Client-side Logic) -->
+                    <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Seu Nome</label>
+                            <input required type="text" id="contact-name" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="Nome Sobrenome">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Seu E-mail</label>
+                            <input required type="email" id="contact-email" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="exemplo@email.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Sua Mensagem</label>
+                            <textarea required id="contact-msg" rows="4" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="Olá Talyson, gostaria de falar sobre..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold tracking-wide transition-all duration-300 shadow-md flex items-center justify-center gap-2">
+                            Enviar Mensagem <i data-lucide="send" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-12 border-t border-slate-900/40 text-slate-500 text-xs font-mono relative">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>© 2026 TALYSON MARQUES. TODOS OS DIREITOS RESERVADOS.</p>
+            <p class="flex items-center gap-1.5">
+                CONSTRUÍDO COM <i data-lucide="heart" class="w-4 h-4 text-red-500 animate-pulse"></i> &amp; IA AUTOMATION.
+            </p>
+        </div>
     </footer>
+
+    <!-- PROJECT SPECS MODAL BASE -->
+    <div id="project-modal" class="fixed inset-0 z-50 overflow-y-auto hidden items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+        <div class="relative w-full max-w-2xl rounded-3xl glass-premium border border-slate-800 p-6 md:p-8 shadow-2xl flex flex-col gap-6">
+            
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors" aria-label="Fechar Modal">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Modal Dynamic Content -->
+            <div id="modal-content">
+                <!-- Injetado por Javascript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripting for interactivity -->
+    <script>
+        // Init Lucide Icons
+        lucide.createIcons();
+
+        // Responsive Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close Mobile Menu on Click outside/link click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // --- INTERACTIVE MOCK TERMINAL ---
+        const terminalScreen = document.getElementById('terminal-screen');
+        const terminalInput = document.getElementById('terminal-input');
+        
+        // Command replies registry
+        const COMMANDS = {
+            'help': `Comandos disponíveis no terminal Talyson AI Shell:<br>
+&nbsp;&nbsp;<span class="text-cyan-400 font-bold">sobre</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Resumo técnico de Talyson Marques.<br>
+&nbsp;&nbsp;<span class="text-cyan-400 font-bold">projetos</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Detalha os principais cases e repositórios.<br>
+&nbsp;&nbsp;<span class="text-cyan-400 font-bold">habilidades</span>&nbsp;&nbsp;&nbsp;- Exibe as competências do stack de tecnologia.<br>
+&nbsp;&nbsp;<span class="text-cyan-400 font-bold">ping [host]</span>&nbsp;&nbsp;&nbsp;- Testa latência do barramento de IA do sistema.<br>
+&nbsp;&nbsp;<span class="text-cyan-400 font-bold">status</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Exibe métricas e integridade operacional.<br>
+&nbsp;&nbsp;<span class="text-cyan-400 font-bold">contato</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Informações de canais de comunicação.<br>
+&nbsp;&nbsp;<span class="text-cyan-400 font-bold">clear</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Limpa a tela do terminal.`,
+            
+            'sobre': `<span class="text-white font-bold">TALYSON MARQUES DE MELLO</span><br>
+------------------------------------<br>
+Graduação técnica em <span class="text-cyan-400 font-semibold">Redes de Computadores</span>.<br>
+Especialidades: Arquiteturas Routing & Switching corporativas, Scripting avançado em Python, integração e engenharia de prompt para Modelos de Linguagem de Grande Porte (LLMs), criação de fluxos orientados a Agentes autônomos e RAG (Geração de Conteúdo Recuperado por Vetor).<br><br>
+Diferencial: Unir a robustez de segurança lógica e protocolos de telecomunicações de redes com a automação generativa de IA.`,
+            
+            'projetos': `<span class="text-white font-bold">LISTA DE PROJETOS PRINCIPAIS:</span><br>
+-----------------------------<br>
+1. <span class="text-cyan-400 font-bold">OmniVoice AI Pipeline:</span><br>
+&nbsp;&nbsp;&nbsp;Interações por voz integradas a LLM com latências abaixo de 200ms.<br>
+2. <span class="text-indigo-400 font-bold">AI Syslog Intelligence:</span><br>
+&nbsp;&nbsp;&nbsp;Analisador cognitivo de logs syslog de Cisco/Juniper para automação de mitigação de falhas.<br>
+3. <span class="text-purple-400 font-bold">Nutrivision Core:</span><br>
+&nbsp;&nbsp;&nbsp;Analisador dietético automatizado com visão computacional multimodal.<br>
+4. <span class="text-emerald-400 font-bold">Dashboard Bonin:</span><br>
+&nbsp;&nbsp;&nbsp;Geo-dashboard corporativo de inteligência logística em mapas de distribuição.<br><br>
+Execute <span class="text-cyan-300">specs [nome-do-projeto]</span> para obter diagramas detalhados das arquiteturas.`,
+
+            'habilidades': `<span class="text-white font-bold">MATRIZ DE COMPETÊNCIAS:</span><br>
+-----------------------------<br>
+<span class="text-cyan-400 font-semibold">Networking/Redes:</span> &nbsp;&nbsp;[████████████████░░] 85% (BGP, OSPF, Cisco, JunOS, Firewall)<br>
+<span class="text-indigo-400 font-semibold">Desenvolvimento:</span> &nbsp;[██████████████████] 95% (Python, FastAPI, Pandas, REST APIs)<br>
+<span class="text-purple-400 font-semibold">Inteligência Art.:</span> [██████████████████] 95% (LangChain, VectorDBs, RAG, Multi-Agent)<br>
+<span class="text-emerald-400 font-semibold">Cloud/DevOps:</span> &nbsp;&nbsp;&nbsp;[██████████████░░░░] 75% (Docker, AWS, Git, CI/CD, GitHub Actions)`,
+
+            'status': `<span class="text-white font-bold">INTEGRIDADE DO SISTEMA:</span><br>
+-----------------------<br>
+- HOST: <span class="text-cyan-400 font-bold">talyson-ai-gateway</span><br>
+- MEMORY USAGE: <span class="text-emerald-400">1.82 GB / 8.00 GB (OK)</span><br>
+- ACTIVE AGENT CORE: <span class="text-emerald-400">ONLINE</span><br>
+- ROUTING SYSTEM: <span class="text-emerald-400">0 PACKET LOSS (STABLE)</span><br>
+- AI INTERACTION PIPELINE: <span class="text-emerald-400">HEALTHY</span><br>
+- CURRENT LATENCY: <span class="text-cyan-300">4.5 ms</span>`,
+
+            'contato': `<span class="text-white font-bold">CANAIS DE CONTATO DE TALYSON MARQUES:</span><br>
+------------------------------------------<br>
+- <span class="text-cyan-400">E-mail:</span> talyson.developer@gmail.com<br>
+- <span class="text-indigo-400">GitHub:</span> https://github.com/SandyMarques<br>
+- <span class="text-purple-400">LinkedIn:</span> linkedin.com/in/SandyMarques<br><br>
+Sinta-se à vontade para enviar um formulário no rodapé do site para iniciarmos um chat!`,
+        };
+
+        function runCommand(cmdString) {
+            cmdString = cmdString.trim().toLowerCase();
+            
+            // Add user input to terminal output
+            const promptLine = document.createElement('div');
+            promptLine.className = 'text-slate-400 pt-1 border-t border-slate-900/30';
+            promptLine.innerHTML = `<span class="text-cyan-400 font-bold">guest@talyson.ai:~$&nbsp;</span>${cmdString}`;
+            terminalScreen.appendChild(promptLine);
+
+            const resultLine = document.createElement('div');
+            resultLine.className = 'text-slate-300 pl-4 leading-relaxed';
+
+            if (cmdString === 'clear') {
+                terminalScreen.innerHTML = '';
+                return;
+            } else if (COMMANDS[cmdString]) {
+                resultLine.innerHTML = COMMANDS[cmdString];
+            } else if (cmdString.startsWith('ping')) {
+                const host = cmdString.split(' ')[1] || 'talyson.ai';
+                resultLine.innerHTML = `PING ${host} (104.244.42.1) 56(84) bytes of data.<br>
+64 bytes from ${host}: icmp_seq=1 ttl=56 time=4.31 ms<br>
+64 bytes from ${host}: icmp_seq=2 ttl=56 time=3.92 ms<br>
+64 bytes from ${host}: icmp_seq=3 ttl=56 time=4.15 ms<br>
+--- ${host} ping statistics ---<br>
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms<br>
+rtt min/avg/max/mdev = 3.922/4.127/4.311/0.165 ms`;
+            } else {
+                resultLine.innerHTML = `<span class="text-red-400 font-bold">Comando não reconhecido: "${cmdString}"</span>.<br>Digite <span class="text-cyan-400 font-bold">help</span> para listar os comandos.`;
+            }
+
+            terminalScreen.appendChild(resultLine);
+            terminalScreen.scrollTop = terminalScreen.scrollHeight;
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            const val = terminalInput.value;
+            if (val.trim()) {
+                runCommand(val);
+                terminalInput.value = '';
+            }
+        }
+
+        // --- DYNAMIC SPECIFICATIONS MODAL ---
+        const modal = document.getElementById('project-modal');
+        const modalContent = document.getElementById('modal-content');
+
+        const MODAL_DATA = {
+            'omnicoice-modal': {
+                title: 'OmniVoice AI Pipeline',
+                category: 'Voice + Generative LLM',
+                icon: 'mic',
+                techStack: ['Python', 'FastAPI', 'Whisper STT', 'ElevenLabs TTS', 'Custom LLM Wrapper'],
+                desc: 'O OmniVoice foi projetado para eliminar as barreiras de latência e roboticidade nas automações por voz. Integrando processamento assíncrono de alto desempenho em Python com APIs multimodais modernas, ele alcança uma conversa extremamente natural e proativa.',
+                architecture: `
+                <div class="space-y-4">
+                    <h4 class="text-sm font-mono text-slate-400 uppercase tracking-wider font-bold">Diagrama de Fluxo Técnico</h4>
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-900 font-mono text-xs text-cyan-300 space-y-1 leading-relaxed">
+                        <p>[Usuário Fala] --(Stream de Áudio)--> [FastAPI Endpoint]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Whisper STT Model]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Custom Agent Core (LLM)]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ElevenLabs / Voice TTS]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>[Usuário Escuta] &lt;--(Ultra-low Latency)--- [Retorno Multimídia]</p>
+                    </div>
+                </div>`
+            },
+            'syslog-modal': {
+                title: 'AI Syslog Intelligence',
+                category: 'Network Automation & LLM Routing',
+                icon: 'activity',
+                techStack: ['Python', 'Syslog Prot.', 'LangChain', 'Regex Parsers', 'OpenAI API'],
+                desc: 'Este projeto cria uma ponte entre os eventos brutos de equipamentos de rede corporativos (Cisco, Huawei, HP) e a tomada de decisões inteligentes via IA. O pipeline é altamente customizado para analisar alarmes de OSPF, flutuações de BGP e falhas de portas, interpretando a gravidade e gerando as linhas exatas de CLI para mitigar o incidente em poucos segundos.',
+                architecture: `
+                <div class="space-y-4">
+                    <h4 class="text-sm font-mono text-slate-400 uppercase tracking-wider font-bold">Workflow de Orquestração</h4>
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-900 font-mono text-xs text-indigo-300 space-y-1 leading-relaxed">
+                        <p>[Switch/Router Node] --(Syslog UDP 514)--> [Python Daemon Collector]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Regex Normalization Filter]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[LangChain Router Chain]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[AI Diagnosis & Config Patch]</p>
+                    </div>
+                </div>`
+            },
+            'nutrivision-modal': {
+                title: 'Nutrivision Core',
+                category: 'Multimodal Vision & Analytics',
+                icon: 'eye',
+                techStack: ['Python', 'Multimodal LLMs', 'CV2 Image Proc.', 'Macronutrient Calculation'],
+                desc: 'O Nutrivision Core visa resolver a complexidade de acompanhamento dietético preciso. Através do envio da imagem de uma refeição, o backend processa o arquivo, extrai as características visuais por redes neurais profundas de IA, e calcula o volume estimado e os nutrientes de cada alimento contido no prato.',
+                architecture: `
+                <div class="space-y-4">
+                    <h4 class="text-sm font-mono text-slate-400 uppercase tracking-wider font-bold">Pipeline Multimodal</h4>
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-900 font-mono text-xs text-purple-300 space-y-1 leading-relaxed">
+                        <p>[Imagem de Prato] --(Upload)--> [Streamlit Frontend / Python API]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Multimodal Vision Model]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[Kcal / Macronutrients Mapping Engine]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>[Dashboard Report] &lt;--(Visual JSON Report)--- [Database Logging]</p>
+                    </div>
+                </div>`
+            },
+            'bonin-modal': {
+                title: 'Dashboard Bonin',
+                category: 'Corporate Geo-Intelligence Dashboard',
+                icon: 'pie-chart',
+                techStack: ['HTML5/JS', 'Leaflet', 'Pandas Engine', 'Tailwind CSS', 'Chart.js'],
+                desc: 'Interface avançada criada especificamente para resolver visualizações complexas de logística em território brasileiro. Permite o upload inteligente de planilhas de distribuição, processa os dados de rotas no backend, plota marcadores em um mapa de alta performance com zoom adaptável e exibe indicadores (KPIs) com contadores animados.',
+                architecture: `
+                <div class="space-y-4">
+                    <h4 class="text-sm font-mono text-slate-400 uppercase tracking-wider font-bold">Módulos de Visualização</h4>
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-900 font-mono text-xs text-teal-300 space-y-1 leading-relaxed">
+                        <p>[Spreadsheet Upload] --(CSV/Excel)--> [Pandas Parser Controller]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[GeoJSON Coordinates Mapping]</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|</p>
+                        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v</p>
+                        <p>[Leaflet Brazil Map Overlay] &lt;--(Coordinates Data)--- [UI Interactive Charts]</p>
+                    </div>
+                </div>`
+            }
+        };
+
+        function openModal(id) {
+            const data = MODAL_DATA[id];
+            if (!data) return;
+
+            let badgesHtml = '';
+            data.techStack.forEach(tech => {
+                badgesHtml += `<span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-slate-400 font-mono text-xs">${tech}</span>`;
+            });
+
+            modalContent.innerHTML = `
+                <div class="flex items-center gap-3 border-b border-slate-800 pb-5 mb-5">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                        <i data-lucide="${data.icon}" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest">${data.category}</span>
+                        <h3 class="text-2xl font-bold font-display text-white mt-0.5">${data.title}</h3>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <h4 class="text-sm font-mono text-slate-500 uppercase tracking-wider mb-2 font-bold">Resumo Operacional</h4>
+                        <p class="text-slate-300 text-sm leading-relaxed">${data.desc}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-mono text-slate-500 uppercase tracking-wider mb-3 font-bold">Core Stack</h4>
+                        <div class="flex flex-wrap gap-2">${badgesHtml}</div>
+                    </div>
+                    ${data.architecture}
+                </div>
+            `;
+
+            lucide.createIcons();
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close Modal on overlay click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // ESC Key to close modal
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // --- CONTACT SIMULATOR ---
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value;
+            const email = document.getElementById('contact-email').value;
+            const msg = document.getElementById('contact-msg').value;
+
+            // Simple visual response
+            alert(`Obrigado pelo contato, ${name}! Seu e-mail (${email}) foi registrado simuladamente com sucesso.`);
+            e.target.reset();
+        }
+    </script>
 </body>
 </html>
