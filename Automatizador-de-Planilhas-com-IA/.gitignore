@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Variáveis de ambiente & credenciais
+.env
+.env.local
+.env.*.local
+
+# Testes e cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Diretórios temporários e planilhas geradas
+temp/
+uploads/
+exports/
+*.xlsx
+*.xls
+*.csv
+
+# IDEs e Sistema Operacional
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db

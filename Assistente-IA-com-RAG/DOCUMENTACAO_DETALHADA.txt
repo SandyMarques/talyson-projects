@@ -1,0 +1,299 @@
+================================================================================
+          DOCUMENTO DE EXPLICACAO COMPLETA E DETALHADA DO PROJETO
+                     ASSISTENTE IA COM RAG (LANGCHAIN & CHROMADB)
+================================================================================
+
+1. INTRODUCAO E VISAO GERAL
+--------------------------------------------------------------------------------
+Este projeto consiste em uma solucao profissional de Inteligencia Artificial
+baseada no padrao arquitetural RAG (Retrieval-Augmented Generation / Geracao
+Aumentada por Recuperacao).
+
+O objetivo principal e permitir que qualquer usuario envie documentos proprios
+(como relatorios, contratos, manuais, livros ou notas em formatos PDF, TXT,
+Markdown, CSV e JSON) e converse em linguagem natural com um assistente virtual
+que responde DUVIDAS BASEANDO-SE ESTRITAMENTE NO CONTEUDO DESSES DOCUMENTOS.
+
+O grande diferencial do RAG em relacao a um chat comum de IA:
+- Eliminacao de Alucinacoes: A IA e proibida de inventar fatos ou usar
+  conhecimento externo que nao esteja explicitamente presente nos documentos.
+- Rastreabilidade e Auditoria: Cada resposta gerada e acompanhada das fontes
+  exatas, indicando o nome do arquivo, a pagina e o trecho de onde a informacao
+  foi extraida.
+- Privacidade e Atualizacao Continua: Nao e necessario retreinar ou fazer
+  fine-tuning de modelos caros; basta fazer upload de novos arquivos para que o
+  assistente aprenda instantaneamente.
+
+
+2. ARQUITETURA GERAL E FLUXO DE DADOS
+--------------------------------------------------------------------------------
+O sistema e composto por 4 camadas principais:
+
++--------------------------------------------------------------------------+
+| 1. CAMADA DE INTERFACE E CLIENTES                                        |
+|    - Interface Web Integrada (HTML5/CSS3/JavaScript SPA)                 |
+|    - Documentacao Interativa Swagger UI (/docs) e ReDoc (/redoc)         |
+|    - Clientes HTTP Externos (cURL, Postman, outros backends)             |
++--------------------------------------------------------------------------+
+                                    |
+                                    v
++--------------------------------------------------------------------------+
+| 2. CAMADA DE API REST (FastAPI)                                          |
+|    - POST /api/v1/documents/upload -> Upload de novos documentos         |
+|    - GET  /api/v1/documents        -> Listagem de documentos indexados   |
+|    - DELETE /api/v1/documents/{fn} -> Exclusao de documento especifico   |
+|    - POST /api/v1/chat             -> Consulta inteligente RAG           |
+|    - GET  /api/v1/health           -> Checagem de saude do sistema       |
++--------------------------------------------------------------------------+
+                                    |
+                                    v
++--------------------------------------------------------------------------+
+| 3. CAMADA DE SERVICOS E PROCESSAMENTO                                    |
+|    - DocumentProcessor: Extrai texto, calcula SHA-256 e fatia em chunks  |
+|    - VectorStoreManager: Conecta ao ChromaDB e gerencia indices vetoriais|
+|    - RAGService: Orquestra o prompt anti-alucinacao, historico e a LLM   |
++--------------------------------------------------------------------------+
+                                    |
+                                    v
++--------------------------------------------------------------------------+
+| 4. CAMADA DE IA E PERSISTENCIA                                           |
+|    - HuggingFace Sentence-Transformers: Embeddings locais (all-MiniLM-L6)|
+|    - ChromaDB: Banco vetorial persistente em disco (./data/chroma)       |
+|    - DeepSeek API (deepseek-chat / V4 Flash): Modelo de geracao de texto |
++--------------------------------------------------------------------------+
+
+FLUXO A: UPLOAD E INDEXACAO DE DOCUMENTOS
+1. O usuario envia um arquivo (ex: contrato.pdf).
+2. O FastAPI recebe os bytes via endpoint POST /api/v1/documents/upload.
+3. O DocumentProcessor calcula o hash SHA-256 do arquivo e extrai o texto
+   pagina a pagina (usando pypdf para PDFs ou decodificacao UTF-8/Latin-1 para textos).
+4. O RecursiveCharacterTextSplitter divide o texto em blocos menores (chunks)
+   de 1000 caracteres com sobreposicao (overlap) de 200 caracteres, anexando
+   metadados como: nome do arquivo, numero da pagina, chunk_id e hash.
+5. Se ja existia uma versao anterior do mesmo arquivo, ela e removida do ChromaDB.
+6. Os chunks sao convertidos em vetores numericos (embeddings) pelo modelo
+   HuggingFace sentence-transformers/all-MiniLM-L6-v2 (executado localmente).
+7. Os vetores e seus metadados sao gravados no ChromaDB no diretorio ./data/chroma.
+
+FLUXO B: CONSULTA E RESPOSTA INTELIGENTE (CHAT RAG)
+1. O usuario digita uma pergunta no chat (ex: "Qual o prazo de entrega no contrato?").
+2. O endpoint POST /api/v1/chat repassa a pergunta para o RAGService.
+3. O VectorStoreManager converte a pergunta em vetor e realiza uma Busca por
+   Similaridade no ChromaDB, recuperando os TOP-K (padrao 4) chunks mais relevantes.
+4. O RAGService monta um bloco de contexto estruturado contendo o texto dos
+   chunks recuperados com numero de fonte, nome do arquivo e pagina.
+5. O LangChain monta o ChatPromptTemplate injetando:
+   - Instrucoes do Sistema Anti-Alucinacao (System Prompt);
+   - Bloco de contexto com os documentos recuperados;
+   - Historico recente da conversa;
+   - Pergunta atual do usuario.
+6. A requisicao e enviada de forma assincrona a API do DeepSeek (deepseek-chat).
+7. O DeepSeek formula a resposta exclusivamente com base nos fatos fornecidos.
+8. A resposta e retornada ao usuario junto com o tempo de execucao (ms) e a lista
+   detalhada das fontes consultadas.
+
+
+3. STACK TECNOLOGICO E DEPENDENCIAS
+--------------------------------------------------------------------------------
+- Python 3.11: Linguagem base escolhida pela excelente compatibilidade com
+  todas as ferramentas de IA e tipagem estatica moderna.
+- FastAPI (v0.111+): Framework web assincrono de alta performance (ASGI) com
+  validacao automatica via Pydantic e geracao nativa de Swagger/OpenAPI.
+- Uvicorn: Servidor web ASGI rapido e leve para executar a aplicacao FastAPI.
+- LangChain (v0.2+): Framework lider mundial para construcao de aplicacoes
+  com Modelos de Linguagem, orquestracao de prompts e integracao de pipelines.
+- langchain-deepseek: Conector oficial para a API do DeepSeek.
+- langchain-huggingface & sentence-transformers: Geracao de embeddings semanticos
+  locais, rapidos e 100% gratuitos (sem custo de API para indexar arquivos).
+- ChromaDB (v0.5+): Banco de dados vetorial embutido e persistente em disco.
+- PyPDF (v4.2+): Biblioteca de extracao de texto e metadados de arquivos PDF.
+- Pydantic & Pydantic-Settings: Modelagem e validacao rigorosa de dados e
+  carregamento de configuracoes a partir do arquivo .env.
+- Pytest, Pytest-Asyncio & Pytest-Cov: Suite completa de testes automatizados
+  unitarios e de integracao.
+- Docker & Docker Compose: Containerizacao pronta para implantacao em servidores.
+
+
+4. ESTRUTURA DE PASTAS E DETALHAMENTO DE ARQUIVOS
+--------------------------------------------------------------------------------
+Assistente-IA-com-RAG/
+│
+├── app/                                 # Codigo-fonte principal da aplicacao
+│   ├── __init__.py                      # Identificador de pacote Python
+│   ├── main.py                          # Ponto de entrada FastAPI, CORS e estaticos
+│   │
+│   ├── core/                            # Nucleo de configuracao e infraestrutura
+│   │   ├── __init__.py
+│   │   ├── config.py                    # Classe Settings (Pydantic) com variaveis .env
+│   │   └── logging.py                   # Configuracao padronizada de logs
+│   │
+│   ├── schemas/                         # Modelos de dados Pydantic (DTOs)
+│   │   ├── __init__.py
+│   │   ├── chat.py                      # Schemas de Request/Response do Chat e Fontes
+│   │   ├── document.py                  # Schemas de Upload e Listagem de Documentos
+│   │   └── health.py                    # Schemas de Diagnostico e Saude do Sistema
+│   │
+│   ├── services/                        # Camada de Regras de Negocio e Servicos
+│   │   ├── __init__.py
+│   │   ├── document_processor.py        # Leitor de arquivos, hashing e chunking
+│   │   ├── vector_store.py              # Wrapper do ChromaDB e gestao de embeddings
+│   │   └── rag_service.py               # Orquestrador RAG e integracao com DeepSeek
+│   │
+│   ├── api/                             # Camada de Rotas e Endpoints HTTP
+│   │   └── v1/
+│   │       ├── api.py                   # Agregador de rotas da versao 1
+│   │       └── endpoints/
+│   │           ├── __init__.py
+│   │           ├── chat.py              # Endpoint POST /api/v1/chat
+│   │           ├── documents.py         # Endpoints de Upload, Listagem e Exclusao
+│   │           └── health.py            # Endpoint GET /api/v1/health
+│   │
+│   └── static/                          # Interface Web (Frontend Integrado)
+│       ├── index.html                   # Estrutura visual da pagina web SPA
+│       ├── style.css                    # Folha de estilo moderna, fluida e responsiva
+│       └── app.js                       # Logica JavaScript (chat assincrono, drag & drop)
+│
+├── data/                                # Armazenamento de Dados Persistentes
+│   ├── chroma/                          # Base de dados vetorial do ChromaDB
+│   └── uploads/                         # Diretorio auxiliar de uploads
+│
+├── tests/                               # Suite de Testes Automatizados
+│   ├── __init__.py
+│   ├── conftest.py                      # Fixtures, mocks de Embeddings e Mock LLM
+│   ├── test_api.py                      # Testes de integracao dos endpoints REST
+│   ├── test_document_processor.py       # Testes unitarios de extracao e chunking
+│   ├── test_vector_store.py             # Testes do banco vetorial isolado
+│   └── test_rag_service.py              # Testes da logica de geracao RAG
+│
+├── .env.example                         # Exemplo de configuracao de variaveis
+├── .env                                 # Variaveis ativas do ambiente (chaves de API)
+├── Dockerfile                           # Definicao da imagem Docker para producao
+├── docker-compose.yml                   # Orquestracao de containers com volume persistente
+├── pyproject.toml                       # Configuracoes de ferramentas e pytest
+├── requirements.txt                     # Lista de pacotes e dependencias Python
+└── README.md                            # Documentacao tecnica do repositorio
+
+
+5. FUNCIONAMENTO DETALHADO DOS PRINCIPAIS COMPONENTES
+--------------------------------------------------------------------------------
+
+A) DOCUMENT PROCESSOR (app/services/document_processor.py):
+   - Metodo calculate_hash: Gera uma assinatura SHA-256 exclusiva para os bytes
+     do arquivo recebido. Permite controle de versao e integridade.
+   - Metodo _parse_pdf: Utiliza o pypdf para percorrer o documento pagina por
+     pagina, preservando o numero de cada pagina nos metadados de cada chunk.
+   - Metodo _parse_text: Suporta arquivos TXT, Markdown, CSV e JSON com deteccao
+     automatica de encodings (UTF-8, Latin-1, CP1252) evitando falhas de decodificacao.
+   - RecursiveCharacterTextSplitter: Divide o texto respeitando a estrutura
+     natural da linguagem (paragrafos "\n\n", linhas "\n", espacos " "),
+     garantindo que sentencas nao sejam cortadas de maneira arbitraria.
+
+B) VECTOR STORE MANAGER (app/services/vector_store.py):
+   - Mantem conexao singleton persistente com o ChromaDB usando caminho absoluto.
+   - Utiliza o modelo HuggingFace ("sentence-transformers/all-MiniLM-L6-v2") que
+     gera vetores de 384 dimensoes de forma ultrarrapida no CPU/GPU local.
+   - Atribui identificadores unicos e deterministicos para cada chunk indexado
+     (ex: "manual_pdf_a1b2c3d4_0_0").
+   - Suporta busca semantica por similaridade de cosseno retornando o score de
+     distancia de cada trecho.
+   - Permite consultar relatorios de documentos indexados (quantidade de chunks e
+     paginas encontradas) e exclusao individual ou total de arquivos.
+
+C) RAG SERVICE (app/services/rag_service.py):
+   - Contem o SYSTEM PROMPT ANTI-ALUCINACAO rigoroso:
+     Instrui a IA a responder somente com base no contexto fornecido, nunca inventar
+     dados, citar as fontes/paginas e manter tom profissional e objetivo.
+   - Converte o historico da conversa entre HumanMessage e AIMessage para manter
+     coerencia em dialogos continuos.
+   - Integra com a API da DeepSeek atraves do ChatDeepSeek (ou ChatOpenAI compativel)
+     com controle preciso de temperatura (padrao 0.0 para maxima factualidade).
+   - Valida preventivamente a presenca da chave de API antes de disparar chamadas
+     externas, evitando falhas silenciosas.
+
+D) API REST (app/api/v1/endpoints/):
+   - documents.py:
+     * POST /api/v1/documents/upload -> Recebe arquivos multipart/form-data.
+     * GET  /api/v1/documents        -> Retorna JSON com todos os documentos salvos.
+     * DELETE /api/v1/documents/{fn} -> Remove documento da base vetorial.
+     * DELETE /api/v1/documents      -> Limpa a colecao inteira.
+   - chat.py:
+     * POST /api/v1/chat             -> Recebe query, historico e parametros;
+                                        executa a cadeia RAG e responde com fontes.
+   - health.py:
+     * GET  /api/v1/health           -> Retorna status do servidor, conexao com
+                                        ChromaDB e contagem total de chunks.
+
+E) INTERFACE WEB INTEGRADA (app/static/):
+   - Painel lateral esquerdo com zona de Drag & Drop para upload rapido de arquivos.
+   - Atualizacao em tempo real da lista de documentos indexados com botao de exclusao.
+   - Chat central com formatacao rica em Markdown, suporte a blocos de codigo e atalho
+     de teclado (Enter para enviar, Shift+Enter para quebra de linha).
+   - Painel retratil "Fontes Citadas" em cada resposta da IA, permitindo abrir e
+     inspecionar o trecho original e a pagina correspondente.
+   - Indicador de status do sistema e botao para limpar historico da conversa.
+
+
+6. VARIAVEIS DE AMBIENTE (.env)
+--------------------------------------------------------------------------------
+A aplicacao e configurada atraves do arquivo .env localizado na raiz do projeto:
+
+| Variavel             | Padrao                  | Descricao                                          |
+|----------------------|-------------------------|----------------------------------------------------|
+| LLM_PROVIDER         | deepseek                | Provedor de linguagem ("deepseek" ou "openai")     |
+| DEEPSEEK_API_KEY     | (Sua Chave)             | Chave da API DeepSeek (platform.deepseek.com)      |
+| DEEPSEEK_MODEL       | deepseek-chat           | Modelo DeepSeek (deepseek-chat / deepseek-reasoner)|
+| DEEPSEEK_BASE_URL    | https://api.deepseek.com| URL base da API da DeepSeek                        |
+| EMBEDDING_PROVIDER   | huggingface             | "huggingface" (local/gratis) ou "openai"           |
+| EMBEDDING_MODEL      | all-MiniLM-L6-v2        | Modelo de embeddings semanticos                    |
+| OPENAI_API_KEY       | (Opcional)              | Chave da OpenAI (se LLM_PROVIDER=openai)           |
+| OPENAI_MODEL         | gpt-4o-mini             | Modelo alternativo da OpenAI                       |
+| TEMPERATURE          | 0.0                     | Criatividade do modelo (0.0 = factual e rigoroso)  |
+| CHROMA_PERSIST_DIR   | ./data/chroma           | Pasta de armazenamento em disco do ChromaDB        |
+| COLLECTION_NAME      | rag_documents           | Nome da colecao dentro do ChromaDB                 |
+| CHUNK_SIZE           | 1000                    | Tamanho maximo de caracteres por chunk             |
+| CHUNK_OVERLAP        | 200                     | Sobreposicao entre chunks vizinhos                 |
+| TOP_K_RESULTS        | 4                       | Quantidade de chunks mais relevantes recuperados   |
+| DEBUG                | false                   | Habilita logs detalhados de depuracao              |
+| HOST                 | 0.0.0.0                 | Host de escuta da aplicacao                        |
+| PORT                 | 8000                    | Porta HTTP de escuta da aplicacao                  |
+
+
+7. GUIA DE EXECUCAO E COMANDOS
+--------------------------------------------------------------------------------
+
+A) Execucao Local (Windows / PowerShell):
+   1. Acesse o diretorio:
+      cd "C:\Users\User\Documents\Projetos\Assistente-IA-com-RAG"
+   2. Ative a venv:
+      .\venv\Scripts\Activate.ps1
+   3. Inicie o servidor:
+      uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   4. Acesse no navegador:
+      http://localhost:8000
+
+B) Execucao dos Testes Automatizados:
+   Com a venv ativada, execute:
+   pytest -v
+   Ou para ver a cobertura de codigo:
+   pytest --cov=app tests/
+
+C) Execucao com Docker Compose:
+   docker-compose up --build -d
+   Para acompanhar os logs:
+   docker-compose logs -f
+   Para parar os servicos:
+   docker-compose down
+
+
+8. RESUMO DOS BENEFICIOS DESTE PROJETO
+--------------------------------------------------------------------------------
+1. Baixo Custo Operacional: Ao usar embeddings locais da HuggingFace, o unico
+   custo de API e nas consultas feitas ao DeepSeek, tornando a solucao
+   extremamente economica.
+2. Alta Performance e Escalabilidade: Backend assincrono FastAPI capaz de lidar
+   com multiplas conexoes concorrentes de forma eficiente.
+3. 100% Testado e Confiavel: Suite completa com 18 testes automatizados que
+   validam parsing, segmentacao, busca vetorial e fluxos de API offline.
+4. Interface Moderna e Pronta: Nao depende de frameworks pesados no frontend;
+   e carregada instantaneamente com suporte a drag-and-drop e visual moderno.
+================================================================================

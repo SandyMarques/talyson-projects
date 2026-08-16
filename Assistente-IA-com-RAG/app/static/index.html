@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistente IA com RAG | LangChain & ChromaDB</title>
+    <meta name="description" content="Chat inteligente com RAG para responder perguntas com base em documentos PDF e textos.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Barra Lateral: Gestão de Documentos -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-area">
+                    <div class="logo-icon">📚</div>
+                    <div>
+                        <h1>RAG Assistant</h1>
+                        <span class="badge">LangChain + ChromaDB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Upload -->
+            <div class="section-card upload-section">
+                <h2>Adicionar Documentos</h2>
+                <div id="drop-zone" class="drop-zone">
+                    <input type="file" id="file-input" accept=".pdf,.txt,.md,.csv,.json" multiple hidden>
+                    <div class="drop-zone-content">
+                        <div class="upload-icon">📤</div>
+                        <p class="drop-text">Arraste arquivos aqui ou <span class="highlight">clique para selecionar</span></p>
+                        <p class="sub-text">Formatos: PDF, TXT, MD, CSV, JSON</p>
+                    </div>
+                </div>
+                <div id="upload-progress" class="upload-progress hidden">
+                    <div class="spinner"></div>
+                    <span id="upload-status-text">Processando e indexando documento...</span>
+                </div>
+            </div>
+
+            <!-- Lista de Documentos Indexados -->
+            <div class="section-card docs-list-section">
+                <div class="section-header">
+                    <h2>Documentos Indexados</h2>
+                    <button id="refresh-docs-btn" class="icon-button" title="Recarregar lista">🔄</button>
+                </div>
+                <div id="docs-list" class="docs-list">
+                    <div class="empty-state">Nenhum documento indexado ainda. Envie um arquivo acima.</div>
+                </div>
+            </div>
+
+            <!-- Estatísticas do Banco Vetorial -->
+            <div class="sidebar-footer">
+                <div class="stats-row">
+                    <span>Total de Documentos:</span>
+                    <strong id="stat-total-docs">0</strong>
+                </div>
+                <div class="stats-row">
+                    <span>Total de Chunks:</span>
+                    <strong id="stat-total-chunks">0</strong>
+                </div>
+                <div class="system-status">
+                    <span class="status-indicator online" id="status-indicator"></span>
+                    <span id="status-text">Sistema Pronto</span>
+                </div>
+                <a href="/docs" target="_blank" class="docs-link">📖 Documentação Swagger API</a>
+            </div>
+        </aside>
+
+        <!-- Painel Principal de Chat -->
+        <main class="chat-main">
+            <header class="chat-header">
+                <div>
+                    <h2>Chat com Documentos</h2>
+                    <p class="subtitle">Faça perguntas baseadas estritamente nos documentos carregados.</p>
+                </div>
+                <div class="header-actions">
+                    <button id="clear-chat-btn" class="button button-outline" title="Limpar conversa">
+                        🗑️ Limpar Chat
+                    </button>
+                </div>
+            </header>
+
+            <!-- Área de Mensagens -->
+            <div id="chat-messages" class="chat-messages">
+                <div class="message assistant-message welcome-message">
+                    <div class="avatar">🤖</div>
+                    <div class="message-body">
+                        <div class="message-sender">Assistente RAG</div>
+                        <div class="message-content">
+                            <p>Olá! Eu sou o seu <strong>Assistente IA com RAG</strong>.</p>
+                            <p>Envie seus documentos (PDFs, notas ou arquivos de texto) na barra lateral e faça perguntas sobre eles. Responderei com base no conteúdo indexado e indicarei as fontes exatas de cada trecho!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Entrada de Mensagem -->
+            <div class="chat-input-area">
+                <form id="chat-form" class="chat-form">
+                    <div class="input-wrapper">
+                        <textarea 
+                            id="query-input" 
+                            placeholder="Faça uma pergunta sobre seus documentos... (Pressione Enter para enviar, Shift+Enter para nova linha)" 
+                            rows="1"
+                            required
+                        ></textarea>
+                        <button type="submit" id="send-button" class="send-button" title="Enviar pergunta">
+                            <span class="send-icon">➤</span>
+                        </button>
+                    </div>
+                </form>
+                <div class="input-footer">
+                    <span>Respostas fundamentadas via ChromaDB + DeepSeek &bull; Anti-alucinação ativo</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Arquivos de dados locais e uploads
+data/chroma/
+data/uploads/
+*.sqlite3
+
+# Arquivos de ambiente
+.env
+.env.local
+
+# Testes e cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE e Sistema Operacional
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
