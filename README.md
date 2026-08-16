@@ -8,7 +8,7 @@ Repositório central de portfólio profissional e projetos de Inteligência Arti
 
 ## 🚀 Projetos em Destaque
 
-### 🧠 1. [Assistente IA com RAG](./Assistente-IA-com-RAG/)
+### 🧠 1. [Assistente IA com RAG](https://github.com/SandyMarques/Assistente-IA-com-RAG)
 > Chat inteligente corporativo com RAG (Retrieval-Augmented Generation) baseado em documentos locais (PDFs, TXT, Markdown, CSV, JSON), com eliminação de alucinações e citação de fontes em tempo real.
 
 - **Stack:** Python 3.10+, FastAPI, LangChain, ChromaDB, Sentence-Transformers / OpenAI Embeddings, DeepSeek / OpenAI API, Docker & Docker Compose.
@@ -17,11 +17,11 @@ Repositório central de portfólio profissional e projetos de Inteligência Arti
   - Banco vetorial persistente com ChromaDB.
   - Endpoints REST assíncronos e Interface Web SPA integrada.
   - Suporte completo a Docker e suíte de testes automatizados com Pytest.
-- 📁 **Acessar projeto:** [Assistente-IA-com-RAG/](./Assistente-IA-com-RAG/)
+- 🔗 **Repositório dedicado:** [SandyMarques/Assistente-IA-com-RAG](https://github.com/SandyMarques/Assistente-IA-com-RAG)
 
 ---
 
-### ⚙️ 2. [Automatizador de Planilhas com IA](./Automatizador-de-Planilhas-com-IA/)
+### ⚙️ 2. [Automatizador de Planilhas com IA](https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA)
 > Ferramenta interativa para manipulação, limpeza, cálculo e transformação de planilhas complexas (Excel/CSV) através de comandos em linguagem natural.
 
 - **Stack:** Python 3.10+, Streamlit, Pandas, OpenPyXL, DeepSeek API (com fallback OpenAI), Pytest.
@@ -30,7 +30,7 @@ Repositório central de portfólio profissional e projetos de Inteligência Arti
   - Geração de código Python seguro e auto-recuperação (Self-Healing Loop) em caso de erro de execução.
   - Histórico de versões de planilhas com funcionalidade de Desfazer/Refazer.
   - Exportação instantânea em formatos `.xlsx` e `.csv`.
-- 📁 **Acessar projeto:** [Automatizador-de-Planilhas-com-IA/](./Automatizador-de-Planilhas-com-IA/)
+- 🔗 **Repositório dedicado:** [SandyMarques/Automatizador-de-Planilhas-com-IA](https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA)
 
 ---
 
