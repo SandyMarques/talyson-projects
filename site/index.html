@@ -9,6 +9,14 @@
     <meta name="description" content="Portfolio de Talyson Marques. Engenheiro de Redes e Especialista em Automação e Inteligência Artificial. Soluções que integram LLMs, RAG e orquestração de infraestrutura de conectividade.">
     <meta name="keywords" content="Talyson Marques, Redes de Computadores, Inteligência Artificial, LLM, RAG, Python, Automação, Cisco, Juniper, Engenheiro de Redes">
     <meta name="author" content="Talyson Marques">
+    <link rel="canonical" href="https://sandymarques.github.io/talyson-projects/">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Talyson Marques | IA, Cloud & Automação de Infraestrutura">
+    <meta property="og:description" content="Portfólio de Talyson Marques: LLMs, RAG, automação de planilhas e infraestrutura de conectividade.">
+    <meta property="og:url" content="https://sandymarques.github.io/talyson-projects/">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2306b6d4'/%3E%3Ctext x='32' y='44' font-family='monospace' font-size='36' font-weight='bold' text-anchor='middle' fill='white'%3ET%3C/text%3E%3C/svg%3E">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -137,9 +145,38 @@
             animation: cursor-blink 1s infinite;
             vertical-align: middle;
         }
+
+        /* Âncoras sob header fixo + acessibilidade */
+        section[id] { scroll-margin-top: 110px; }
+        :focus-visible {
+            outline: 2px solid #06b6d4;
+            outline-offset: 3px;
+            border-radius: 6px;
+        }
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            background: #06b6d4;
+            color: #03131a;
+            padding: 10px 16px;
+            font-weight: 700;
+            z-index: 100;
+            border-radius: 0 0 12px 0;
+        }
+        .skip-link:focus { left: 0; }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
     </style>
 </head>
 <body class="tech-grid selection:bg-cyan-500/30 selection:text-cyan-200">
+    <a href="#sobre" class="skip-link">Pular para o conteúdo</a>
 
     <!-- Ambient Blobs -->
     <div class="glow-blob w-[500px] h-[500px] bg-cyan-600 top-[-100px] left-[-100px] animate-pulse-slow"></div>
@@ -769,18 +806,18 @@
                     </div>
 
                     <!-- Contact Form (Visual / Client-side Logic) -->
-                    <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                    <form onsubmit="handleContactSubmit(event)" class="space-y-4" aria-label="Formulário de contato">
                         <div>
-                            <label class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Seu Nome</label>
-                            <input required type="text" id="contact-name" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="Nome Sobrenome">
+                            <label for="contact-name" class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Seu Nome</label>
+                            <input required type="text" id="contact-name" name="name" autocomplete="name" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="Nome Sobrenome">
                         </div>
                         <div>
-                            <label class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Seu E-mail</label>
-                            <input required type="email" id="contact-email" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="exemplo@email.com">
+                            <label for="contact-email" class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Seu E-mail</label>
+                            <input required type="email" id="contact-email" name="email" autocomplete="email" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="exemplo@email.com">
                         </div>
                         <div>
-                            <label class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Sua Mensagem</label>
-                            <textarea required id="contact-msg" rows="4" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="Olá Talyson, gostaria de falar sobre..."></textarea>
+                            <label for="contact-msg" class="block text-xs font-mono text-slate-500 uppercase tracking-widest mb-1.5 font-bold">Sua Mensagem</label>
+                            <textarea required id="contact-msg" name="message" rows="4" class="w-full px-4 py-3 rounded-xl bg-slate-900/60 border border-slate-800 text-white placeholder-slate-600 focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 focus:outline-none transition-colors text-sm" placeholder="Olá Talyson, gostaria de falar sobre..."></textarea>
                         </div>
                         
                         <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-white font-bold tracking-wide transition-all duration-300 shadow-md flex items-center justify-center gap-2">

@@ -25,6 +25,19 @@
                 </div>
             </div>
 
+            <!-- Chave de acesso à API -->
+            <div class="section-card api-key-section">
+                <h2>Chave de Acesso</h2>
+                <p class="sub-text">A API exige o header <code>X-API-Key</code>. A chave fica apenas neste navegador.</p>
+                <input type="password" id="api-key-input" placeholder="Cole a API_KEY do servidor"
+                       autocomplete="off" aria-label="Chave de acesso à API">
+                <div class="api-key-actions">
+                    <button id="api-key-save" class="secondary-button" type="button">Salvar</button>
+                    <button id="api-key-clear" class="icon-button" type="button" title="Remover chave salva"
+                            aria-label="Remover chave salva">🗑️</button>
+                </div>
+            </div>
+
             <!-- Área de Upload -->
             <div class="section-card upload-section">
                 <h2>Adicionar Documentos</h2>

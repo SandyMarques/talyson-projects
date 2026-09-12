@@ -1,8 +1,15 @@
-"""Testes para o manipulador de arquivos (FileHandler) com suporte multi-abas."""
+"""Testes para o manipulador de arquivos (FileHandler) com suporte multi-abas.
+
+Inclui regressão de bugs confirmados: CSV com vírgula dentro de campo entre aspas (a heurística
+de contagem de substring escolhia o delimitador errado), `.xls` aceito mas impossível de ler,
+e perda silenciosa de linhas malformadas.
+"""
 
 import io
+
 import pandas as pd
 import pytest
+
 from src.core.file_handler import FileHandler
 
 
@@ -71,3 +78,83 @@ def test_export_to_csv_bytes():
     csv_bytes = FileHandler.export_to_csv_bytes(df, sep=";")
     assert isinstance(csv_bytes, bytes)
     assert b"A;B" in csv_bytes
+
+
+# ---------------------------------------------------------------------------------------
+# Robustez de leitura: casos que a heurística de contagem de substring errava
+# ---------------------------------------------------------------------------------------
+
+
+class TestDeteccaoDeDelimitador:
+    """Detecção de delimitador precisa respeitar aspas, não contar substrings."""
+
+    def test_csv_ponto_virgula_com_virgula_entre_aspas(self):
+        """Caso real: endereços com vírgula dentro de campos entre aspas."""
+        conteudo = (
+            'Nome;Endereco;Cidade\n'
+            'Ana;"Rua A, 100, apto 2";Sao Paulo\n'
+            'Bruno;"Av. B, 2000";Rio de Janeiro\n'
+        )
+        df, meta = FileHandler.load_csv(conteudo.encode("utf-8"))
+        assert list(df.columns) == ["Nome", "Endereco", "Cidade"]
+        assert meta["delimiter"] == ";"
+        assert df.loc[0, "Endereco"] == "Rua A, 100, apto 2"
+
+    def test_csv_virgula_com_ponto_virgula_no_texto(self):
+        conteudo = 'Nome,Observacao\nAna,"gosta de a;b"\nBruno,"x;y"\n'
+        df, meta = FileHandler.load_csv(conteudo.encode("utf-8"))
+        assert list(df.columns) == ["Nome", "Observacao"]
+        assert meta["delimiter"] == ","
+
+    def test_csv_tab(self):
+        conteudo = "A\tB\tC\n1\t2\t3\n"
+        df, meta = FileHandler.load_csv(conteudo.encode("utf-8"))
+        assert list(df.columns) == ["A", "B", "C"]
+        assert meta["delimiter"] == "\t"
+
+    def test_csv_encoding_latin1(self):
+        conteudo = "Cidade;Habitantes\nSão Paulo;12000000\n"
+        df, meta = FileHandler.load_csv(conteudo.encode("latin-1"))
+        assert len(df) == 1
+        assert "Habitantes" in df.columns
+
+
+class TestVolumeEFormatos:
+    """Limites e formatos precisam falhar de forma explícita, não obscura."""
+
+    def test_xls_legado_recusado_com_mensagem_clara(self):
+        with pytest.raises(ValueError, match="não é suportado"):
+            FileHandler.load_all_sheets(b"conteudo binario", "planilha.xls")
+
+    def test_formato_desconhecido_recusado(self):
+        with pytest.raises(ValueError, match="não suportado"):
+            FileHandler.load_all_sheets(b"abc", "arquivo.txt")
+
+    def test_csv_vazio_recusado(self):
+        with pytest.raises(ValueError, match="vazio"):
+            FileHandler.load_csv(b"")
+
+    def test_limite_de_linhas_no_upload(self, monkeypatch):
+        """Planilha gigante deve ser recusada antes de consumir memória."""
+        from src.core import config as config_module
+
+        monkeypatch.setattr(config_module.config, "max_upload_rows", 5)
+        conteudo = "A,B\n" + "\n".join(f"{i},{i}" for i in range(50))
+        with pytest.raises(ValueError, match="acima do limite"):
+            FileHandler.load_all_sheets(conteudo.encode("utf-8"), "grande.csv")
+
+    def test_limite_de_colunas_no_upload(self, monkeypatch):
+        from src.core import config as config_module
+
+        monkeypatch.setattr(config_module.config, "max_upload_columns", 3)
+        df = pd.DataFrame({f"c{i}": [1] for i in range(10)})
+        excel_bytes = FileHandler.export_to_excel_bytes(df)
+        with pytest.raises(ValueError, match="colunas"):
+            FileHandler.load_all_sheets(excel_bytes, "larga.xlsx")
+
+    def test_linhas_malformadas_sao_reportadas(self):
+        """`on_bad_lines='skip'` não pode perder dados em silêncio."""
+        conteudo = 'A,B\n1,2\n3,4,5,6,7\n5,6\n'
+        df, meta = FileHandler.load_csv(conteudo.encode("utf-8"))
+        assert "aviso" in meta
+        assert "linhas_descartadas" in meta

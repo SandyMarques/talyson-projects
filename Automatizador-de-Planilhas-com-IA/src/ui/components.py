@@ -1,10 +1,22 @@
-"""Componentes visuais reutilizáveis para a aplicação Streamlit com suporte a múltiplas abas."""
+"""Componentes visuais reutilizáveis para a aplicação Streamlit com suporte a múltiplas abas.
 
-from typing import Dict, List, Optional, Union
+Nota de segurança: tudo que vem da planilha do usuário (nome de aba, nome de coluna, amostra de
+valores, explicação gerada pelo LLM) passa por `_escape` antes de entrar em `st.markdown(...,
+unsafe_allow_html=True)`. Sem isso, uma célula ou nome de aba com HTML/JS é injetado na página.
+"""
+
+from html import escape as _html_escape
+from typing import Any, Dict, List, Optional, Union
+
 import pandas as pd
 import streamlit as st
 
 from src.core.file_handler import FileHandler
+
+
+def _escape(valor: Any) -> str:
+    """Escapa um valor vindo do usuário/LLM para interpolação segura em HTML."""
+    return _html_escape(str(valor), quote=True)
 
 
 def render_header():
@@ -73,7 +85,7 @@ def render_workbook_overview(dfs: Dict[str, pd.DataFrame]):
             <span style="color: #3b82f6; font-weight: bold;">{total_sheets} aba(s) carregada(s)</span>
             <span style="color: #64748b; font-size: 0.9rem;"> ({total_rows:,} linhas totais no arquivo)</span>
             <div style="margin-top: 6px; display: flex; gap: 8px; flex-wrap: wrap;">
-                {' '.join([f'<span style="background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 500;">📄 {sheet} ({len(df)} linhas)</span>' for sheet, df in dfs.items()])}
+                {' '.join([f'<span style="background: #e0e7ff; color: #3730a3; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; font-weight: 500;">📄 {_escape(sheet)} ({len(df)} linhas)</span>' for sheet, df in dfs.items()])}
             </div>
         </div>
         """,
@@ -104,11 +116,14 @@ def render_diff_summary(
         st.markdown(f"**Tempo de Execução:** `{execution_time_ms:.1f} ms`")
 
     with col3:
-        added_text = ", ".join([f"`{c}`" for c in columns_added]) if columns_added else "Nenhuma"
+        # Nomes de coluna vêm da planilha: escapados antes de entrar no markdown com HTML.
+        added_text = ", ".join([f"`{_escape(c)}`" for c in columns_added]) if columns_added else "Nenhuma"
         st.markdown(f"**Novas Colunas:** {added_text}")
 
     if columns_removed:
-        st.markdown(f"**Colunas Removidas:** {', '.join([f'`{c}`' for c in columns_removed])}")
+        st.markdown(
+            f"**Colunas Removidas:** {', '.join([f'`{_escape(c)}`' for c in columns_removed])}"
+        )
 
 
 def render_ai_explanation(explanation: str, healing_applied: bool = False):
@@ -117,12 +132,16 @@ def render_ai_explanation(explanation: str, healing_applied: bool = False):
     if healing_applied:
         healing_html = '<div class="healing-badge">⚡ Auto-Healing Aplicado: O código foi corrigido automaticamente pela IA após ajuste de execução.</div>'
 
+    # O texto vem do LLM, que por sua vez leu o CONTEUDO da planilha: e dado nao confiavel.
+    # Escapamos antes de trocar \n por <br>, e so entao liberamos o HTML do container.
+    texto = _escape(explanation).replace("\n", "<br>")
+
     st.markdown(
         f"""
         <div class="ai-explanation-box">
             {healing_html}
             <h4>💡 O que a IA realizou:</h4>
-            <div>{explanation.replace(chr(10), '<br>')}</div>
+            <div>{texto}</div>
         </div>
         """,
         unsafe_allow_html=True,
@@ -178,6 +197,9 @@ def render_download_buttons(
     
     col1, col2 = st.columns(2)
     with col1:
+        if isinstance(data, dict) and not data:
+            st.warning("Nenhuma aba disponível para exportar.")
+            return
         xlsx_data = FileHandler.export_to_excel_bytes(data)
         st.download_button(
             label="📥 Baixar Excel Completo (.xlsx)",
@@ -187,11 +209,24 @@ def render_download_buttons(
             use_container_width=True,
         )
     with col2:
-        # Se for dict, pega a primeira aba ou a aba de resultado para o CSV
+        # Se for dict, pega a aba "Resultado" ou a primeira aba para o CSV.
+        # NUNCA usar `data.get("Resultado") or ...`: avaliar a verdade de um DataFrame
+        # levanta ValueError ("truth value of a DataFrame is ambiguous") e quebrava a
+        # exportação logo após qualquer transformação bem-sucedida.
         if isinstance(data, dict):
-            export_df = data.get("Resultado") or list(data.values())[0]
+            if not data:
+                st.warning("Nenhuma aba disponível para exportar em CSV.")
+                export_df = None
+            elif "Resultado" in data:
+                export_df = data["Resultado"]
+            else:
+                export_df = next(iter(data.values()))
         else:
             export_df = data
+
+        if export_df is None:
+            st.caption("Use o botão de Excel para exportar o arquivo completo.")
+            return
 
         csv_data = FileHandler.export_to_csv_bytes(export_df, sep=";", encoding="utf-8-sig")
         st.download_button(

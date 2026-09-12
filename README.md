@@ -53,4 +53,4 @@ Todos os projetos utilizam arquitetura desacoplada com variáveis de ambiente (`
 ## 📬 Contato
 
 - **GitHub:** [@SandyMarques](https://github.com/SandyMarques)
-- **Email:** alneaimiexephos@gmail.com
+- **Email:** talyson14marques@hotmail.com

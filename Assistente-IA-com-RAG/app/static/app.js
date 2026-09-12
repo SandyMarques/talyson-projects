@@ -21,6 +21,79 @@ document.addEventListener('DOMContentLoaded', () => {
     let chatHistory = [];
     let isProcessing = false;
 
+    // =========================================================================
+    // Autenticação (X-API-Key)
+    // =========================================================================
+    // A API passou a exigir chave. O painel guarda a chave no localStorage do navegador
+    // (nunca em código servido) e a envia no header de toda requisição.
+    const API_KEY_STORAGE = 'rag_api_key';
+
+    function getApiKey() {
+        try {
+            return window.localStorage.getItem(API_KEY_STORAGE) || '';
+        } catch (e) {
+            return '';
+        }
+    }
+
+    function setApiKey(valor) {
+        try {
+            if (valor) {
+                window.localStorage.setItem(API_KEY_STORAGE, valor);
+            } else {
+                window.localStorage.removeItem(API_KEY_STORAGE);
+            }
+        } catch (e) {
+            console.warn('Não foi possível persistir a chave de API:', e);
+        }
+    }
+
+    function apiHeaders(extras = {}) {
+        const chave = getApiKey();
+        return chave ? { ...extras, 'X-API-Key': chave } : { ...extras };
+    }
+
+    // Controles da chave de acesso
+    const apiKeyInput = document.getElementById('api-key-input');
+    const apiKeySave = document.getElementById('api-key-save');
+    const apiKeyClear = document.getElementById('api-key-clear');
+
+    if (apiKeyInput) {
+        apiKeyInput.value = getApiKey();
+    }
+
+    if (apiKeySave) {
+        apiKeySave.addEventListener('click', () => {
+            setApiKey(apiKeyInput.value.trim());
+            showToast('Chave salva neste navegador.', 'success');
+            fetchHealthStatus();
+            loadDocuments();
+        });
+    }
+
+    if (apiKeyClear) {
+        apiKeyClear.addEventListener('click', () => {
+            setApiKey('');
+            if (apiKeyInput) apiKeyInput.value = '';
+            showToast('Chave removida.', 'info');
+        });
+    }
+
+    async function tratarNaoAutorizado(res) {
+        if (res.status === 401 || res.status === 503) {
+            let detalhe = 'A API exige uma chave válida.';
+            try {
+                const corpo = await res.json();
+                detalhe = corpo.detail || detalhe;
+            } catch (e) {
+                /* corpo não-JSON */
+            }
+            showToast(detalhe, 'error');
+            return true;
+        }
+        return false;
+    }
+
     // Inicialização
     fetchHealthStatus();
     loadDocuments();
@@ -41,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     async function fetchHealthStatus() {
         try {
-            const res = await fetch('/api/v1/health');
+            const res = await fetch('/api/v1/health', { headers: apiHeaders() });
             if (res.ok) {
                 const data = await res.json();
                 if (data.status === 'ok') {
@@ -65,8 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     async function loadDocuments() {
         try {
-            const res = await fetch('/api/v1/documents');
-            if (!res.ok) throw new Error('Erro ao listar documentos');
+            const res = await fetch('/api/v1/documents', { headers: apiHeaders() });
+            if (!res.ok) {
+                if (await tratarNaoAutorizado(res)) return;
+                throw new Error('Erro ao listar documentos');
+            }
             const data = await res.json();
 
             statTotalDocs.textContent = data.total_documents;
@@ -83,12 +159,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.className = 'doc-item';
                 
                 const pagesText = doc.pages ? ` • ${doc.pages.length} pág(s)` : '';
+                // O nome do arquivo vem do multipart e é controlado por quem fez o upload:
+                // interpolar direto em innerHTML permitia XSS armazenado no painel.
                 item.innerHTML = `
                     <div class="doc-info">
-                        <span class="doc-name" title="${doc.filename}">${doc.filename}</span>
-                        <span class="doc-meta">${doc.chunks_count} chunks${pagesText}</span>
+                        <span class="doc-name" title="${escapeHtml(doc.filename)}">${escapeHtml(doc.filename)}</span>
+                        <span class="doc-meta">${escapeHtml(doc.chunks_count)} chunks${pagesText}</span>
                     </div>
-                    <button class="icon-button delete-doc-btn" data-filename="${encodeURIComponent(doc.filename)}" title="Excluir documento">
+                    <button class="icon-button delete-doc-btn" data-filename="${encodeURIComponent(doc.filename)}" title="Excluir documento" aria-label="Excluir documento ${escapeHtml(doc.filename)}">
                         ✖
                     </button>
                 `;
@@ -114,7 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function deleteDocument(filename) {
         try {
             const res = await fetch(`/api/v1/documents/${encodeURIComponent(filename)}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: apiHeaders()
             });
             if (res.ok) {
                 showToast(`Documento '${filename}' removido com sucesso.`, 'success');
@@ -183,12 +262,15 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('/api/v1/documents/upload', {
                 method: 'POST',
+                headers: apiHeaders(),
                 body: formData
             });
 
             if (response.ok) {
                 const data = await response.json();
                 showToast(data.message, 'success');
+            } else if (await tratarNaoAutorizado(response)) {
+                /* mensagem já exibida */
             } else {
                 const err = await response.json();
                 showToast(`Erro no upload de '${file.name}': ${err.detail || 'Falha no processamento'}`, 'error');
@@ -238,7 +320,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('/api/v1/chat', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: apiHeaders({ 'Content-Type': 'application/json' }),
                 body: JSON.stringify({
                     query: query,
                     history: chatHistory.slice(-6), // Mantém os últimos 6 turnos de contexto
@@ -251,6 +333,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
                 appendAssistantMessage(data);
                 chatHistory.push({ role: 'assistant', content: data.answer });
+            } else if (await tratarNaoAutorizado(response)) {
+                /* mensagem já exibida */
             } else {
                 const err = await response.json();
                 appendMessage('assistant', `⚠️ Erro ao consultar assistente: ${err.detail || 'Falha interna'}`);
@@ -309,17 +393,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.sources && data.sources.length > 0) {
             const sourceCards = data.sources.map((s, idx) => {
                 const pageBadge = s.page ? ` (Pág. ${s.page})` : '';
-                const scoreText = s.score !== null ? `Relevância: ${(1 - s.score).toFixed(2)}` : '';
+                // O campo é DISTÂNCIA vetorial (L2 ao quadrado): menor = mais parecido.
+                // A versão anterior exibia `1 - score` como "Relevância", o que produzia
+                // valores negativos (ex.: -1.00) e chamava distância de similaridade.
+                const distancia = (s.distance !== undefined && s.distance !== null)
+                    ? s.distance
+                    : s.score;
+                const rotulo = s.relevance_label ? ` • ${s.relevance_label}` : '';
+                const scoreText = (distancia !== undefined && distancia !== null)
+                    ? `Distância: ${Number(distancia).toFixed(2)}${rotulo}`
+                    : '';
                 return `
                     <div class="source-card">
                         <div class="source-card-header">
-                            <span>📄 ${s.source}${pageBadge}</span>
+                            <span>📄 ${escapeHtml(s.source)}${pageBadge}</span>
                             <small>${scoreText}</small>
                         </div>
                         <div class="source-card-content">${escapeHtml(s.content)}</div>
                     </div>
                 `;
             }).join('');
+
+            const descartados = data.discarded_count
+                ? `<p class="sources-note">${data.discarded_count} trecho(s) recuperado(s) foram descartados por baixa relevância.</p>`
+                : '';
 
             sourcesHtml = `
                 <div class="sources-container">
@@ -328,6 +425,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </button>
                     <div class="sources-list hidden">
                         ${sourceCards}
+                        ${descartados}
                     </div>
                 </div>
             `;
@@ -342,8 +440,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     ${sourcesHtml}
                 </div>
                 <div class="message-meta">
-                    <span>Modelo: ${data.model_used}</span>
-                    <span>Tempo: ${data.execution_time_ms}ms</span>
+                    <span>Modelo: ${escapeHtml(data.model_used)}</span>
+                    <span>Tempo: ${escapeHtml(data.execution_time_ms)}ms</span>
                 </div>
             </div>
         `;

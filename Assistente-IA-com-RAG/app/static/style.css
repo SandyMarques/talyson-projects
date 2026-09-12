@@ -626,6 +626,50 @@ textarea#query-input {
     color: #ef4444;
 }
 
+/* Chave de acesso à API */
+.api-key-section input {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #334155);
+    background: var(--bg-main, #0b1120);
+    color: var(--text-primary, #e2e8f0);
+    font-family: inherit;
+    font-size: 13px;
+}
+
+.api-key-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.secondary-button {
+    flex: 1;
+    padding: 7px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color, #334155);
+    background: transparent;
+    color: var(--text-primary, #e2e8f0);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.secondary-button:hover {
+    background: rgba(148, 163, 184, 0.12);
+    border-color: #64748b;
+}
+
+.sources-note {
+    margin: 8px 4px 2px;
+    font-size: 12px;
+    color: var(--text-secondary, #94a3b8);
+}
+
 /* Spinner e Feedback */
 .spinner {
     width: 14px;

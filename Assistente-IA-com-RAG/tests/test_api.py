@@ -51,10 +51,15 @@ def test_api_chat_endpoint(client: TestClient):
         files={"file": ("projeto.txt", io.BytesIO(file_content.encode("utf-8")), "text/plain")},
     )
 
-    # Realiza pergunta
+    # Realiza pergunta (query com sobreposição lexical + limiar amplo:
+    # o Fake de embeddings é bag-of-words, então a distância L2 depende das
+    # palavras em comum — aqui testamos o plumbing, não a qualidade do embedding)
     chat_res = client.post(
         "/api/v1/chat",
-        json={"query": "Quais tecnologias foram usadas no projeto?"},
+        json={
+            "query": "O projeto RAG Assistant foi desenvolvido com FastAPI e ChromaDB?",
+            "min_score": 2.0,
+        },
     )
     assert chat_res.status_code == 200
     data = chat_res.json()

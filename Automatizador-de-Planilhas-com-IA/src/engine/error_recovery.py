@@ -35,9 +35,16 @@ class PipelineResult:
 class TransformationPipeline:
     """Controla o fluxo completo: interpretação -> geração -> sandbox -> auto-healing."""
 
-    def __init__(self, client: DeepSeekClient, max_retries: int = 2):
+    def __init__(
+        self,
+        client: DeepSeekClient,
+        max_retries: int = 2,
+        executor: Optional[SafeCodeExecutor] = None,
+    ):
         self.client = client
         self.max_retries = max_retries
+        #: Executor isolado injetável (permite testar o loop sem subprocesso real).
+        self.executor = executor or SafeCodeExecutor()
 
     def run(
         self,
@@ -61,13 +68,13 @@ class TransformationPipeline:
         except Exception as gen_err:
             return PipelineResult(
                 success=False,
-                error_message=f"Falha na comunicação com a IA: {str(gen_err)}",
+                error_message=f"Falha na comunicação com a IA: {gen_err}",
             )
 
         if status_callback:
-            status_callback("Executando código no ambiente seguro...")
+            status_callback("Executando código no ambiente isolado...")
 
-        exec_res = SafeCodeExecutor.execute(current_code, data)
+        exec_res = self.executor.execute(current_code, data)
         attempts.append(
             PipelineAttempt(
                 attempt_number=1,
@@ -90,13 +97,15 @@ class TransformationPipeline:
                 healing_applied=False,
             )
 
-        # 2. Loop de Auto-Healing (tentativas de autocorreção)
+        # 2. Loop de Auto-Healing (tentativas de autocorreção, finito por construção)
         retry_count = 0
+        repair_error: Optional[str] = None
         while not exec_res.success and retry_count < self.max_retries:
             retry_count += 1
             if status_callback:
                 status_callback(
-                    f"Código falhou ({exec_res.error}). Acionando auto-healing DeepSeek (Tentativa {retry_count}/{self.max_retries})..."
+                    f"Código falhou ({exec_res.error}). Acionando auto-healing DeepSeek "
+                    f"(Tentativa {retry_count}/{self.max_retries})..."
                 )
 
             try:
@@ -106,13 +115,16 @@ class TransformationPipeline:
                     failed_code=current_code,
                     error_message=exec_res.traceback or exec_res.error or "Erro de execução",
                 )
-            except Exception:
+            except Exception as repair_exc:
+                # Falha do auto-healing nao pode virar erro silencioso (antes: `break`
+                # deixava `error_message=None` e a UI mostrava "Falha: None").
+                repair_error = f"Auto-healing indisponível: {repair_exc}"
                 break
 
             current_code = repaired_code
             current_explanation = repaired_explanation
 
-            exec_res = SafeCodeExecutor.execute(current_code, data)
+            exec_res = self.executor.execute(current_code, data)
             attempts.append(
                 PipelineAttempt(
                     attempt_number=retry_count + 1,
@@ -137,6 +149,12 @@ class TransformationPipeline:
 
         # Se todas as tentativas falharem
         last_attempt = attempts[-1] if attempts else None
+        execution_error = (
+            last_attempt.execution_result.error if last_attempt else "Erro desconhecido"
+        )
+        error_message = (
+            f"{execution_error} ({repair_error})" if repair_error else execution_error
+        )
         return PipelineResult(
             success=False,
             final_df=None,
@@ -145,6 +163,6 @@ class TransformationPipeline:
             final_explanation=last_attempt.explanation if last_attempt else current_explanation,
             total_attempts=len(attempts),
             attempts_history=attempts,
-            error_message=last_attempt.execution_result.error if last_attempt else "Erro desconhecido",
+            error_message=error_message,
             healing_applied=(retry_count > 0),
         )
