@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projetos em Desenvolvimento | Talyson Marques — Arquitetura e Especificação</title>
+
+    <meta name="description" content="Especificações técnicas, arquitetura de sistemas e roadmap dos projetos em desenvolvimento de Talyson Marques em Automação, IA Corporativa e Infraestrutura.">
+    <meta name="author" content="Talyson Marques">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231e3a5f'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='36' font-weight='bold' text-anchor='middle' fill='white'%3ET%3C/text%3E%3C/svg%3E">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        // Sincroniza o tema antes da pintura da página
+        (function () {
+            try {
+                var saved = localStorage.getItem('tm-theme');
+                if (saved === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else if (saved === 'light') {
+                    document.documentElement.classList.remove('dark');
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) { /* sem persistência */ }
+        })();
+    </script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            50: '#f0f4f9',
+                            100: '#dce6f1',
+                            200: '#b9cde3',
+                            300: '#8fadcf',
+                            400: '#5b84b5',
+                            500: '#386293',
+                            600: '#274e78',
+                            700: '#1e3a5f',
+                            800: '#162945',
+                            900: '#101e33',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(16, 30, 51, 0.08);
+        }
+        .dark .card {
+            background: #162945;
+            border-color: #2b3f5e;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        }
+        .card-hover { transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+        .card-hover:hover {
+            border-color: #8fadcf;
+            transform: translateY(-2px);
+        }
+        :focus-visible {
+            outline: 2px solid #274e78;
+            outline-offset: 3px;
+            border-radius: 6px;
+        }
+        .dark :focus-visible { outline-color: #8fadcf; }
+        .tab-btn.active {
+            background-color: #1e3a5f;
+            color: #ffffff;
+            border-color: #1e3a5f;
+        }
+        .dark .tab-btn.active {
+            background-color: #386293;
+            color: #ffffff;
+            border-color: #5b84b5;
+        }
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            background: #1e3a5f;
+            color: #ffffff;
+            padding: 10px 16px;
+            font-weight: 700;
+            z-index: 100;
+            border-radius: 0 0 12px 0;
+        }
+        .skip-link:focus { left: 0; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200 antialiased selection:bg-navy-200 selection:text-navy-900 min-h-screen flex flex-col justify-between">
+    <a href="#project-container" class="skip-link">Pular para as especificações</a>
+
+    <!-- Header / Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-4">
+        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur border border-slate-200 dark:border-navy-700 px-5 py-3 flex items-center justify-between shadow-sm">
+            <a href="index.html" class="flex items-center gap-3 group" aria-label="Talyson Marques - Início">
+                <div class="w-9 h-9 rounded-lg bg-navy-700 group-hover:bg-navy-600 transition-colors flex items-center justify-center font-display font-bold text-white text-lg">
+                    T
+                </div>
+                <div class="flex flex-col leading-tight">
+                    <span class="font-display font-bold tracking-wide text-navy-800 dark:text-white text-sm">TALYSON MARQUES</span>
+                    <span class="text-[10px] tracking-widest text-slate-600 dark:text-slate-400 font-medium">ESPECIFICAÇÕES & DESENVOLVIMENTO</span>
+                </div>
+            </a>
+
+            <div class="flex items-center gap-3">
+                <a href="index.html#projetos" class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-navy-800 text-navy-700 dark:text-slate-200 border border-slate-200 dark:border-navy-700 hover:border-navy-400 transition-colors" aria-label="Voltar à seção de projetos">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Voltar aos</span> Projetos
+                </a>
+                <button id="theme-toggle" type="button" aria-label="Alternar entre tema claro e escuro" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-200 hover:border-navy-400 hover:text-navy-700 dark:hover:text-white transition-colors">
+                    <i data-lucide="moon" class="w-5 h-5 icon-moon"></i>
+                    <i data-lucide="sun" class="w-5 h-5 icon-sun hidden"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Container -->
+    <main class="pt-28 pb-16 px-4 flex-grow">
+        <div class="max-w-6xl mx-auto">
+
+            <!-- Intro Header -->
+            <div class="text-center max-w-3xl mx-auto mb-10">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-300 text-xs font-semibold mb-4">
+                    <i data-lucide="hammer" class="w-3.5 h-3.5"></i> PROJETOS EM DESENVOLVIMENTO
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold text-navy-800 dark:text-white mb-4">
+                    Planejamento & Arquitetura
+                </h1>
+                <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Aqui você confere o preview técnico dos projetos que estou construindo. Cada projeto foi estruturado para resolver um gargalo real de operações corporativas, unindo <strong>processos administrativos</strong>, <strong>automação com Python e IA</strong> e <strong>infraestrutura de redes</strong>.
+                </p>
+            </div>
+
+            <!-- Project Navigation Tabs (Desktop & Mobile) -->
+            <div class="mb-8">
+                <!-- Mobile Select -->
+                <div class="block lg:hidden mb-4">
+                    <label for="project-select-mobile" class="block text-xs uppercase tracking-wider font-bold text-slate-600 dark:text-slate-400 mb-2">Selecione o projeto:</label>
+                    <select id="project-select-mobile" onchange="switchProject(this.value)" class="w-full px-4 py-3 rounded-xl bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-sm font-semibold text-navy-800 dark:text-white focus:outline-none focus:border-navy-500">
+                        <option value="validador-documental">Validador de Documentos (Auditoria Inteligente)</option>
+                        <option value="painel-operacional">Painel Operacional (Métricas & Telemetria)</option>
+                        <option value="helpdesk-sla">HelpDesk & SLA (Gestor de Atendimentos)</option>
+                        <option value="bot-infraestrutura">Bot de Redes & Infraestrutura (Network Bot)</option>
+                        <option value="compliance-tracker">Gestor de Prazos & Contratos (Compliance)</option>
+                    </select>
+                </div>
+
+                <!-- Desktop Tab Pills -->
+                <div role="tablist" aria-label="Projetos em desenvolvimento" class="hidden lg:flex items-center justify-center flex-wrap gap-2.5 p-2 rounded-2xl bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-800 shadow-sm">
+                    <button onclick="switchProject('validador-documental')" id="tab-validador-documental" role="tab" aria-selected="true" aria-controls="project-validador-documental" class="tab-btn active px-4 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border border-transparent">
+                        <i data-lucide="file-check" class="w-4 h-4"></i> Validador de Documentos
+                    </button>
+                    <button onclick="switchProject('painel-operacional')" id="tab-painel-operacional" role="tab" aria-selected="false" aria-controls="project-painel-operacional" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-navy-700 dark:hover:text-white transition-all flex items-center gap-2 border border-transparent">
+                        <i data-lucide="activity" class="w-4 h-4"></i> Painel Operacional
+                    </button>
+                    <button onclick="switchProject('helpdesk-sla')" id="tab-helpdesk-sla" role="tab" aria-selected="false" aria-controls="project-helpdesk-sla" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-navy-700 dark:hover:text-white transition-all flex items-center gap-2 border border-transparent">
+                        <i data-lucide="ticket" class="w-4 h-4"></i> HelpDesk & SLA
+                    </button>
+                    <button onclick="switchProject('bot-infraestrutura')" id="tab-bot-infraestrutura" role="tab" aria-selected="false" aria-controls="project-bot-infraestrutura" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-navy-700 dark:hover:text-white transition-all flex items-center gap-2 border border-transparent">
+                        <i data-lucide="network" class="w-4 h-4"></i> Bot de Redes & Infra
+                    </button>
+                    <button onclick="switchProject('compliance-tracker')" id="tab-compliance-tracker" role="tab" aria-selected="false" aria-controls="project-compliance-tracker" class="tab-btn px-4 py-2.5 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-navy-700 dark:hover:text-white transition-all flex items-center gap-2 border border-transparent">
+                        <i data-lucide="calendar-check" class="w-4 h-4"></i> Gestor de Prazos & Contratos
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic Project Content Area -->
+            <div id="project-container">
+
+                <!-- 1. VALIDADOR DOCUMENTAL -->
+                <div id="project-validador-documental" role="tabpanel" aria-labelledby="tab-validador-documental" class="project-view space-y-6">
+                    <div class="card rounded-2xl p-6 sm:p-8">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-navy-700 pb-5 mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-navy-700 text-white flex items-center justify-center shrink-0">
+                                    <i data-lucide="file-check" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs uppercase font-bold tracking-widest text-navy-600 dark:text-navy-300">Administração + Inteligência Artificial</span>
+                                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-navy-800 dark:text-white">Validador e Auditor Inteligente de Documentos</h2>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Em Desenvolvimento (Fase 1: Schemas & MVP)
+                            </span>
+                        </div>
+
+                        <!-- Grid de Destaques Rápidos -->
+                        <div class="grid sm:grid-cols-3 gap-4 mb-8">
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Problema Resolvido</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Conferência manual exaustiva de contratos, termos e notas fiscais.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Conexão com Currículo</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Análise técnica de documentos e estruturação de dados (Accenture).</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Stack Tecnológica</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Python, FastAPI, Pydantic, PdfPlumber, DeepSeek / OpenAI API.</p>
+                            </div>
+                        </div>
+
+                        <!-- Corpo do Projeto -->
+                        <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                            <div>
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i data-lucide="target" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Visão Geral & Problema de Negócio
+                                </h3>
+                                <p>
+                                    Em áreas de backoffice e operações corporativas, analistas gastam dezenas de horas semanais conferindo documentos em PDF para checar se campos obrigatórios foram preenchidos, se dados como CNPJ/CPF e valores coincidem com o sistema, se certidões estão no prazo de validade e se assinaturas constam no documento.
+                                </p>
+                                <p class="mt-2">
+                                    O <strong>Validador Inteligente de Documentos</strong> é uma ferramenta que processa lotes de arquivos em PDF/imagens, extrai entidades com OCR e modelos de linguagem, aplica um checklist rigoroso de regras de negócio configuráveis e gera um parecer técnico instantâneo: <em>Aprovado</em>, <em>Rejeitado</em> ou <em>Pendente de Correção</em>, com relatório detalhado das inconsistências.
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-xl bg-slate-50 dark:bg-navy-800/40 border border-slate-200 dark:border-navy-700">
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-3 flex items-center gap-2">
+                                    <i data-lucide="layers" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Fluxo de Execução & Arquitetura
+                                </h3>
+                                <ol class="list-decimal list-inside space-y-2 text-sm">
+                                    <li><strong>Ingestão em Lote:</strong> Upload de arquivos (PDFs nativos ou escaneados) via interface web ou API assíncrona.</li>
+                                    <li><strong>Extração & Normalização:</strong> Extração textual estruturada com `PdfPlumber` e pré-processamento de texto.</li>
+                                    <li><strong>Inferência Semântica:</strong> LLM valida conformidade via Schemas tipados (`Pydantic`), identificando assinaturas, datas de vigência e cláusulas-chave.</li>
+                                    <li><strong>Motor de Regras (Rule Engine):</strong> Validação lógica contra regras corporativas (ex: data vencida, divergência de titularidade, falta de anexo).</li>
+                                    <li><strong>Exportação & Auditoria:</strong> Emissão de relatório consolidado em Excel/CSV e painel web para conferência humana assistida.</li>
+                                </ol>
+                            </div>
+
+                            <div>
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-3 flex items-center gap-2">
+                                    <i data-lucide="git-merge" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Roadmap de Desenvolvimento
+                                </h3>
+                                <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                                    <div class="p-3 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-800">
+                                        <span class="font-bold text-emerald-800 dark:text-emerald-300 block mb-1">Fase 1: Concluída</span>
+                                        Modelagem de esquemas Pydantic e regras de validação para contratos e termos.
+                                    </div>
+                                    <div class="p-3 rounded-lg bg-amber-50 dark:bg-amber-950/60 border border-amber-300 dark:border-amber-800">
+                                        <span class="font-bold text-amber-800 dark:text-amber-300 block mb-1">Fase 2: Em Andamento</span>
+                                        Construção do pipeline de extração com OCR e integração com API de IA.
+                                    </div>
+                                    <div class="p-3 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">
+                                        <span class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Fase 3: Planejada</span>
+                                        Interface visual em Streamlit/FastAPI para upload e visualização do diff de pendências.
+                                    </div>
+                                    <div class="p-3 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">
+                                        <span class="font-bold text-slate-700 dark:text-slate-300 block mb-1">Fase 4: Final</span>
+                                        Containerização Docker, testes automatizados e deploy público da documentação.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. PAINEL OPERACIONAL -->
+                <div id="project-painel-operacional" role="tabpanel" aria-labelledby="tab-painel-operacional" class="project-view hidden space-y-6">
+                    <div class="card rounded-2xl p-6 sm:p-8">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-navy-700 pb-5 mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-navy-700 text-white flex items-center justify-center shrink-0">
+                                    <i data-lucide="activity" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs uppercase font-bold tracking-widest text-navy-600 dark:text-navy-300">Infraestrutura & Operações</span>
+                                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-navy-800 dark:text-white">Painel de Acompanhamento Operacional & Métricas</h2>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Em Desenvolvimento (Fase 1: Estrutura & Telemetria)
+                            </span>
+                        </div>
+
+                        <div class="grid sm:grid-cols-3 gap-4 mb-8">
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Problema Resolvido</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Falta de visibilidade centralizada sobre a saúde de serviços e rotinas diárias.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Conexão com Currículo</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Diagnóstico e triagem de inconsistências sistêmicas e monitoramento.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Stack Tecnológica</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Python, FastAPI, Docker, Chart.js / Tailwind, SQLite.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                            <div>
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i data-lucide="target" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Visão Geral & Problema de Negócio
+                                </h3>
+                                <p>
+                                    Operações de TI e processos administrativos dependem de múltiplos serviços auxiliares rodando em paralelo (scripts agendados, banco de dados, APIs e conectividade). Quando um deles falha em silêncio, a equipe só descobre horas depois ao receber reclamações de usuários ou atrasar relatórios.
+                                </p>
+                                <p class="mt-2">
+                                    Este painel centraliza a telemetria dessas rotinas, fornecendo um <em>Health Check Dashboard</em> executivo e técnico: status de contêineres Docker, latência de serviços, taxa de sucesso de jobs automatizados e alertas visuais imediatos para desvios operacionais.
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-xl bg-slate-50 dark:bg-navy-800/40 border border-slate-200 dark:border-navy-700">
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-3 flex items-center gap-2">
+                                    <i data-lucide="layers" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Funcionalidades Principais
+                                </h3>
+                                <ul class="list-disc list-inside space-y-2 text-sm">
+                                    <li><strong>Visão Geral em Tempo Real:</strong> Indicadores de disponibilidade (Uptime), uso de recursos e jobs concluídos.</li>
+                                    <li><strong>Histórico de Incidentes:</strong> Registro detalhado de logs e falhas para análise de causa-raiz.</li>
+                                    <li><strong>Matriz de Status de Rotinas:</strong> Painel tipo semáforo (Verde / Amarelo / Vermelho) para rápida avaliação da gestão.</li>
+                                    <li><strong>Exportação de Relatórios de Estabilidade:</strong> Geração de resumos em PDF/Excel para acompanhamento semanal de qualidade.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. HELPDESK AI & SLA -->
+                <div id="project-helpdesk-sla" role="tabpanel" aria-labelledby="tab-helpdesk-sla" class="project-view hidden space-y-6">
+                    <div class="card rounded-2xl p-6 sm:p-8">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-navy-700 pb-5 mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-navy-700 text-white flex items-center justify-center shrink-0">
+                                    <i data-lucide="ticket" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs uppercase font-bold tracking-widest text-navy-600 dark:text-navy-300">Suporte Técnico + Gestão de Prazos (SLA)</span>
+                                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-navy-800 dark:text-white">HelpDesk AI & Gestor de Métricas de SLA</h2>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Em Desenvolvimento (Fase 1: Regras de Negócio & SLA)
+                            </span>
+                        </div>
+
+                        <div class="grid sm:grid-cols-3 gap-4 mb-8">
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Problema Resolvido</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Chamados acumulados sem triagem prévia e risco constante de estouro de SLA.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Conexão com Currículo</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Cumprimento rigoroso de métricas de SLA, triagem e qualidade (Accenture).</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Stack Tecnológica</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Python, FastAPI, Supabase / PostgreSQL, LLM Categorizer, Tailwind.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                            <div>
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i data-lucide="target" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Visão Geral & Problema de Negócio
+                                </h3>
+                                <p>
+                                    Centrais de atendimento e suporte recebem solicitações desestruturadas via e-mail e formulários. A triagem manual consome tempo precioso, incidentes críticos acabam ficando para trás na fila e o tempo limite de atendimento (SLA) é violado, gerando atrito com clientes ou setores internos.
+                                </p>
+                                <p class="mt-2">
+                                    O <strong>HelpDesk AI</strong> recebe os chamados, utiliza um modelo de linguagem para classificar a categoria (Redes, Acessos, Erro Sistêmico, Administrativo) e severidade, calcula a data/hora limite de resposta com base na matriz de SLA corporativa, sugere um template de resposta padrão para o analista e sinaliza chamados em risco de expiração em um Kanban prioritário.
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-xl bg-slate-50 dark:bg-navy-800/40 border border-slate-200 dark:border-navy-700">
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-3 flex items-center gap-2">
+                                    <i data-lucide="cpu" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Diferenciais de Engenharia
+                                </h3>
+                                <ul class="list-disc list-inside space-y-2 text-sm">
+                                    <li><strong>Classificação com Few-Shot Prompting:</strong> Categorização padronizada sem alucinações.</li>
+                                    <li><strong>Cálculo Real de Horário Útil:</strong> O motor de SLA desconta fins de semana e feriados para medição justa de prazos.</li>
+                                    <li><strong>Assistente de Resposta Rápida:</strong> Gera rascunho de resposta técnica cordial pronto para revisão humana.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. BOT DE INFRAESTRUTURA E REDES -->
+                <div id="project-bot-infraestrutura" role="tabpanel" aria-labelledby="tab-bot-infraestrutura" class="project-view hidden space-y-6">
+                    <div class="card rounded-2xl p-6 sm:p-8">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-navy-700 pb-5 mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-navy-700 text-white flex items-center justify-center shrink-0">
+                                    <i data-lucide="network" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs uppercase font-bold tracking-widest text-navy-600 dark:text-navy-300">Redes de Computadores + Linux & Docker</span>
+                                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-navy-800 dark:text-white">Bot de Monitoramento de Conectividade e Redes</h2>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Em Desenvolvimento (Fase 1: Engine de Sondagem)
+                            </span>
+                        </div>
+
+                        <div class="grid sm:grid-cols-3 gap-4 mb-8">
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Problema Resolvido</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Interrupção de links, portas inoperantes e falha de certificados sem aviso.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Conexão com Currículo</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Graduação em Redes de Computadores (SENAC), Linux e contêineres Docker.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Stack Tecnológica</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Python, Docker, Bash/Linux, Socket/TCP, Discord/Telegram Webhooks.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                            <div>
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i data-lucide="target" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Visão Geral & Problema de Negócio
+                                </h3>
+                                <p>
+                                    Pequenas e médias empresas frequentemente sofrem com quedas inesperadas de internet, gateways inoperantes, serviços em nuvem fora do ar ou certificados SSL expirados porque não possuem ferramentas de monitoramento enterprise (que são caras e complexas de manter).
+                                </p>
+                                <p class="mt-2">
+                                    Este projeto é um serviço leve e confiável empacotado em <strong>Docker sobre Linux</strong> que executa checagens periódicas em intervalos customizados: teste de ping/ICMP, conexão em portas TCP essenciais (HTTP/HTTPS, SSH, DNS, Banco de Dados) e validade de certificados SSL. Quando uma anomalia ocorre, dispara imediatamente um card informativo via Webhook para o canal da equipe com diagnóstico e timestamp.
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-xl bg-slate-50 dark:bg-navy-800/40 border border-slate-200 dark:border-navy-700">
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-3 flex items-center gap-2">
+                                    <i data-lucide="shield-check" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Destaques de Infraestrutura
+                                </h3>
+                                <ul class="list-disc list-inside space-y-2 text-sm">
+                                    <li><strong>Isolamento com Docker Compose:</strong> Instalação em 1 comando em qualquer servidor Linux ou Raspberry Pi.</li>
+                                    <li><strong>Zero dependência de serviços externos pagos:</strong> Utiliza bibliotecas nativas de rede (`socket`, `ssl`).</li>
+                                    <li><strong>Relatório Diário de Disponibilidade:</strong> Resumo executivo de Uptime enviado no início da manhã.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. COMPLIANCE TRACKER -->
+                <div id="project-compliance-tracker" role="tabpanel" aria-labelledby="tab-compliance-tracker" class="project-view hidden space-y-6">
+                    <div class="card rounded-2xl p-6 sm:p-8">
+                        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-navy-700 pb-5 mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-navy-700 text-white flex items-center justify-center shrink-0">
+                                    <i data-lucide="calendar-check" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <span class="text-xs uppercase font-bold tracking-widest text-navy-600 dark:text-navy-300">Gestão de Processos + Governança Corporativa</span>
+                                    <h2 class="text-2xl sm:text-3xl font-display font-bold text-navy-800 dark:text-white">Gestor de Prazos, Certidões e Contratos (Compliance Tracker)</h2>
+                                </div>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800 flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span> Em Desenvolvimento (Fase 1: Modelagem & Cron Engine)
+                            </span>
+                        </div>
+
+                        <div class="grid sm:grid-cols-3 gap-4 mb-8">
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Problema Resolvido</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Perda de prazos contratuais, certidões negativas vencidas e multas operacionais.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Conexão com Currículo</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Gestão de prazos, organização documental e controles internos de escritório.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-50 dark:bg-navy-800/60 border border-slate-200 dark:border-navy-700">
+                                <span class="text-xs text-slate-500 dark:text-slate-400 uppercase font-semibold">Stack Tecnológica</span>
+                                <p class="text-sm font-bold text-navy-800 dark:text-white mt-1">Python (FastAPI), SQLite/PostgreSQL, APScheduler, Tailwind CSS.</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
+                            <div>
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-2 flex items-center gap-2">
+                                    <i data-lucide="target" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Visão Geral & Problema de Negócio
+                                </h3>
+                                <p>
+                                    Manter o controle de vencimento de certidões da Receita/FGTS, licenças de software de TI e renovação de contratos com fornecedores em planilhas dispersas é um dos maiores riscos administrativos em empresas. O esquecimento de uma data gera bloqueios bancários ou quebra de serviços críticos.
+                                </p>
+                                <p class="mt-2">
+                                    O <strong>Compliance Tracker</strong> é uma plataforma focada em prevenção e governança: permite catalogar documentos com suas vigências, calcula prazos de antecedência necessários para renovação, dispara notificações preventivas por e-mail com antecedência programada (30, 15 e 5 dias) e oferece relatórios consolidados em Excel para a diretoria.
+                                </p>
+                            </div>
+
+                            <div class="p-5 rounded-xl bg-slate-50 dark:bg-navy-800/40 border border-slate-200 dark:border-navy-700">
+                                <h3 class="text-lg font-bold text-navy-800 dark:text-white mb-3 flex items-center gap-2">
+                                    <i data-lucide="check-circle-2" class="w-5 h-5 text-navy-600 dark:text-navy-300"></i> Pilares do Projeto
+                                </h3>
+                                <ul class="list-disc list-inside space-y-2 text-sm">
+                                    <li><strong>Régua Preventiva de Alertas:</strong> Disparos automáticos escalonados por criticidade.</li>
+                                    <li><strong>Painel de Risco (Matriz Semáforo):</strong> Visão imediata de itens Vencidos, A Vencer em 30 dias e Em Dia.</li>
+                                    <li><strong>Repositório de Anexos:</strong> Centralização do arquivo comprovante vinculado ao vencimento.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Navegação Sequencial entre Projetos & Compartilhamento -->
+            <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-800 shadow-sm">
+                <button id="prev-project-btn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl card card-hover text-xs font-semibold text-navy-800 dark:text-white transition-all">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i> <span id="prev-project-label">Projeto Anterior</span>
+                </button>
+                <button onclick="copyProjectLink()" id="share-project-btn" type="button" class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-100 dark:bg-navy-800 hover:bg-slate-200 dark:hover:bg-navy-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors">
+                    <i data-lucide="link" class="w-3.5 h-3.5"></i> <span id="share-project-text">Copiar Link deste Projeto</span>
+                </button>
+                <button id="next-project-btn" type="button" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl card card-hover text-xs font-semibold text-navy-800 dark:text-white transition-all">
+                    <span id="next-project-label">Próximo Projeto</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Call to Action Box -->
+            <div class="mt-12 card rounded-2xl p-6 sm:p-8 bg-gradient-to-r from-navy-700 to-navy-800 text-white flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div>
+                    <h3 class="text-xl font-bold font-display mb-1">Quer acompanhar o progresso desses projetos?</h3>
+                    <p class="text-sm text-navy-100 max-w-xl">
+                        Os repositórios públicos no GitHub e as demonstrações ao vivo serão disponibilizados gradualmente conforme cada MVP atinge a fase de homologação.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3 shrink-0">
+                    <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="px-5 py-3 rounded-xl bg-white hover:bg-slate-100 text-navy-800 font-bold text-xs transition-colors flex items-center gap-2">
+                        <i data-lucide="github" class="w-4 h-4"></i> GitHub @SandyMarques
+                    </a>
+                    <a href="index.html#contato" class="px-5 py-3 rounded-xl bg-navy-600 hover:bg-navy-500 text-white font-bold text-xs border border-navy-500 transition-colors">
+                        Fale Comigo
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="text-center py-8 text-slate-600 dark:text-slate-400 text-xs border-t border-slate-200 dark:border-navy-800">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>© 2026 TALYSON MARQUES. TODOS OS DIREITOS RESERVADOS.</p>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium">Voltar ao Portfólio</a>
+                <span>•</span>
+                <p>ESPECIFICAÇÕES & ARQUITETURA DE SISTEMAS</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Interactive Navigation Scripts -->
+    <script>
+        function safeCreateIcons() {
+            try {
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            } catch (e) { /* CDN indisponível */ }
+        }
+        safeCreateIcons();
+
+        // Gerenciamento de Tema
+        const themeToggleBtn = document.getElementById('theme-toggle');
+
+        function refreshThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            document.querySelectorAll('#theme-toggle .icon-moon').forEach(el => el.classList.toggle('hidden', isDark));
+            document.querySelectorAll('#theme-toggle .icon-sun').forEach(el => el.classList.toggle('hidden', !isDark));
+            safeCreateIcons();
+        }
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            try { localStorage.setItem('tm-theme', theme); } catch (e) {}
+            refreshThemeIcons();
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        }
+
+        if (themeToggleBtn) themeToggleBtn.addEventListener('click', toggleTheme);
+        refreshThemeIcons();
+
+        // Alternância Dinâmica de Projetos
+        const validProjects = ['validador-documental', 'painel-operacional', 'helpdesk-sla', 'bot-infraestrutura', 'compliance-tracker'];
+        const projectNames = {
+            'validador-documental': 'Validador de Documentos',
+            'painel-operacional': 'Painel Operacional',
+            'helpdesk-sla': 'HelpDesk & SLA',
+            'bot-infraestrutura': 'Bot de Redes',
+            'compliance-tracker': 'Gestor de Contratos'
+        };
+
+        function switchProject(projectId) {
+            if (!validProjects.includes(projectId)) {
+                projectId = 'validador-documental';
+            }
+
+            // Oculta todas as views
+            document.querySelectorAll('.project-view').forEach(view => {
+                view.classList.add('hidden');
+            });
+
+            // Mostra a view selecionada
+            const target = document.getElementById('project-' + projectId);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // Atualiza botões desktop e acessibilidade WAI-ARIA
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300');
+                btn.setAttribute('aria-selected', 'false');
+            });
+            const activeTab = document.getElementById('tab-' + projectId);
+            if (activeTab) {
+                activeTab.classList.add('active');
+                activeTab.classList.remove('text-slate-600', 'dark:text-slate-300');
+                activeTab.setAttribute('aria-selected', 'true');
+            }
+
+            // Atualiza o select mobile se necessário
+            const mobileSelect = document.getElementById('project-select-mobile');
+            if (mobileSelect && mobileSelect.value !== projectId) {
+                mobileSelect.value = projectId;
+            }
+
+            // Atualiza botões de navegação sequencial
+            const currentIndex = validProjects.indexOf(projectId);
+            const prevIndex = (currentIndex - 1 + validProjects.length) % validProjects.length;
+            const nextIndex = (currentIndex + 1) % validProjects.length;
+            const prevId = validProjects[prevIndex];
+            const nextId = validProjects[nextIndex];
+
+            const prevBtn = document.getElementById('prev-project-btn');
+            const nextBtn = document.getElementById('next-project-btn');
+            const prevLabel = document.getElementById('prev-project-label');
+            const nextLabel = document.getElementById('next-project-label');
+
+            if (prevBtn && prevLabel) {
+                prevBtn.onclick = () => switchProject(prevId);
+                prevLabel.textContent = projectNames[prevId] || 'Projeto Anterior';
+            }
+            if (nextBtn && nextLabel) {
+                nextBtn.onclick = () => switchProject(nextId);
+                nextLabel.textContent = projectNames[nextId] || 'Próximo Projeto';
+            }
+
+            // Atualiza a URL sem recarregar
+            if (window.history.replaceState) {
+                const url = new URL(window.location);
+                url.searchParams.set('id', projectId);
+                window.history.replaceState({}, '', url);
+            }
+
+            safeCreateIcons();
+        }
+
+        // Copia link direto do projeto ativo
+        function copyProjectLink() {
+            const url = window.location.href;
+            const btn = document.getElementById('share-project-btn');
+            const btnText = document.getElementById('share-project-text');
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(url).then(() => {
+                    btnText.textContent = 'Link Copiado!';
+                    btn.classList.add('bg-emerald-600', 'text-white');
+                    setTimeout(() => {
+                        btnText.textContent = 'Copiar Link deste Projeto';
+                        btn.classList.remove('bg-emerald-600', 'text-white');
+                    }, 2000);
+                });
+            }
+        }
+
+        // Inicialização com base no parâmetro da URL ou Hash
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idParam = urlParams.get('id');
+            const hashParam = window.location.hash.replace('#', '');
+            
+            const targetId = idParam || hashParam || 'validador-documental';
+            switchProject(targetId);
+        });
+    </script>
+</body>
+</html>

@@ -124,65 +124,95 @@
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200 antialiased selection:bg-navy-200 selection:text-navy-900">
-    <a href="#sobre" class="skip-link">Pular para o conteúdo</a>
+    <a href="#inicio" class="skip-link">Pular para o conteúdo</a>
 
     <!-- Header / Navigation Bar -->
-    <header class="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-4">
-        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur border border-slate-200 dark:border-navy-700 px-5 py-3 flex items-center justify-between shadow-sm">
+    <header class="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-3.5">
+        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur-md border border-slate-200/90 dark:border-navy-700 px-4 sm:px-5 py-2.5 flex items-center justify-between shadow-sm gap-4">
             <!-- Brand -->
-            <a href="#sobre" class="flex items-center gap-3" aria-label="Ir para o início / sobre">
-                <div class="w-9 h-9 rounded-lg bg-navy-700 flex items-center justify-center font-display font-bold text-white text-lg">
+            <a href="#inicio" class="flex items-center gap-3 shrink-0 group focus:outline-none" aria-label="Talyson Marques - Início">
+                <div class="w-9 h-9 rounded-xl bg-navy-700 group-hover:bg-navy-600 text-white flex items-center justify-center font-display font-bold text-base shadow-sm transition-all duration-200 ring-1 ring-black/5 dark:ring-white/10 shrink-0">
                     T
                 </div>
-                <div class="flex flex-col leading-tight">
-                    <span class="font-display font-bold tracking-wide text-navy-800 dark:text-white text-sm">TALYSON MARQUES</span>
-                    <span class="text-[10px] tracking-widest text-slate-600 dark:text-slate-400 font-medium">ADMINISTRAÇÃO • TECNOLOGIA • EFICIÊNCIA</span>
+                <div class="flex flex-col leading-tight shrink-0">
+                    <span class="font-display font-bold tracking-wide text-navy-800 dark:text-white text-sm group-hover:text-navy-700 dark:group-hover:text-navy-200 transition-colors">TALYSON MARQUES</span>
+                    <span class="text-[9.5px] tracking-wider text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap uppercase">Administração • Tecnologia</span>
                 </div>
             </a>
 
-            <!-- Nav Links (Desktop) -->
-            <div class="hidden lg:flex items-center gap-5 text-sm font-medium text-slate-600 dark:text-slate-300">
-                <a href="#sobre" class="hover:text-navy-700 dark:hover:text-white transition-colors flex items-center gap-1.5"><i data-lucide="user" class="w-4 h-4"></i> Sobre</a>
-                <a href="#experiencia" class="hover:text-navy-700 dark:hover:text-white transition-colors flex items-center gap-1.5"><i data-lucide="briefcase" class="w-4 h-4"></i> Trajetória</a>
-                <a href="#competencias" class="hover:text-navy-700 dark:hover:text-white transition-colors flex items-center gap-1.5"><i data-lucide="list-checks" class="w-4 h-4"></i> Competências</a>
-                <a href="#projetos" class="hover:text-navy-700 dark:hover:text-white transition-colors flex items-center gap-1.5"><i data-lucide="folder" class="w-4 h-4"></i> Projetos</a>
-                <a href="#terminal" class="hover:text-navy-700 dark:hover:text-white transition-colors flex items-center gap-1.5"><i data-lucide="message-square" class="w-4 h-4"></i> Atendimento</a>
-                <a href="#habilidades" class="hover:text-navy-700 dark:hover:text-white transition-colors flex items-center gap-1.5"><i data-lucide="clipboard-check" class="w-4 h-4"></i> Habilidades</a>
+            <!-- Nav Links (Desktop) - Clean typography without icon clutter -->
+            <div class="hidden lg:flex items-center gap-1 xl:gap-1.5 text-xs xl:text-[13px] font-medium text-slate-600 dark:text-slate-300">
+                <a href="#sobre" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Sobre</a>
+                <a href="#experiencia" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Trajetória</a>
+                <a href="#competencias" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Competências</a>
+                <a href="#projetos" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Projetos</a>
+                <a href="blog.html" class="px-2.5 xl:px-3 py-1.5 rounded-lg text-navy-700 dark:text-navy-300 font-semibold hover:bg-navy-50 dark:hover:bg-navy-800/80 transition-colors inline-flex items-center gap-1">
+                    Blog
+                    <span class="text-[9px] px-1.5 py-0.5 rounded-md font-bold bg-navy-100 dark:bg-navy-800 text-navy-700 dark:text-navy-300">Artigos</span>
+                </a>
+                <a href="#terminal" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Atendimento</a>
+                <a href="#habilidades" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Habilidades</a>
             </div>
 
-            <div class="flex items-center gap-2">
-                <button id="theme-toggle" type="button" aria-label="Alternar entre tema claro e escuro" class="w-10 h-10 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-200 hover:border-navy-400 hover:text-navy-700 dark:hover:text-white transition-colors">
-                    <i data-lucide="moon" class="w-5 h-5 icon-moon"></i>
-                    <i data-lucide="sun" class="w-5 h-5 icon-sun hidden"></i>
+            <!-- Actions (Theme Toggle + CTA + Mobile trigger) -->
+            <div class="flex items-center gap-2 shrink-0">
+                <div class="hidden lg:block h-5 w-px bg-slate-200 dark:bg-navy-700 mr-1"></div>
+                <button id="theme-toggle" type="button" aria-label="Alternar entre tema claro e escuro" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-navy-600 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                    <i data-lucide="moon" class="w-4 h-4 icon-moon"></i>
+                    <i data-lucide="sun" class="w-4 h-4 icon-sun hidden"></i>
                 </button>
-                <a href="#contato" class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold rounded-xl bg-navy-700 text-white hover:bg-navy-600 transition-colors">
-                    Fale Comigo <i data-lucide="send" class="w-3 h-3"></i>
+                <a href="#contato" class="hidden lg:inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm hover:shadow transition-all">
+                    <span>Fale Comigo</span>
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
                 </a>
-                <button id="mobile-menu-btn" class="lg:hidden w-10 h-10 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-200" aria-label="Abrir Menu">
-                    <i data-lucide="menu" class="w-5 h-5"></i>
+                <button id="mobile-menu-btn" class="lg:hidden w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors" aria-label="Abrir Menu">
+                    <i data-lucide="menu" class="w-4 h-4"></i>
                 </button>
             </div>
         </nav>
 
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden lg:hidden absolute top-20 left-4 right-4 rounded-2xl bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 p-5 flex flex-col gap-1 text-center mt-2 shadow-xl">
-            <a href="#sobre" class="py-2.5 font-medium border-b border-slate-100 dark:border-navy-700 text-slate-700 dark:text-slate-200">Sobre</a>
-            <a href="#experiencia" class="py-2.5 font-medium border-b border-slate-100 dark:border-navy-700 text-slate-700 dark:text-slate-200">Trajetória</a>
-            <a href="#competencias" class="py-2.5 font-medium border-b border-slate-100 dark:border-navy-700 text-slate-700 dark:text-slate-200">Competências</a>
-            <a href="#projetos" class="py-2.5 font-medium border-b border-slate-100 dark:border-navy-700 text-slate-700 dark:text-slate-200">Projetos</a>
-            <a href="#terminal" class="py-2.5 font-medium border-b border-slate-100 dark:border-navy-700 text-slate-700 dark:text-slate-200">Atendimento virtual</a>
-            <a href="#habilidades" class="py-2.5 font-medium border-b border-slate-100 dark:border-navy-700 text-slate-700 dark:text-slate-200">Habilidades</a>
-            <div class="flex gap-2 mt-3">
-                <button id="theme-toggle-mobile" type="button" class="flex-1 py-3 rounded-xl border border-slate-200 dark:border-navy-700 text-sm font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-2">
-                    <i data-lucide="moon" class="w-4 h-4"></i> Claro / Escuro
+        <div id="mobile-menu" class="hidden lg:hidden absolute top-20 left-4 right-4 rounded-2xl bg-white/98 dark:bg-navy-900/98 backdrop-blur-xl border border-slate-200 dark:border-navy-700 p-4 shadow-2xl flex flex-col gap-1 transition-all z-50">
+            <a href="#sobre" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <i data-lucide="user" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Sobre
+            </a>
+            <a href="#experiencia" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <i data-lucide="briefcase" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Trajetória
+            </a>
+            <a href="#competencias" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <i data-lucide="list-checks" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Competências
+            </a>
+            <a href="#projetos" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <i data-lucide="folder" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Projetos
+            </a>
+            <a href="blog.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-navy-700 dark:text-navy-300 hover:bg-navy-50 dark:hover:bg-navy-800 transition-colors">
+                <span class="flex items-center gap-3">
+                    <i data-lucide="book-open" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Mini Blog & Artigos
+                </span>
+                <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-navy-100 dark:bg-navy-800 text-navy-700 dark:text-navy-200 border border-navy-200 dark:border-navy-700">Artigos</span>
+            </a>
+            <a href="#terminal" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <i data-lucide="message-square" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Atendimento Virtual
+            </a>
+            <a href="#habilidades" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <i data-lucide="clipboard-check" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Habilidades Técnicas
+            </a>
+
+            <div class="pt-3 mt-2 border-t border-slate-200 dark:border-navy-700 flex items-center gap-2">
+                <button id="theme-toggle-mobile" type="button" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                    <i data-lucide="moon" class="w-4 h-4 icon-moon"></i>
+                    <i data-lucide="sun" class="w-4 h-4 icon-sun hidden"></i>
+                    <span>Alternar tema</span>
                 </button>
-                <a href="#contato" class="flex-1 py-3 rounded-xl bg-navy-700 text-white font-bold text-sm flex items-center justify-center">Fale Comigo</a>
+                <a href="#contato" class="flex-1 py-2.5 rounded-xl bg-navy-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                    Fale Comigo <i data-lucide="send" class="w-3 h-3"></i>
+                </a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="pt-36 pb-16 px-4">
+    <section id="inicio" class="pt-36 pb-16 px-4">
         <div class="max-w-5xl mx-auto text-center">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-6">
                 <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
@@ -201,15 +231,12 @@
                 <strong class="font-semibold">Python e inteligência artificial</strong> para automatizar tarefas e ganhar eficiência.
             </p>
 
-            <div class="flex flex-col sm:flex-row sm:flex-wrap gap-3 justify-center items-center">
-                <a href="curriculo-talyson-marques.pdf" target="_blank" rel="noopener" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm tracking-wide transition-colors flex items-center justify-center gap-2">
-                    <i data-lucide="download" class="w-4 h-4"></i> Baixar currículo
-                </a>
-                <a href="#projetos" class="w-full sm:w-auto px-7 py-3.5 rounded-xl card card-hover text-navy-800 dark:text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
+            <div class="flex flex-col sm:flex-row gap-3.5 justify-center items-center">
+                <a href="#projetos" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm tracking-wide shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
                     <i data-lucide="folder-open" class="w-4 h-4"></i> Ver projetos
                 </a>
-                <a href="#terminal" class="w-full sm:w-auto px-7 py-3.5 rounded-xl card card-hover text-navy-800 dark:text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
-                    <i data-lucide="message-square" class="w-4 h-4"></i> Atendimento virtual
+                <a href="curriculo-talyson-marques.pdf" target="_blank" rel="noopener" class="w-full sm:w-auto px-7 py-3.5 rounded-xl card card-hover text-navy-800 dark:text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
+                    <i data-lucide="download" class="w-4 h-4"></i> Baixar currículo
                 </a>
             </div>
 
@@ -255,16 +282,20 @@
                         </div>
                         <ul class="space-y-4 text-sm">
                             <li class="flex gap-3">
+                                <i data-lucide="building-2" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
+                                <div><strong class="text-navy-800 dark:text-white">Experiência corporativa (5+ anos)</strong><br><span class="text-slate-600 dark:text-slate-300">Atuação contínua na Accenture Brasil (Projeto Vivere) em processos, compliance e automação.</span></div>
+                            </li>
+                            <li class="flex gap-3">
                                 <i data-lucide="graduation-cap" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
-                                <div><strong class="text-navy-800 dark:text-white">Formação em Redes de Computadores</strong><br><span class="text-slate-600 dark:text-slate-300">Base em infraestrutura, conectividade e segurança (Cisco, Huawei, Juniper).</span></div>
+                                <div><strong class="text-navy-800 dark:text-white">Formação em Redes de Computadores</strong><br><span class="text-slate-600 dark:text-slate-300">SENAC-SP: infraestrutura, segurança de redes e padronização técnica.</span></div>
                             </li>
                             <li class="flex gap-3">
                                 <i data-lucide="clipboard-list" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
-                                <div><strong class="text-navy-800 dark:text-white">Foco administrativo</strong><br><span class="text-slate-600 dark:text-slate-300">Organização de rotinas, documentos, prazos e atendimento.</span></div>
+                                <div><strong class="text-navy-800 dark:text-white">Foco administrativo</strong><br><span class="text-slate-600 dark:text-slate-300">Conferência documental, gestão de SLAs, planilhas e atendimento.</span></div>
                             </li>
                             <li class="flex gap-3">
                                 <i data-lucide="bot" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
-                                <div><strong class="text-navy-800 dark:text-white">Tecnologia aplicada</strong><br><span class="text-slate-600 dark:text-slate-300">Python e inteligência artificial para automatizar tarefas repetitivas.</span></div>
+                                <div><strong class="text-navy-800 dark:text-white">Tecnologia aplicada</strong><br><span class="text-slate-600 dark:text-slate-300">Python e inteligência artificial para ganho de escala e eficiência operacional.</span></div>
                             </li>
                             <li class="flex gap-3">
                                 <i data-lucide="languages" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
@@ -272,7 +303,7 @@
                             </li>
                         </ul>
                         <div class="border-t border-slate-200 dark:border-navy-700 mt-6 pt-4 text-xs text-slate-600 dark:text-slate-400 space-y-1">
-                            <p class="flex justify-between"><span>Local</span><span class="font-semibold text-slate-700 dark:text-slate-200">Brasil</span></p>
+                            <p class="flex justify-between"><span>Local</span><span class="font-semibold text-slate-700 dark:text-slate-200">Praia Grande - SP (Remoto / Híbrido)</span></p>
                             <p class="flex justify-between"><span>Disponibilidade</span><span class="font-semibold text-emerald-700 dark:text-emerald-300">Aberto a oportunidades</span></p>
                         </div>
                     </div>
@@ -287,36 +318,38 @@
                     </h2>
                     <div class="space-y-4 text-slate-600 dark:text-slate-300 text-base leading-relaxed">
                         <p>
-                            Sou formado em <strong class="text-navy-700 dark:text-white font-semibold">Redes de Computadores</strong>, com base em
-                            conectividade, segurança e infraestrutura (Cisco, Huawei, Juniper). Essa formação me deu disciplina com
-                            processos, documentação e resolução organizada de problemas.
+                            Atuo há mais de <strong class="text-navy-700 dark:text-white font-semibold">5 anos na Accenture Brasil (Projeto Vivere)</strong>,
+                            conduzindo análise documental técnica, validação de conformidade cadastral e conciliação de informações sob rigorosos
+                            padrões regulatórios e acordos de nível de serviço (SLAs). Sou graduado em
+                            <strong class="text-navy-700 dark:text-white font-semibold">Redes de Computadores pelo SENAC-SP</strong>, base que
+                            estruturou minha disciplina com infraestrutura, protocolos, documentação e resolução metódica de problemas.
                         </p>
                         <p>
-                            Nos últimos anos, direcionei meus estudos para <strong class="font-semibold">automação de rotinas com Python</strong> e
-                            uso aplicado de <strong class="font-semibold">inteligência artificial</strong> — por exemplo, consulta organizada a
-                            documentos e tratamento de planilhas por comandos em português. O objetivo é prático: reduzir tarefas
-                            manuais, evitar erros e liberar tempo para o que importa.
+                            No dia a dia corporativo, alio essa vivência administrativa à criação de
+                            <strong class="font-semibold text-navy-700 dark:text-white">rotinas de automação em Python</strong> e à aplicação de ferramentas de
+                            <strong class="font-semibold text-navy-700 dark:text-white">Inteligência Artificial</strong>. O objetivo é altamente prático:
+                            estruturar dados e planilhas complexas, acelerar a triagem documental e eliminar retrabalho manual com total acurácia.
                         </p>
                         <p>
-                            Busco oportunidades em <strong class="font-semibold">Administração</strong> e em
-                            <strong class="font-semibold">Tecnologia</strong>, com o mesmo peso: de um lado, organização,
-                            documentação, prazos e atendimento; de outro, ferramentas, dados e automação para tornar as
-                            rotinas mais eficientes.
+                            Busco oportunidades em <strong class="font-semibold text-navy-700 dark:text-white">Administração</strong> e em
+                            <strong class="font-semibold text-navy-700 dark:text-white">Tecnologia</strong> com o mesmo peso e seriedade:
+                            de um lado, organização, governança, cumprimento de prazos e comunicação assertiva; de outro, dados, código e automação
+                            para transformar rotinas em fluxos ágeis e eficientes.
                         </p>
                     </div>
 
                     <div class="grid grid-cols-3 gap-6 mt-8 card rounded-2xl p-5">
+                        <div>
+                            <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display">+5 Anos</div>
+                            <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Vivência corporativa na Accenture</div>
+                        </div>
                         <div>
                             <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display">Admin + Tech</div>
                             <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Atuação híbrida com peso igual</div>
                         </div>
                         <div>
                             <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display">Projetos</div>
-                            <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Publicados com código e documentação</div>
-                        </div>
-                        <div>
-                            <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display">PT / EN</div>
-                            <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Português nativo • Inglês básico</div>
+                            <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Publicados com código e docs</div>
                         </div>
                     </div>
                 </div>
@@ -332,75 +365,78 @@
                     <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> TRAJETÓRIA
                 </div>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Evolução profissional</h2>
-                <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-lg mx-auto text-sm">Da base em infraestrutura à aplicação prática de tecnologia em rotinas administrativas.</p>
+                <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">Mais de 5 anos de vivência corporativa contínua na Accenture Brasil: da análise documental e gestão de SLAs à automação com Python e IA.</p>
             </div>
 
             <div class="relative border-l-2 border-slate-200 dark:border-navy-700 ml-3 md:ml-24 pl-8 space-y-10">
+                <!-- Marco 1: 2020 - 2022 -->
                 <div class="relative">
                     <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center">
                         <div class="w-2 h-2 rounded-full bg-navy-600"></div>
                     </div>
-                    <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">2020 – 2023</div>
-                    <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">2020 – 2023</span>
+                    <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">2020 – 2022</div>
+                    <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">2020 – 2022</span>
                     <div class="card rounded-2xl p-6">
-                        <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Base técnica</span>
+                        <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Accenture Brasil • Operações & Compliance</span>
                         <h3 class="text-xl font-bold text-navy-800 dark:text-white mt-1 mb-2 flex items-center gap-2">
-                            Infraestrutura e redes corporativas <i data-lucide="network" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
+                            Análise Documental e Gestão de SLAs <i data-lucide="building-2" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
                         </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
-                            Formação em Redes de Computadores com foco em organização de infraestrutura, protocolos de roteamento corporativo,
-                            segurança e documentação de ambientes. Base que desenvolveu rigor com processos e registros.
+                            Ingresso na Accenture Brasil (Projeto Vivere) atuando na conferência minuciosa e validação técnica de contratos de financiamento, matrículas imobiliárias e conformidade cadastral sob rigorosas metas de SLA e auditoria. Em paralelo, conclusão da graduação em Redes de Computadores (SENAC-SP), consolidando forte disciplina metodológica e visão de processos estruturados.
                         </p>
                         <div class="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Redes e conectividade</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Cisco • Huawei • Juniper</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Segurança e documentação</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Accenture Brasil</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Análise Documental & Compliance</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Gestão de SLAs</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Redes • SENAC-SP</span>
                         </div>
                     </div>
                 </div>
 
+                <!-- Marco 2: 2022 - 2024 -->
                 <div class="relative">
                     <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center">
                         <div class="w-2 h-2 rounded-full bg-navy-600"></div>
                     </div>
-                    <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">2023 – 2025</div>
-                    <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">2023 – 2025</span>
+                    <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">2022 – 2024</div>
+                    <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">2022 – 2024</span>
                     <div class="card rounded-2xl p-6">
-                        <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Eficiência operacional</span>
+                        <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Accenture Brasil • Eficiência Operacional</span>
                         <h3 class="text-xl font-bold text-navy-800 dark:text-white mt-1 mb-2 flex items-center gap-2">
-                            Automação de rotinas com Python <i data-lucide="file-cog" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
+                            Automação de Rotinas e Dados com Python <i data-lucide="file-cog" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
                         </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
-                            Troca de tarefas manuais por rotinas automatizadas: organização e conferência de dados, leitura de planilhas
-                            e relatórios, e integração com sistemas por APIs. Menos erro manual e mais padronização.
+                            Identificação proativa de gargalos operacionais no fluxo corporativo e implementação de rotinas automatizadas em Python combinadas a planilhas avançadas em Excel (PROCV, PROCX e fórmulas lógicas). Substituição sistemática de tarefas manuais repetitivas, mitigação de erros operacionais e ganho consistente de escala e velocidade de processamento.
                         </p>
                         <div class="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Python</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Planilhas e relatórios</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Integração com sistemas</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Python Corporativo</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Excel Avançado</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Otimização de Processos</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Mitigação de Erros</span>
                         </div>
                     </div>
                 </div>
 
+                <!-- Marco 3: 2024 - Atual -->
                 <div class="relative">
                     <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center">
                         <div class="w-2 h-2 rounded-full bg-navy-600"></div>
                     </div>
-                    <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">Presente</div>
-                    <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">Presente</span>
+                    <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">2024 – Atual</div>
+                    <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">2024 – Atual</span>
                     <div class="card rounded-2xl p-6">
-                        <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Apoio administrativo + tecnologia</span>
+                        <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Accenture Brasil • IA Aplicada ao Negócio</span>
                         <h3 class="text-xl font-bold text-navy-800 dark:text-white mt-1 mb-2 flex items-center gap-2">
-                            Organização com apoio de IA <i data-lucide="clipboard-check" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
+                            Inteligência Artificial e Resolução de Inconsistências <i data-lucide="bot" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
                         </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
-                            Aplicação de inteligência artificial em tarefas administrativas: consulta a documentos com indicação de fonte,
-                            organização de planilhas por comandos em português e apoio a atendimento e controles internos.
+                            Aplicação de ferramentas e APIs de Inteligência Artificial no fluxo diário de trabalho para aceleração na análise técnica de documentos complexos, triagem de dados e diagnóstico de inconsistências sistêmicas. União da sólida bagagem em compliance e rotinas de escritório com tecnologia de ponta para tomada de decisão ágil e alcance de metas de excelência.
                         </p>
                         <div class="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Consulta a documentos</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Planilhas por comandos em português</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Apoio a rotinas e atendimento</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Inteligência Artificial Aplicada</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Triagem Documental</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Resolução de Inconsistências</span>
+                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">SLAs de Alta Performance</span>
                         </div>
                     </div>
                 </div>
@@ -479,7 +515,9 @@
                         <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5">
                             <i data-lucide="book-open-text" class="w-5 h-5 text-white"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-navy-800 dark:text-white font-display mb-2">Assistente de consulta a documentos</h3>
+                        <h3 class="text-xl font-bold font-display mb-2">
+                            <a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Assistente de consulta a documentos</a>
+                        </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
                             Ferramenta que responde perguntas com base em documentos enviados (PDF, texto, planilhas e outros),
                             indicando a fonte da informação.
@@ -492,6 +530,7 @@
                         <a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-navy-700 text-white hover:bg-navy-600 transition-colors">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-brand="github" class="w-3.5 h-3.5"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> Ver repositório
                         </a>
+                        <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">v1.0 • Código Aberto</span>
                     </div>
                 </div>
 
@@ -503,7 +542,9 @@
                         <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5">
                             <i data-lucide="file-spreadsheet" class="w-5 h-5 text-white"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-navy-800 dark:text-white font-display mb-2">Automatizador de planilhas por comandos em português</h3>
+                        <h3 class="text-xl font-bold font-display mb-2">
+                            <a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Automatizador de planilhas por comandos em português</a>
+                        </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
                             Aplicação para limpeza, cálculo e transformação de planilhas (Excel e CSV) a partir de instruções em português.
                             Gera histórico de versões com desfazer/refazer e exporta o resultado em .xlsx e .csv.
@@ -516,34 +557,137 @@
                         <a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-navy-700 text-white hover:bg-navy-600 transition-colors">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-brand="github" class="w-3.5 h-3.5"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> Ver repositório
                         </a>
+                        <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">v1.0 • Código Aberto</span>
                     </div>
                 </div>
 
                 <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full">EM DESENVOLVIMENTO</div>
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                    </div>
                     <div>
                         <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
-                            <i data-lucide="camera" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                            <i data-lucide="file-check" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-navy-800 dark:text-white font-display mb-2">Registro de presença com apoio de câmera</h3>
+                        <h3 class="text-xl font-bold font-display mb-2">
+                            <a href="projeto-detalhe.html?id=validador-documental" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Validador e auditor inteligente de documentos corporativos</a>
+                        </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
-                            Projeto em desenvolvimento para apoiar controles de presença com registro automático e relatórios simples em painel web.
-                            <span class="block mt-2 text-xs text-slate-600 dark:text-slate-400">Tecnologias previstas: Python, OpenCV, FastAPI, SQLite.</span>
+                            Aplicação para análise técnica automatizada de lotes de documentos (PDF e texto). Extrai entidades-chave, valida regras de conformidade e sinaliza inconsistências antes do processamento manual.
+                            <strong class="block mt-2 font-semibold text-navy-700 dark:text-white">Resultado:</strong>
+                            reduz o tempo de conferência manual, elimina erros de triagem e acelera o fluxo de aprovação operacional.
+                            <span class="block mt-2 text-xs text-slate-600 dark:text-slate-400">Tecnologias previstas: Python, FastAPI, Pydantic, PdfPlumber, DeepSeek / OpenAI API, Pandas.</span>
                         </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
+                        <a href="projeto-detalhe.html?id=validador-documental" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        </a>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Schemas & MVP</span>
                     </div>
                 </div>
 
                 <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full">EM DESENVOLVIMENTO</div>
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                    </div>
                     <div>
                         <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
                             <i data-lucide="activity" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-navy-800 dark:text-white font-display mb-2">Painel de acompanhamento operacional</h3>
+                        <h3 class="text-xl font-bold font-display mb-2">
+                            <a href="projeto-detalhe.html?id=painel-operacional" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Painel de acompanhamento operacional e métricas</a>
+                        </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
-                            Projeto em desenvolvimento para acompanhamento de sistemas e recursos, com alertas e visão organizada do ambiente.
-                            <span class="block mt-2 text-xs text-slate-600 dark:text-slate-400">Tecnologias previstas: Python, Docker, FastAPI.</span>
+                            Painel centralizado para acompanhamento da saúde de serviços, rotinas agendadas e conectividade de rede, com alertas visuais e visão organizada do ambiente.
+                            <strong class="block mt-2 font-semibold text-navy-700 dark:text-white">Resultado:</strong>
+                            previne falhas silenciosas de processos em segundo plano e oferece transparência operacional para a gestão.
+                            <span class="block mt-2 text-xs text-slate-600 dark:text-slate-400">Tecnologias previstas: Python, FastAPI, Docker, Chart.js, SQLite.</span>
                         </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
+                        <a href="projeto-detalhe.html?id=painel-operacional" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        </a>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Telemetria</span>
+                    </div>
+                </div>
+
+                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                    </div>
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
+                            <i data-lucide="ticket" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-display mb-2">
+                            <a href="projeto-detalhe.html?id=helpdesk-sla" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">HelpDesk AI & Gestor de Métricas de SLA</a>
+                        </h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+                            Central inteligente de triagem de chamados e incidentes com categorização automática por IA, cálculo de horário útil de atendimento e controle preventivo de SLA.
+                            <strong class="block mt-2 font-semibold text-navy-700 dark:text-white">Resultado:</strong>
+                            elimina filas desorganizadas, prioriza chamados críticos e assegura o cumprimento rigoroso de acordos de nível de serviço (SLA).
+                            <span class="block mt-2 text-xs text-slate-600 dark:text-slate-400">Tecnologias previstas: Python, FastAPI, Supabase / PostgreSQL, LLM Categorizer, Tailwind.</span>
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
+                        <a href="projeto-detalhe.html?id=helpdesk-sla" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        </a>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Matriz de SLA</span>
+                    </div>
+                </div>
+
+                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                    </div>
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
+                            <i data-lucide="network" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-display mb-2">
+                            <a href="projeto-detalhe.html?id=bot-infraestrutura" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Bot de Monitoramento de Infraestrutura e Redes</a>
+                        </h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+                            Serviço conteinerizado em Docker para checagem ativa de conectividade (ping, portas TCP essenciais e validade de certificados SSL) com alertas em tempo real via Webhook.
+                            <strong class="block mt-2 font-semibold text-navy-700 dark:text-white">Resultado:</strong>
+                            reduz o tempo de inatividade de sistemas e alerta a equipe de TI antes que falhas de rede afetem os usuários finais.
+                            <span class="block mt-2 text-xs text-slate-600 dark:text-slate-400">Tecnologias previstas: Python, Docker Compose, Linux, Bash, Socket/TCP, Discord/Telegram Webhooks.</span>
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
+                        <a href="projeto-detalhe.html?id=bot-infraestrutura" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        </a>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Engine de Rede</span>
+                    </div>
+                </div>
+
+                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative md:col-span-2">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                    </div>
+                    <div>
+                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
+                            <i data-lucide="calendar-check" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                        </div>
+                        <h3 class="text-xl font-bold font-display mb-2">
+                            <a href="projeto-detalhe.html?id=compliance-tracker" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Gestor de Prazos, Certidões e Contratos (Compliance Tracker)</a>
+                        </h3>
+                        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
+                            Plataforma de governança preventiva para cadastro e acompanhamento de vencimentos de certidões, contratos com fornecedores e licenças com régua escalonada de alertas automáticos.
+                            <strong class="block mt-2 font-semibold text-navy-700 dark:text-white">Resultado:</strong>
+                            previne bloqueios cadastrais, multas por atraso e perda de prazos críticos com relatórios executivos para a liderança.
+                            <span class="block mt-2 text-xs text-slate-600 dark:text-slate-400">Tecnologias previstas: Python (FastAPI), SQLite/PostgreSQL, APScheduler, Tailwind CSS.</span>
+                        </p>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
+                        <a href="projeto-detalhe.html?id=compliance-tracker" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        </a>
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Cron Engine</span>
                     </div>
                 </div>
             </div>
@@ -570,13 +714,15 @@
                 </div>
 
                 <div class="bg-slate-50 dark:bg-navy-800/60 border-b border-slate-200 dark:border-navy-700 p-3.5 flex flex-wrap gap-2 items-center text-xs text-slate-600 dark:text-slate-400">
-                    <span class="mr-1">Acesso rápido:</span>
-                    <button onclick="runCommand('sobre')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">sobre</button>
-                    <button onclick="runCommand('projetos')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">projetos</button>
-                    <button onclick="runCommand('habilidades')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">habilidades</button>
-                    <button onclick="runCommand('contato')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">contato</button>
-                    <button onclick="runCommand('ajuda')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">ajuda</button>
-                    <button onclick="runCommand('limpar')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-red-400 hover:text-red-600 transition-colors font-medium">limpar</button>
+                    <span class="mr-1 font-semibold">Acesso rápido:</span>
+                    <button type="button" onclick="runCommand('sobre')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">sobre</button>
+                    <button type="button" onclick="runCommand('projetos')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">projetos</button>
+                    <button type="button" onclick="runCommand('blog')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">blog</button>
+                    <button type="button" onclick="runCommand('habilidades')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">habilidades</button>
+                    <button type="button" onclick="runCommand('contato')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">contato</button>
+                    <button type="button" onclick="runCommand('status')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">status</button>
+                    <button type="button" onclick="runCommand('ajuda')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">ajuda</button>
+                    <button type="button" onclick="runCommand('limpar')" class="sm:ml-auto px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-red-400 hover:text-red-600 transition-colors font-medium">limpar</button>
                 </div>
 
                 <div id="terminal-screen" class="p-6 text-sm overflow-y-auto max-h-[320px] flex-grow space-y-4 text-slate-700 dark:text-slate-200 bg-white dark:bg-navy-900" aria-live="polite">
@@ -588,7 +734,7 @@
 
                 <form id="terminal-form" onsubmit="handleFormSubmit(event)" class="bg-slate-50 dark:bg-navy-800/60 border-t border-slate-200 dark:border-navy-700 p-4 flex items-center gap-3">
                     <span class="text-navy-700 dark:text-slate-200 font-bold text-sm select-none">&gt;</span>
-                    <input id="terminal-input" type="text" autocomplete="off" placeholder="Digite: sobre, projetos, habilidades, contato..." aria-label="Campo de consulta do atendimento virtual" class="bg-transparent border-none outline-none flex-grow text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500">
+                    <input id="terminal-input" type="text" autocomplete="off" placeholder="Digite: sobre, projetos, blog, habilidades, contato..." aria-label="Campo de consulta do atendimento virtual" class="bg-transparent border-none outline-none flex-grow text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500">
                     <button type="submit" aria-label="Enviar consulta" class="w-9 h-9 rounded-lg bg-navy-700 text-white flex items-center justify-center hover:bg-navy-600 transition-colors">
                         <i data-lucide="corner-down-left" class="w-4 h-4"></i>
                     </button>
@@ -604,50 +750,58 @@
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4">
                     <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i> HABILIDADES TÉCNICAS
                 </div>
-                <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Ferramentas e habilidades técnicas</h2>
-                <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-lg mx-auto text-sm">Tecnologia aplicada às rotinas administrativas, com foco em organização, controle e eficiência.</p>
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Capacidades comprovadas</h2>
+                <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">Organização de rotinas, dados e tecnologia com o mesmo nível de rigor.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
-                <div class="card p-6 rounded-2xl">
-                    <h3 class="text-base font-bold font-display text-navy-800 dark:text-white mb-5 flex items-center gap-2">
-                        <i data-lucide="folder-check" class="text-navy-600 dark:text-navy-200 w-5 h-5"></i> Rotinas administrativas
-                    </h3>
-                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Organização de documentos</span></li>
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Planilhas (Excel / CSV)</span></li>
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Prazos e acompanhamento</span></li>
+                <div class="card rounded-2xl p-6">
+                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4">
+                        <i data-lucide="briefcase" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-navy-800 dark:text-white font-display mb-3">Rotinas administrativas</h3>
+                    <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Organização de documentos e arquivos</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Gestão de prazos e acompanhamento</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Atendimento telefônico e presencial</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Redação comercial e comunicados</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Suporte operacional e rotinas gerais</li>
                     </ul>
                 </div>
 
-                <div class="card p-6 rounded-2xl">
-                    <h3 class="text-base font-bold font-display text-navy-800 dark:text-white mb-5 flex items-center gap-2">
-                        <i data-lucide="database" class="text-navy-600 dark:text-navy-200 w-5 h-5"></i> Dados e ferramentas
-                    </h3>
-                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Python aplicado a rotinas</span></li>
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Conferência e relatórios</span></li>
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Noções de redes e sistemas</span></li>
+                <div class="card rounded-2xl p-6">
+                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4">
+                        <i data-lucide="table" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-navy-800 dark:text-white font-display mb-3">Dados e ferramentas</h3>
+                    <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Excel avançado (fórmulas e relatórios)</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Google Sheets e controle de versões</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Pacote Office completo</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Extração e conferência de dados</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Organização de relatórios gerenciais</li>
                     </ul>
                 </div>
 
-                <div class="card p-6 rounded-2xl">
-                    <h3 class="text-base font-bold font-display text-navy-800 dark:text-white mb-5 flex items-center gap-2">
-                        <i data-lucide="bot" class="text-navy-600 dark:text-navy-200 w-5 h-5"></i> Automação com IA
-                    </h3>
-                    <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Consulta a documentos</span></li>
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Tratamento de planilhas</span></li>
-                        <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 shrink-0 text-navy-600 dark:text-navy-200"></i><span>Apoio ao atendimento</span></li>
+                <div class="card rounded-2xl p-6">
+                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4">
+                        <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-navy-800 dark:text-white font-display mb-3">Automação com IA</h3>
+                    <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2">
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Python para automação de tarefas</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Pandas e processamento de tabelas</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Integração com modelos de IA (APIs)</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Redes de Computadores (conectividade)</li>
+                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Linux básico e Docker para deploys</li>
                     </ul>
-                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-5">Base: Python, FastAPI, LangChain, Pandas, Streamlit, Docker — conforme projetos publicados.</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Section: Contato -->
-    <section id="contato" class="py-16 px-4 bg-white dark:bg-navy-900/40 border-t border-slate-200 dark:border-navy-800">
+    <section id="contato" class="py-16 px-4 bg-slate-50 dark:bg-navy-900/40 border-t border-slate-200 dark:border-navy-800">
         <div class="max-w-4xl mx-auto">
             <div class="card p-8 md:p-10 rounded-2xl">
                 <div class="grid md:grid-cols-2 gap-10 items-start">
@@ -713,7 +867,13 @@
     <footer class="text-center py-10 text-slate-600 dark:text-slate-400 text-xs">
         <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p>© 2026 TALYSON MARQUES. TODOS OS DIREITOS RESERVADOS.</p>
-            <p>PORTFÓLIO PROFISSIONAL • ADMINISTRAÇÃO E TECNOLOGIA</p>
+            <div class="flex items-center gap-4">
+                <a href="blog.html" class="hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium">Mini Blog & Artigos</a>
+                <span>•</span>
+                <a href="#inicio" class="hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium inline-flex items-center gap-1">
+                    Voltar ao topo <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
         </div>
     </footer>
 
@@ -782,34 +942,51 @@
 
         const COMMANDS = {
             'ajuda': `Posso ajudar com:<br>
-&nbsp;&nbsp;<strong>sobre</strong> — resumo do perfil profissional.<br>
-&nbsp;&nbsp;<strong>projetos</strong> — os dois projetos publicados.<br>
-&nbsp;&nbsp;<strong>habilidades</strong> — o que posso apoiar no dia a dia.<br>
-&nbsp;&nbsp;<strong>contato</strong> — e-mail, LinkedIn e GitHub.<br>
+&nbsp;&nbsp;<strong>1 ou sobre</strong> — resumo do perfil profissional.<br>
+&nbsp;&nbsp;<strong>2 ou projetos</strong> — os projetos publicados e em desenvolvimento.<br>
+&nbsp;&nbsp;<strong>3 ou blog</strong> — mini blog e notas técnicas.<br>
+&nbsp;&nbsp;<strong>4 ou habilidades</strong> — o que posso apoiar no dia a dia.<br>
+&nbsp;&nbsp;<strong>5 ou contato</strong> — e-mail, LinkedIn e GitHub.<br>
+&nbsp;&nbsp;<strong>6 ou status</strong> — disponibilidade e formato de atuação.<br>
 &nbsp;&nbsp;<strong>limpar</strong> — limpa esta conversa.`,
 
             'help': `Posso ajudar com:<br>
-&nbsp;&nbsp;<strong>sobre</strong> — resumo do perfil profissional.<br>
-&nbsp;&nbsp;<strong>projetos</strong> — os dois projetos publicados.<br>
-&nbsp;&nbsp;<strong>habilidades</strong> — o que posso apoiar no dia a dia.<br>
-&nbsp;&nbsp;<strong>contato</strong> — e-mail, LinkedIn e GitHub.<br>
+&nbsp;&nbsp;<strong>1 ou sobre</strong> — resumo do perfil profissional.<br>
+&nbsp;&nbsp;<strong>2 ou projetos</strong> — os projetos publicados e em desenvolvimento.<br>
+&nbsp;&nbsp;<strong>3 ou blog</strong> — mini blog e notas técnicas.<br>
+&nbsp;&nbsp;<strong>4 ou habilidades</strong> — o que posso apoiar no dia a dia.<br>
+&nbsp;&nbsp;<strong>5 ou contato</strong> — e-mail, LinkedIn e GitHub.<br>
+&nbsp;&nbsp;<strong>6 ou status</strong> — disponibilidade e formato de atuação.<br>
 &nbsp;&nbsp;<strong>limpar</strong> — limpa esta conversa.`,
 
             'sobre': `<strong>TALYSON MARQUES</strong><br>
 ------------------------------------<br>
-Formação em <strong>Redes de Computadores</strong> com foco em organização, processos e infraestrutura.<br>
-Atuação híbrida com peso igual: <strong>Administração</strong> (documentos, planilhas, prazos e atendimento) e <strong>Tecnologia</strong> (dados e automação).<br>
-Aplico <strong>Python e inteligência artificial</strong> para automatizar rotinas administrativas e reduzir retrabalho.<br>
-Idiomas: Português (nativo) • Inglês (básico).`,
++5 anos de atuação contínua na <strong>Accenture Brasil (Projeto Vivere)</strong> em análise de processos, validação de conformidade e cumprimento rigoroso de SLAs.<br>
+Formação em <strong>Redes de Computadores (SENAC-SP)</strong>, com base sólida em conectividade, segurança e padronização técnica.<br>
+Atuação híbrida: alio governança administrativa e planilhas avançadas à criação de <strong>automações em Python</strong> e aplicação prática de <strong>Inteligência Artificial</strong>.<br>
+Disponibilidade: Praia Grande - SP (Remoto, Híbrido ou Presencial).`,
 
             'projetos': `<strong>PROJETOS PUBLICADOS:</strong><br>
 -----------------------------<br>
 1. <strong>Assistente de consulta a documentos</strong><br>
 &nbsp;&nbsp;&nbsp;Responde com base em documentos enviados, indicando a fonte.<br>
-&nbsp;&nbsp;&nbsp;Ver: https://github.com/SandyMarques/Assistente-IA-com-RAG<br>
+&nbsp;&nbsp;&nbsp;<a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="underline text-navy-700 dark:text-navy-300 font-semibold">Ver repositório no GitHub &rarr;</a><br>
 2. <strong>Automatizador de planilhas por comandos em português</strong><br>
 &nbsp;&nbsp;&nbsp;Limpeza e transformação de Excel/CSV com histórico e exportação.<br>
-&nbsp;&nbsp;&nbsp;Ver: https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA`,
+&nbsp;&nbsp;&nbsp;<a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="underline text-navy-700 dark:text-navy-300 font-semibold">Ver repositório no GitHub &rarr;</a><br><br>
+<strong>EM DESENVOLVIMENTO:</strong><br>
+-----------------------------<br>
+3. <strong>Validador e auditor de documentos</strong> (IA + Conformidade)<br>
+4. <strong>Painel operacional e métricas</strong> (Docker + Telemetria)<br>
+5. <strong>HelpDesk AI & Gestor de SLA</strong> (Triagem + Prazos)<br>
+6. <strong>Bot de monitoramento de redes</strong> (Linux + Conectividade)<br>
+7. <strong>Gestor de prazos & contratos</strong> (Governança + Alertas)<br>
+<a href="projeto-detalhe.html" class="inline-flex items-center gap-1 font-bold text-navy-700 dark:text-navy-300 underline mt-1">Ver especificações e arquitetura detalhada &rarr;</a>`,
+
+            'blog': `<strong>MINI BLOG & ARTIGOS TÉCNICOS:</strong><br>
+------------------------------------------<br>
+Artigos práticos sobre automação de rotinas, planilhas com Python, IA (RAG) e organização administrativa com suporte a Markdown.<br>
+<a href="blog.html" class="inline-flex items-center gap-1 font-bold text-navy-700 dark:text-navy-300 underline mt-1">Acessar o Blog de Artigos &rarr;</a>`,
 
             'habilidades': `<strong>O QUE POSSO APOIAR:</strong><br>
 -----------------------------<br>
@@ -820,27 +997,40 @@ Idiomas: Português (nativo) • Inglês (básico).`,
 
             'contato': `<strong>CONTATO:</strong><br>
 ------------------------------------------<br>
-- E-mail: talyson14marques@hotmail.com<br>
-- LinkedIn: https://www.linkedin.com/in/talysonmarques/<br>
-- GitHub: https://github.com/SandyMarques<br><br>
-Use o formulário de contato para enviar uma mensagem. Há também a opção de baixar o currículo.`,
+- E-mail: <a href="mailto:talyson14marques@hotmail.com" class="underline text-navy-700 dark:text-navy-300 font-medium">talyson14marques@hotmail.com</a><br>
+- LinkedIn: <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener noreferrer" class="underline text-navy-700 dark:text-navy-300 font-medium">linkedin.com/in/talysonmarques</a><br>
+- GitHub: <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="underline text-navy-700 dark:text-navy-300 font-medium">github.com/SandyMarques</a><br><br>
+Use o formulário na seção de contato ou envie uma mensagem direta.`,
 
-            'status': `<strong>DISPONIBILIDADE:</strong><br>
+            'status': `<strong>DISPONIBILIDADE & ATUAÇÃO:</strong><br>
 -----------------------<br>
 - Situação: aberto a oportunidades em Administração e Tecnologia.<br>
-- Resposta: pelo e-mail informado na seção de contato.<br>
-- Portfólio: projetos publicados com código e documentação.`,
+- Formatos: Presencial, Híbrido ou Remoto (Baixada Santista / SP e Brasil).<br>
+- Contato: via e-mail direto ou formulário de contato abaixo.<br>
+- Portfólio: 100% dos projetos contam com documentação e código aberto.`,
         };
 
         const ALIASES = {
+            '1': 'sobre',
+            '2': 'projetos',
+            '3': 'blog',
+            '4': 'habilidades',
+            '5': 'contato',
+            '6': 'status',
+            '7': 'ajuda',
             'sobre mim': 'sobre',
             'projeto': 'projetos',
+            'artigo': 'blog',
+            'artigos': 'blog',
+            'post': 'blog',
+            'posts': 'blog',
             'habilidade': 'habilidades',
             'skills': 'habilidades',
             'email': 'contato',
             'e-mail': 'contato',
             'clear': 'limpar',
             'limpa': 'limpar',
+            'reset': 'limpar',
         };
 
         function runCommand(cmdString) {

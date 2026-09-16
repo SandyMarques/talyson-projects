@@ -68,6 +68,35 @@ body {
     overflow-y: auto;
 }
 
+.sidebar-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.portfolio-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-sidebar-muted);
+    text-decoration: none;
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-sidebar);
+    transition: all 0.2s ease;
+    width: fit-content;
+}
+
+.portfolio-back-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #64748b;
+}
+
 .sidebar-header .logo-area {
     display: flex;
     align-items: center;

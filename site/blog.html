@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Blog | Talyson Marques — Administração, Automação e Tecnologia</title>
+
+    <meta name="description" content="Artigos práticos, estudos de caso e anotações técnicas sobre automação de rotinas em Python, planilhas inteligentes, IA aplicada (RAG) e organização de processos administrativos.">
+    <meta name="author" content="Talyson Marques">
+    <link rel="canonical" href="https://sandymarques.github.io/talyson-projects/blog.html">
+    <meta property="og:type" content="blog">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="Mini Blog | Talyson Marques — Administração, Automação e Tecnologia">
+    <meta property="og:description" content="Artigos práticos e notas técnicas sobre automação, IA e processos administrativos.">
+    <meta property="og:url" content="https://sandymarques.github.io/talyson-projects/blog.html">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231e3a5f'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='36' font-weight='bold' text-anchor='middle' fill='white'%3ET%3C/text%3E%3C/svg%3E">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Marked.js for Markdown rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+        // Aplica o tema salvo antes da pintura para evitar flash
+        (function () {
+            try {
+                var saved = localStorage.getItem('tm-theme');
+                if (saved === 'dark') {
+                    document.documentElement.classList.add('dark');
+                } else if (saved === 'light') {
+                    document.documentElement.classList.remove('dark');
+                } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.classList.add('dark');
+                }
+            } catch (e) { }
+        })();
+    </script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        navy: {
+                            50: '#f0f4f9',
+                            100: '#dce6f1',
+                            200: '#b9cde3',
+                            300: '#8fadcf',
+                            400: '#5b84b5',
+                            500: '#386293',
+                            600: '#274e78',
+                            700: '#1e3a5f',
+                            800: '#162945',
+                            900: '#101e33',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/css">
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(16, 30, 51, 0.08);
+        }
+        .dark .card {
+            background: #162945;
+            border-color: #2b3f5e;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+        }
+        .card-hover {
+            transition: border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .card-hover:hover {
+            border-color: #8fadcf;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 24px -6px rgba(30, 58, 95, 0.12), 0 6px 12px -4px rgba(30, 58, 95, 0.08);
+        }
+        .dark .card-hover:hover {
+            border-color: #5b84b5;
+            box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.55);
+        }
+        :focus-visible {
+            outline: 2px solid #274e78;
+            outline-offset: 3px;
+            border-radius: 6px;
+        }
+        .dark :focus-visible { outline-color: #8fadcf; }
+
+        /* Estilização do Conteúdo Markdown Renderizado */
+        .markdown-content {
+            font-size: 1.0625rem;
+            line-height: 1.8;
+            color: #334155;
+        }
+        .dark .markdown-content {
+            color: #cbd5e1;
+        }
+        .markdown-content h1,
+        .markdown-content h2,
+        .markdown-content h3,
+        .markdown-content h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            line-height: 1.3;
+            scroll-margin-top: 100px;
+        }
+        .markdown-content h1 {
+            font-size: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #101e33;
+        }
+        .dark .markdown-content h1 {
+            color: #f8fafc;
+        }
+        .markdown-content h2 {
+            font-size: 1.5rem;
+            margin-top: 2.25rem;
+            margin-bottom: 0.85rem;
+            color: #1e3a5f;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+        .dark .markdown-content h2 {
+            color: #93c5fd;
+            border-color: #2b3f5e;
+        }
+        .markdown-content h3 {
+            font-size: 1.25rem;
+            margin-top: 1.75rem;
+            margin-bottom: 0.65rem;
+            color: #1e3a5f;
+        }
+        .dark .markdown-content h3 {
+            color: #bfdbfe;
+        }
+        .markdown-content p {
+            margin-bottom: 1.25rem;
+        }
+        .markdown-content strong {
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .dark .markdown-content strong {
+            color: #ffffff;
+        }
+        .markdown-content ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .markdown-content ol {
+            list-style-type: decimal;
+            padding-left: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .markdown-content li {
+            margin-bottom: 0.4rem;
+        }
+        .markdown-content blockquote {
+            border-left: 4px solid #386293;
+            background: #f8fafc;
+            padding: 1rem 1.25rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.75rem 0.75rem 0;
+            font-style: italic;
+            color: #475569;
+        }
+        .dark .markdown-content blockquote {
+            border-left-color: #5b84b5;
+            background: #1e293b;
+            color: #cbd5e1;
+        }
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9375rem;
+            overflow-x: auto;
+            display: block;
+        }
+        .markdown-content th,
+        .markdown-content td {
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            text-align: left;
+        }
+        .dark .markdown-content th,
+        .dark .markdown-content td {
+            border-color: #334155;
+        }
+        .markdown-content th {
+            background-color: #f1f5f9;
+            font-weight: 700;
+            color: #1e3a5f;
+        }
+        .dark .markdown-content th {
+            background-color: #1e293b;
+            color: #93c5fd;
+        }
+        .markdown-content tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+        .dark .markdown-content tr:nth-child(even) {
+            background-color: #0f172a;
+        }
+        .markdown-content code:not(pre code) {
+            background: #f1f5f9;
+            color: #1e3a5f;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.375rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            border: 1px solid #e2e8f0;
+        }
+        .dark .markdown-content code:not(pre code) {
+            background: #1e293b;
+            color: #93c5fd;
+            border-color: #334155;
+        }
+        .markdown-content pre {
+            position: relative;
+            background: #0f172a;
+            color: #f8fafc;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            border: 1px solid #334155;
+        }
+        .markdown-content hr {
+            border: 0;
+            border-top: 1px solid #e2e8f0;
+            margin: 2.5rem 0;
+        }
+        .dark .markdown-content hr {
+            border-color: #334155;
+        }
+
+        /* Botão de copiar nos blocos de código com micro-interações táteis */
+        .code-block-wrapper {
+            position: relative;
+        }
+        .code-copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            padding: 0.35rem 0.65rem;
+            font-size: 0.75rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            border-radius: 0.5rem;
+            background: rgba(255, 255, 255, 0.12);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            backdrop-filter: blur(4px);
+        }
+        .code-copy-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-1px);
+        }
+        .code-copy-btn:active {
+            transform: scale(0.96);
+        }
+        .code-copy-btn.copied {
+            background: #059669 !important;
+            border-color: #34d399 !important;
+            color: #ffffff !important;
+            transform: scale(1.04);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.35);
+        }
+
+        /* --- MOTION DESIGN SKILL: COREOGRAFIAS, ESCALONAMENTO & AMBIENTE --- */
+        @keyframes cardEntrance {
+            0% {
+                opacity: 0;
+                transform: translateY(14px) scale(0.985);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        .animate-card-enter {
+            animation: cardEntrance 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        /* Transição fluida entre views */
+        .view-transition {
+            transition: opacity 220ms cubic-bezier(0.4, 0, 0.2, 1), transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Camada Ambiente para SVGs Técnicos */
+        @keyframes ambientFlow {
+            0% { stroke-dashoffset: 24; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .svg-flow-line {
+            stroke-dasharray: 6 4;
+            animation: ambientFlow 1.6s linear infinite;
+        }
+        @keyframes nodePulseGlow {
+            0%, 100% { transform: scale(1); opacity: 0.85; }
+            50% { transform: scale(1.22); opacity: 1; filter: drop-shadow(0 0 5px rgba(96, 165, 250, 0.6)); }
+        }
+        .svg-node-pulse {
+            transform-origin: center;
+            animation: nodePulseGlow 3s ease-in-out infinite;
+        }
+        .svg-node-pulse-delayed {
+            transform-origin: center;
+            animation: nodePulseGlow 3s ease-in-out infinite;
+            animation-delay: 1.2s;
+        }
+        @keyframes checkmarkPop {
+            0% { transform: scale(0.65); opacity: 0; }
+            70% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .svg-check-pop {
+            transform-origin: center;
+            animation: checkmarkPop 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .skip-link {
+            position: absolute;
+            left: -9999px;
+            top: 0;
+            background: #1e3a5f;
+            color: #ffffff;
+            padding: 10px 16px;
+            font-weight: 700;
+            z-index: 100;
+            border-radius: 0 0 12px 0;
+        }
+        .skip-link:focus { left: 0; }
+        /* Respeito às diretrizes de Acessibilidade (Sensibilidade Vestibular) */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .svg-flow-line, .svg-node-pulse, .svg-node-pulse-delayed, .svg-check-pop {
+                animation: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200 antialiased selection:bg-navy-200 selection:text-navy-900 min-h-screen flex flex-col">
+    <a href="#feed-view" class="skip-link">Pular para os artigos</a>
+
+    <!-- Barra de Progresso de Leitura -->
+    <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-navy-600 dark:bg-navy-400 z-50 transition-all duration-150" style="width: 0%;"></div>
+
+    <!-- Header / Barra de Navegação -->
+    <header class="fixed top-0 left-0 w-full z-40 px-4 md:px-8 py-3.5">
+        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur-md border border-slate-200/90 dark:border-navy-700 px-4 sm:px-5 py-2.5 flex items-center justify-between shadow-sm gap-4">
+            <!-- Brand -->
+            <a href="index.html" class="flex items-center gap-3 shrink-0 group focus:outline-none" aria-label="Ir para a página inicial">
+                <div class="w-9 h-9 rounded-xl bg-navy-700 group-hover:bg-navy-600 text-white flex items-center justify-center font-display font-bold text-base shadow-sm transition-all duration-200 ring-1 ring-black/5 dark:ring-white/10 shrink-0">
+                    T
+                </div>
+                <div class="flex flex-col leading-tight shrink-0">
+                    <span class="font-display font-bold tracking-wide text-navy-800 dark:text-white text-sm group-hover:text-navy-700 dark:group-hover:text-navy-200 transition-colors">TALYSON MARQUES</span>
+                    <span class="text-[9.5px] tracking-wider text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap uppercase">Mini Blog • Notas Técnicas</span>
+                </div>
+            </a>
+
+            <!-- Links de Ação -->
+            <div class="flex items-center gap-2.5 shrink-0">
+                <a id="nav-back-btn" href="index.html" class="inline-flex items-center gap-1.5 sm:gap-2 h-9 px-3 sm:px-3.5 text-xs font-semibold rounded-xl card card-hover text-navy-800 dark:text-white transition-all" aria-label="Voltar ao Portfólio">
+                    <i data-lucide="arrow-left" class="w-3.5 h-3.5 shrink-0"></i>
+                    <span id="nav-back-btn-text" class="hidden xs:inline sm:inline">Voltar ao Portfólio</span>
+                </a>
+                <div class="h-5 w-px bg-slate-200 dark:bg-navy-700"></div>
+                <button id="theme-toggle" type="button" aria-label="Alternar tema claro/escuro" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-navy-600 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                    <i data-lucide="moon" class="w-4 h-4 icon-moon"></i>
+                    <i data-lucide="sun" class="w-4 h-4 icon-sun hidden"></i>
+                </button>
+                <a href="index.html#contato" class="inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm hover:shadow transition-all">
+                    <span>Contato</span>
+                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <main class="flex-grow pt-28 pb-16 px-4">
+        
+        <!-- ==========================================
+             VIEW 1: FEED / LISTA DE ARTIGOS
+             ========================================== -->
+        <section id="feed-view" class="max-w-5xl mx-auto transition-opacity duration-300">
+            
+            <!-- Hero do Blog -->
+            <div class="text-center pt-8 pb-12">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-5 shadow-sm">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 text-navy-600 dark:text-navy-300"></i>
+                    Casos Reais, Anotações & Markdown
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold tracking-tight text-navy-800 dark:text-white mb-4">
+                    Mini Blog & Notas Técnicas
+                </h1>
+                
+                <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed mb-8">
+                    Artigos práticos sobre como unir <strong>organização de processos administrativos</strong>, <strong>planilhas inteligentes</strong> e <strong>automação com Python e IA</strong> para gerar eficiência no dia a dia.
+                </p>
+
+                <!-- Barra de Busca e Filtros -->
+                <div class="max-w-xl mx-auto mb-8">
+                    <div class="relative">
+                        <i data-lucide="search" class="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none"></i>
+                        <input id="search-input" type="text" placeholder="Buscar por tema, palavra-chave ou tecnologia..." class="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 text-sm focus:border-navy-500 focus:outline-none shadow-sm transition-all">
+                    </div>
+                </div>
+
+                <!-- Pílulas de Categorias / Temas -->
+                <div id="category-filters" class="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold">
+                    <button data-category="all" class="filter-btn active px-4 py-2 rounded-xl bg-navy-700 text-white shadow-sm transition-all">
+                        Todos os Temas (<span id="count-all">3</span>)
+                    </button>
+                    <button data-category="Automação com Python" class="filter-btn px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
+                        ⚡ Automação com Python
+                    </button>
+                    <button data-category="Inteligência Artificial & RAG" class="filter-btn px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
+                        🧠 Inteligência Artificial & RAG
+                    </button>
+                    <button data-category="Administração & Processos" class="filter-btn px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
+                        📋 Administração & Processos
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grade de Posts -->
+            <div id="posts-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Posts injetados dinamicamente via JS -->
+            </div>
+
+            <!-- Estado Vazio (quando a busca não encontra resultados) -->
+            <div id="empty-state" class="hidden text-center py-16 card rounded-2xl p-8 max-w-md mx-auto">
+                <i data-lucide="inbox" class="w-12 h-12 text-slate-400 mx-auto mb-3"></i>
+                <h2 class="text-lg font-bold text-navy-800 dark:text-white mb-1">Nenhum artigo encontrado</h2>
+                <p class="text-xs text-slate-600 dark:text-slate-400 mb-4">Tente buscar por outro termo ou selecione a opção "Todos os Temas".</p>
+                <button onclick="resetFilters()" class="px-4 py-2 bg-navy-700 text-white rounded-xl text-xs font-semibold">
+                    Limpar Filtros
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             VIEW 2: MODO LEITURA (ARTIGO COMPLETO)
+             ========================================== -->
+        <article id="article-view" class="hidden max-w-4xl mx-auto transition-opacity duration-300">
+            
+            <!-- Breadcrumbs e Ações de Retorno -->
+            <div class="flex items-center justify-between gap-4 mb-8 pb-4 border-b border-slate-200 dark:border-navy-700">
+                <nav class="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 min-w-0" aria-label="Navegação estrutural">
+                    <a href="index.html" class="hover:text-navy-700 dark:hover:text-white transition-colors shrink-0">Portfólio</a>
+                    <span class="shrink-0">/</span>
+                    <button onclick="showFeedView()" class="hover:text-navy-700 dark:hover:text-white transition-colors font-semibold shrink-0">Blog</button>
+                    <span class="shrink-0">/</span>
+                    <span id="breadcrumb-title" class="text-navy-700 dark:text-slate-200 truncate font-semibold">Artigo</span>
+                </nav>
+
+                <div class="flex items-center gap-2 shrink-0">
+                    <button onclick="copyArticleLink()" id="share-btn" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-200 dark:bg-navy-800 hover:bg-slate-300 dark:hover:bg-navy-700 text-xs font-semibold text-slate-700 dark:text-slate-200 transition-colors" title="Copiar link deste artigo">
+                        <i data-lucide="link" class="w-3.5 h-3.5"></i> <span id="share-btn-text">Copiar Link</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card Principal do Artigo -->
+            <div class="card rounded-3xl p-6 sm:p-10 shadow-md">
+                
+                <!-- Metadados de Cabeçalho -->
+                <header class="mb-8">
+                    <div class="flex flex-wrap items-center gap-3 text-xs mb-4">
+                        <span id="article-category-badge" class="px-3 py-1 rounded-full font-bold bg-navy-100 dark:bg-navy-800 text-navy-700 dark:text-navy-200 border border-navy-200 dark:border-navy-700">
+                            Categoria
+                        </span>
+                        <span class="flex items-center gap-1 text-slate-600 dark:text-slate-400">
+                            <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                            <span id="article-date">Data</span>
+                        </span>
+                        <span>•</span>
+                        <span class="flex items-center gap-1 text-slate-600 dark:text-slate-400">
+                            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                            <span id="article-read-time">X min de leitura</span>
+                        </span>
+                    </div>
+
+                    <h1 id="article-title" class="text-2xl sm:text-3xl md:text-4xl font-display font-extrabold text-navy-800 dark:text-white leading-tight mb-4">
+                        Título do Artigo
+                    </h1>
+
+                    <p id="article-lead" class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed font-normal border-l-4 border-navy-600 dark:border-navy-400 pl-4 py-1">
+                        Resumo do artigo...
+                    </p>
+                </header>
+
+                <!-- Ilustração Vetorial SVG de Destaque -->
+                <div id="article-svg-banner" class="w-full mb-10 rounded-2xl overflow-hidden bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-navy-700 p-6 sm:p-8 flex items-center justify-center">
+                    <!-- SVG injetado dinamicamente -->
+                </div>
+
+                <!-- Conteúdo Renderizado em Markdown -->
+                <div id="article-markdown-body" class="markdown-content">
+                    <!-- HTML gerado pelo marked.js -->
+                </div>
+
+                <!-- Tags do Artigo -->
+                <div class="border-t border-slate-200 dark:border-navy-700 mt-10 pt-6">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest mr-2">Tags:</span>
+                        <div id="article-tags-container" class="flex flex-wrap gap-2">
+                            <!-- Tags injetadas dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mini Bio do Autor no Rodapé do Artigo -->
+                <footer class="border-t border-slate-200 dark:border-navy-700 mt-8 pt-8 flex flex-col sm:flex-row items-center gap-5 bg-slate-50 dark:bg-navy-900/60 p-6 rounded-2xl">
+                    <div class="w-14 h-14 rounded-2xl bg-navy-700 flex items-center justify-center font-display font-bold text-white text-2xl shrink-0 shadow-sm">
+                        T
+                    </div>
+                    <div class="text-center sm:text-left flex-grow">
+                        <h2 class="font-display font-bold text-navy-800 dark:text-white text-base">Escrito por Talyson Marques</h2>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
+                            Formado em Redes de Computadores com atuação híbrida em <strong>Administração</strong> e <strong>Tecnologia</strong>. Desenvolve projetos de automação de rotinas em Python, planilhas com IA e organização de documentos.
+                        </p>
+                    </div>
+                    <div class="flex gap-2 shrink-0">
+                        <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-xl card card-hover flex items-center justify-center text-slate-700 dark:text-slate-200" title="GitHub" aria-label="GitHub de Talyson Marques">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-brand="github" class="w-4 h-4"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                        </a>
+                        <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-xl card card-hover flex items-center justify-center text-slate-700 dark:text-slate-200" title="LinkedIn" aria-label="LinkedIn de Talyson Marques">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-brand="linkedin" class="w-4 h-4"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                        </a>
+                        <a href="mailto:talyson14marques@hotmail.com" class="w-9 h-9 rounded-xl card card-hover flex items-center justify-center text-slate-700 dark:text-slate-200" title="E-mail" aria-label="E-mail de Talyson Marques">
+                            <i data-lucide="mail" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </footer>
+
+                <!-- Navegação ao Rodapé do Artigo -->
+                <div class="mt-8 pt-6 border-t border-slate-200 dark:border-navy-700 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <button onclick="showFeedView()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl card card-hover text-navy-800 dark:text-white font-bold text-xs inline-flex items-center justify-center gap-2">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Todos os Artigos
+                    </button>
+                    <div id="article-nav-next-container" class="w-full sm:w-auto"></div>
+                </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="text-center py-10 text-slate-600 dark:text-slate-400 text-xs border-t border-slate-200 dark:border-navy-800 bg-white dark:bg-navy-900/60">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>© 2026 TALYSON MARQUES. TODOS OS DIREITOS RESERVADOS.</p>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium">Voltar ao Portfólio</a>
+                <span>•</span>
+                <p>ADMINISTRAÇÃO E TECNOLOGIA</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         DADOS DOS ARTIGOS E SCRIPTS INTERATIVOS
+         ========================================== -->
+    <script>
+        // --- ILUSTRAÇÕES SVG VETORIAIS PERSONALIZADAS COM CAMADA AMBIENTE (MOTION DESIGN) ---
+        const SVG_ILLUSTRATIONS = {
+            pythonSpreadsheet: `
+                <svg viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-lg h-auto drop-shadow-sm">
+                    <!-- Fundo estilizado do diagrama -->
+                    <rect x="10" y="20" width="180" height="200" rx="16" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#334155]"/>
+                    <rect x="25" y="35" width="40" height="12" rx="4" fill="#94a3b8" opacity="0.5"/>
+                    <!-- Tabela Manual Antes -->
+                    <rect x="25" y="60" width="150" height="20" rx="4" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <rect x="25" y="90" width="150" height="16" rx="4" fill="#f1f5f9" class="dark:fill-[#1e293b]"/>
+                    <rect x="25" y="115" width="150" height="16" rx="4" fill="#f1f5f9" class="dark:fill-[#1e293b]"/>
+                    <rect x="25" y="140" width="150" height="16" rx="4" fill="#f1f5f9" class="dark:fill-[#1e293b]"/>
+                    <text x="100" y="185" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="700" fill="#64748b" class="dark:fill-[#94a3b8]">Excel Manual (Horas)</text>
+
+                    <!-- Seta de Transformação com Fluxo Contínuo e Ícone Python -->
+                    <path d="M205 120 H250" stroke="#386293" stroke-width="3" class="svg-flow-line" marker-end="url(#arrow)"/>
+                    <circle cx="300" cy="120" r="42" fill="#1e3a5f" stroke="#5b84b5" stroke-width="3" class="svg-node-pulse"/>
+                    <!-- Ícone estilizado Python / IA -->
+                    <path d="M285 110 C285 102 292 102 298 102 H306 V112 H294 C290 112 285 114 285 118 V124 H280 C274 124 274 128 274 132 C274 136 280 136 280 136 H286 V130 C286 124 290 120 296 120 H304 C310 120 314 116 314 110 V104 C314 98 308 94 300 94 C290 94 286 98 286 102 Z" fill="#60a5fa"/>
+                    <circle cx="292" cy="106" r="2" fill="#1e293b"/>
+                    <text x="300" y="180" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="12" font-weight="700" fill="#2563eb" class="dark:fill-[#60a5fa]">Automação Python</text>
+
+                    <!-- Seta de Fluxo para Resultado -->
+                    <path d="M350 120 H395" stroke="#386293" stroke-width="3" class="svg-flow-line"/>
+
+                    <!-- Dashboard / Planilha Limpa Automatizada -->
+                    <rect x="410" y="20" width="180" height="200" rx="16" fill="#f8fafc" stroke="#10b981" stroke-width="2" class="dark:fill-[#1e293b]"/>
+                    <rect x="425" y="35" width="70" height="12" rx="4" fill="#10b981" opacity="0.3"/>
+                    <rect x="425" y="60" width="150" height="24" rx="6" fill="#10b981" opacity="0.15"/>
+                    <path d="M435 72 L442 79 L458 65" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="svg-check-pop"/>
+                    <rect x="425" y="95" width="70" height="35" rx="6" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <rect x="505" y="95" width="70" height="35" rx="6" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <rect x="425" y="140" width="150" height="14" rx="4" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <text x="500" y="185" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="700" fill="#059669" class="dark:fill-[#34d399]">Relatório 100% Pronto</text>
+                </svg>
+            `,
+            ragAiSystem: `
+                <svg viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-lg h-auto drop-shadow-sm">
+                    <!-- Documentos Corporativos -->
+                    <rect x="20" y="35" width="120" height="160" rx="12" fill="#f8fafc" stroke="#64748b" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#475569]"/>
+                    <path d="M35 55 H105 M35 75 H115 M35 95 H85 M35 115 H120 M35 135 H95" stroke="#94a3b8" stroke-width="3" stroke-linecap="round"/>
+                    <text x="80" y="170" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="700" fill="#64748b" class="dark:fill-[#94a3b8]">PDFs & Documentos</text>
+
+                    <!-- Seta de Fluxo Contínuo para Banco Vetorial -->
+                    <path d="M150 115 H210" stroke="#3b82f6" stroke-width="3" class="svg-flow-line"/>
+
+                    <!-- Banco Vetorial / Embeddings com Nós Pulsantes -->
+                    <rect x="220" y="45" width="160" height="140" rx="16" fill="#1e3a5f" stroke="#3b82f6" stroke-width="2"/>
+                    <circle cx="260" cy="85" r="5" fill="#60a5fa" class="svg-node-pulse"/>
+                    <circle cx="330" cy="95" r="5" fill="#34d399" class="svg-node-pulse-delayed"/>
+                    <circle cx="280" cy="135" r="5" fill="#f43f5e" class="svg-node-pulse"/>
+                    <circle cx="340" cy="145" r="5" fill="#fbbf24" class="svg-node-pulse-delayed"/>
+                    <line x1="260" y1="85" x2="330" y2="95" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="2 2"/>
+                    <line x1="260" y1="85" x2="280" y2="135" stroke="#60a5fa" stroke-width="1.5" stroke-dasharray="2 2"/>
+                    <line x1="330" y1="95" x2="340" y2="145" stroke="#34d399" stroke-width="1.5" stroke-dasharray="2 2"/>
+                    <text x="300" y="170" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="700" fill="#bfdbfe">ChromaDB / Embeddings</text>
+
+                    <!-- Seta de Fluxo para Assistente Inteligente -->
+                    <path d="M390 115 H440" stroke="#3b82f6" stroke-width="3" class="svg-flow-line"/>
+
+                    <!-- Resposta Precisa com Fonte Citada -->
+                    <rect x="450" y="35" width="130" height="160" rx="14" fill="#f8fafc" stroke="#10b981" stroke-width="2" class="dark:fill-[#1e293b]"/>
+                    <rect x="465" y="50" width="100" height="40" rx="8" fill="#10b981" opacity="0.15"/>
+                    <text x="515" y="74" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="700" fill="#047857" class="dark:fill-[#34d399]">Resposta Precisa</text>
+                    <rect x="465" y="100" width="100" height="24" rx="6" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <text x="515" y="116" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="9" fill="#475569" class="dark:fill-[#94a3b8]">Fonte: Contrato_v2</text>
+                    <text x="515" y="170" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="700" fill="#059669" class="dark:fill-[#34d399]">Sem Alucinações</text>
+                </svg>
+            `,
+            adminProcesses: `
+                <svg viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-lg h-auto drop-shadow-sm">
+                    <!-- Pastas Organizadas e Taxonomia -->
+                    <rect x="20" y="30" width="160" height="170" rx="14" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#334155]"/>
+                    <path d="M35 50 H65 L75 60 H145 V85 H35 Z" fill="#386293" opacity="0.2"/>
+                    <path d="M40 75 H120" stroke="#386293" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M40 95 H135" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M40 115 H110" stroke="#64748b" stroke-width="2" stroke-linecap="round"/>
+                    <text x="100" y="175" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="700" fill="#475569" class="dark:fill-[#94a3b8]">Padronização de Pastas</text>
+
+                    <!-- Calendário e Gestão de Prazos -->
+                    <rect x="220" y="30" width="160" height="170" rx="14" fill="#f8fafc" stroke="#386293" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#5b84b5]"/>
+                    <rect x="220" y="30" width="160" height="35" rx="12" fill="#1e3a5f"/>
+                    <text x="300" y="53" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="12" font-weight="700" fill="#ffffff">Controle de Prazos</text>
+                    <!-- Grid de dias -->
+                    <circle cx="255" cy="95" r="10" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <circle cx="300" cy="95" r="10" fill="#fef08a" class="svg-node-pulse"/>
+                    <circle cx="345" cy="95" r="10" fill="#10b981"/>
+                    <circle cx="255" cy="130" r="10" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <circle cx="300" cy="130" r="10" fill="#f43f5e"/>
+                    <circle cx="345" cy="130" r="10" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <text x="300" y="175" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="700" fill="#274e78" class="dark:fill-[#93c5fd]">Rastreabilidade Total</text>
+
+                    <!-- Checklist e Eficiência Operacional -->
+                    <rect x="420" y="30" width="160" height="170" rx="14" fill="#f8fafc" stroke="#10b981" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#10b981]"/>
+                    <rect x="440" y="55" width="16" height="16" rx="4" fill="#10b981"/>
+                    <path d="M443 63 L447 67 L453 59" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-check-pop"/>
+                    <rect x="465" y="59" width="90" height="8" rx="4" fill="#94a3b8"/>
+
+                    <rect x="440" y="85" width="16" height="16" rx="4" fill="#10b981"/>
+                    <path d="M443 93 L447 97 L453 89" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-check-pop"/>
+                    <rect x="465" y="89" width="75" height="8" rx="4" fill="#94a3b8"/>
+
+                    <rect x="440" y="115" width="16" height="16" rx="4" fill="#10b981"/>
+                    <path d="M443 123 L447 127 L453 119" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-check-pop"/>
+                    <rect x="465" y="119" width="85" height="8" rx="4" fill="#94a3b8"/>
+
+                    <text x="500" y="175" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="11" font-weight="700" fill="#059669" class="dark:fill-[#34d399]">Zero Retrabalho</text>
+                </svg>
+            `
+        };
+
+        // --- BASE DE DADOS DOS ARTIGOS EM MARKDOWN (NARRATIVA & STORYTELLING APRIMORADOS) ---
+        const POSTS = [
+            {
+                id: 'automacao-de-planilhas-com-python',
+                title: 'Do Caos da "Planilha Mestre" à Execução em 3 Segundos: Como Eliminar 80% do Trabalho Braçal no Excel com Python e IA',
+                subtitle: 'Menos retrabalho manual, eliminação de riscos de digitação e padronização matemática de relatórios operacionais com Pandas e comandos em português.',
+                category: 'Automação com Python',
+                readTime: '6 min de leitura',
+                date: '14 de Setembro, 2026',
+                tags: ['Python', 'Pandas', 'Excel', 'Automação', 'Produtividade', 'Governança'],
+                svgKey: 'pythonSpreadsheet',
+                summary: 'O fechamento de mês não precisa ser um pesadelo de PROCVs quebrados e horas extras. Veja como transformar arquivos brutos cheios de divergências em relatórios auditados e prontos em poucos segundos.',
+                content: `
+Quem já trabalhou na linha de frente de operações, departamento financeiro ou controladoria conhece muito bem este cenário:
+
+É sexta-feira, **16h45**. Você está prestes a fechar o expediente quando recebe uma notificação urgente por e-mail ou mensagem: *"A planilha mestre consolidada com as 12 filiais acabou de chegar. Precisamos do relatório auditado na mesa da diretoria até as 18h"*.
+
+Você abre o arquivo no Excel. São **18.420 linhas**. E, em menos de dois minutos de inspeção, o pesadelo habitual se revela:
+- Metade das datas está no padrão brasileiro (\`DD/MM/AAAA\`) e a outra metade no padrão americano (\`AAAA-MM-DD\`).
+- Nomes de filiais e clientes com espaços duplos invisíveis no final (\`"Filial Sul "\`), que fazem qualquer busca falhar.
+- Valores monetários salvos como texto com o símbolo \`R$\` misturado, impedindo qualquer fórmula de soma direta.
+- Quando você finalmente escreve um \`PROCV\` ou \`XLOOKUP\` para cruzar com a base de cadastro e arrasta a fórmula para 18 mil linhas, a tela do computador congela: **"Excel (Não Respondendo)"**.
+
+O pior de tudo não é o estresse nem as duas horas extras não planejadas. O pior é o **risco silencioso**: quando a conferência de 18 mil linhas é feita no cansaço visual, um único valor digitado errado ou uma linha deslocada pode passar despercebido e comprometer uma decisão estratégica de fechamento contábil.
+
+---
+
+## 1. O Ponto de Virada: Por que Macros VBA Antigas Não Resolvem Mais
+
+Durante muito tempo, tentou-se resolver esse problema com macros gravadas em VBA. Mas quem opera no ambiente corporativo moderno sabe o quanto elas são frágeis:
+- Quebram se a ordem das colunas mudar um centímetro no arquivo exportado pelo ERP.
+- Não lidam de forma nativa com arquivos corrompidos ou codificações de caracteres distintas (\`UTF-8\` vs \`ISO-8859-1\`).
+- Bloqueios constantes de segurança das políticas de TI corporativa.
+
+A regra é simples e incontestável: **se o seu processo depende de um ser humano olhando linha por linha às 19h, o erro não é uma possibilidade; é uma certeza estatística.**
+
+Quando combinamos a disciplina metódica de processos com a biblioteca **Pandas em Python**, o jogo muda radicalmente de patamar. O que levava 2 a 3 horas de estresse e tensão se transforma em uma rotina idempotente, auditável e finalizada em **menos de 3 segundos**.
+
+---
+
+## 2. Impacto Operacional: Antes vs. Depois na Prática
+
+A tabela abaixo sintetiza o ganho real de produtividade observado em rotinas administrativas reais de conferência:
+
+| Operação Operacional Crítica | Método Manual (Excel Convencional) | Método Automatizado (Script Python) | Ganho de Produtividade | Confiabilidade / Auditoria |
+| :--- | :--- | :--- | :--- | :--- |
+| **Limpeza e Normalização de Cabeçalhos** | 15 a 20 minutos corrigindo espaços e caracteres especiais | **0.18 segundos** com mapeamento automatizado | **99% mais rápido** | 100% livre de falha humana |
+| **Cruzamento de Bases (PROCV em 18k linhas)** | 35 a 45 minutos (com risco de travamento de memória) | **0.75 segundos** com merge indexado em memória | **98% mais rápido** | Rastreabilidade total de chaves não localizadas |
+| **Validação de Documentos (CPF/CNPJ e Prazos)** | 40 minutos conferindo célula por célula | **0.90 segundos** com validação de algoritmo formal | **98% mais rápido** | Alerta imediato de incongruências |
+| **Consolidação e Exportação Auditada** | 25 minutos montando tabela dinâmica e gráficos | **0.42 segundos** gerando arquivo formatado com log | **97% mais rápido** | Histórico salvo com carimbo de data/hora |
+
+> [!NOTE]
+> Uma rotina diária de 2 horas gasta com conferências manuais de planilha soma **mais de 44 horas por mês** de um colaborador qualificado. Isso equivale a mais de uma semana inteira de trabalho dedicada apenas a copiar e colar dados.
+
+---
+
+## 3. Anatomia de uma Pipeline Robusta em Python
+
+Veja a estrutura de um script real, enxuto e comentado que resolve a higienização completa de um lote de vendas ou despesas corporativas:
+
+\`\`\`python
+import pandas as pd
+import numpy as np
+from datetime import datetime
+
+def sanitizar_planilha_operacional(caminho_entrada: str, caminho_saida: str):
+    """
+    Executa a limpeza, validação e auditoria da planilha operacional
+    em tempo recorde com garantia de integridade estrutural.
+    """
+    inicio = datetime.now()
+    
+    # 1. Leitura resiliente (trata tanto Excel quanto CSV com codificação adequada)
+    df = pd.read_excel(caminho_entrada)
+    linhas_iniciais = len(df)
+    
+    # 2. Padronização estrita de cabeçalhos: minúsculas, sem acentos e sem espaços
+    df.columns = (
+        df.columns.str.strip()
+                  .str.lower()
+                  .str.replace(' ', '_')
+                  .str.replace('/', '_')
+    )
+    
+    # 3. Tratamento de campos de texto: remoção de espaços duplos e trim
+    colunas_texto = df.select_dtypes(include=['object']).columns
+    for col in colunas_texto:
+        df[col] = df[col].astype(str).str.strip()
+    
+    # 4. Parsing inteligente de datas multiformato (DD/MM/AAAA ou AAAA-MM-DD)
+    if 'data_operacao' in df.columns:
+        df['data_operacao'] = pd.to_datetime(df['data_operacao'], dayfirst=True, errors='coerce')
+    
+    # 5. Tratamento de valores financeiros: converte texto para float e preenche nulos
+    if 'valor_total' in df.columns:
+        if df['valor_total'].dtype == object:
+            df['valor_total'] = (
+                df['valor_total'].str.replace('R$', '', regex=False)
+                                 .str.replace('.', '', regex=False)
+                                 .str.replace(',', '.', regex=False)
+            )
+        df['valor_total'] = pd.to_numeric(df['valor_total'], errors='coerce').fillna(0.0).round(2)
+    
+    # 6. Deduplicação com critério de auditoria (remove registros duplicados pela chave de negócio)
+    df = df.drop_duplicates(subset=['id_cliente', 'data_operacao'], keep='last')
+    
+    # 7. Adiciona coluna de carimbo de auditoria
+    df['auditado_em'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+    # 8. Exportação com formatação limpa
+    df.to_excel(caminho_saida, index=False)
+    
+    duracao = (datetime.now() - inicio).total_seconds()
+    print(f"Sucesso: {linhas_iniciais} linhas processadas em {duracao:.2f}s! Arquivo salvo em: {caminho_saida}")
+
+# Execução da rotina
+sanitizar_planilha_operacional("fechamento_bruto_12_filiais.xlsx", "relatorio_auditado_diretoria.xlsx")
+\`\`\`
+
+---
+
+## 4. O Próximo Passo: IA Generativa em Linguagem Natural
+
+E se qualquer membro do seu time administrativo — mesmo quem nunca escreveu uma linha de Python na vida — pudesse rodar análises complexas sem depender da equipe técnica?
+
+Foi exatamente com esse objetivo que desenvolvi o projeto de código aberto [Automatizador de Planilhas com IA](https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA).
+
+Nele, conectei a inteligência de processamento do Pandas a um assistente inteligente. O usuário simplesmente arrasta o arquivo \`.xlsx\` ou \`.csv\` e digita em português claro:
+
+> *"Filtre apenas os contratos com vencimento nos próximos 15 dias, agrupe o valor total por gestor responsável e crie uma coluna calculando o percentual de adimplência."*
+
+O sistema gera o código seguro em tempo real, executa em sandbox controlado, exibe a tabela tratada com pré-visualização instantânea e permite **desfazer ou refazer qualquer etapa com um clique**.
+
+> [!TIP]
+> **Ganho de Autonomia:** A equipe de back-office ganha superpoderes operacionais sem precisar esperar semanas por uma alteração no sistema central de TI.
+
+---
+
+## Conclusão: Tecnologia a Serviço do Humano
+
+A tecnologia não existe para complicar o ambiente de trabalho e muito menos para substituir as pessoas. Ela existe para **eliminar a escravidão das tarefas repetitivas**.
+
+Quando um profissional deixa de ser um mero operador de "copiar e colar" para se tornar um analista focado em prazos, negociações e qualidade de entrega, toda a organização sai ganhando. Esse é o equilíbrio exato entre **rigor administrativo e inteligência tecnológica**.
+                `
+            },
+            {
+                id: 'rag-e-busca-semantica-documentos',
+                title: 'Além do "Ctrl + F": Como Transformei Pastas Corporativas Caóticas em um Assistente Inteligente com RAG',
+                subtitle: 'A combinação de busca vetorial (ChromaDB), LangChain e modelos de linguagem para encontrar cláusulas contratuais, manuais e certidões em milissegundos — sem alucinações.',
+                category: 'Inteligência Artificial & RAG',
+                readTime: '7 min de leitura',
+                date: '08 de Setembro, 2026',
+                tags: ['IA Generativa', 'RAG', 'ChromaDB', 'LangChain', 'FastAPI', 'Compliance'],
+                svgKey: 'ragAiSystem',
+                summary: 'A busca tradicional por palavras-chave quebra quando o vocabulário jurídico ou administrativo varia. Entenda como a arquitetura RAG cria um assistente corporativo que responde com citação exata de página e parágrafo.',
+                content: `
+Acontece com frequência nos escritórios e centros de serviços compartilhados:
+
+O telefone toca. Do outro lado da linha, o diretor comercial ou o auditor regulatório faz uma pergunta direta que exige resposta em 10 minutos:
+> *"Talyson, qual é a cláusula exata de multa por rescisão antecipada que acordamos com o fornecedor Alfa no contrato do ano retrasado?"*
+
+Você acessa a pasta compartilhada no servidor de rede corporativo e se depara com a clássica "selva de versões":
+- \`Contrato_Fornecedor_Alfa_2024_v1.pdf\`
+- \`Contrato_Fornecedor_Alfa_2024_FINAL.pdf\`
+- \`Contrato_Fornecedor_Alfa_2024_FINAL_revisado_diretoria.pdf\`
+- \`Contrato_Fornecedor_Alfa_2024_assinado_agora_vai.pdf\`
+
+Você abre o leitor de PDF e pressiona \`Ctrl + F\`. Digita **"multa"**. *Nenhum resultado encontrado*.
+Digita **"rescisão"**. *Nenhum resultado encontrado*.
+
+O pânico começa a se instalar. O cliente aguarda, o tempo corre e você é forçado a ler 48 páginas escaneadas de juriquês denso na velocidade da luz. Quinze minutos depois, descobre o motivo: o advogado redigiu a cláusula sob o título: *"Das sanções compensatórias por resilição e inadimplemento contratual"*.
+
+O \`Ctrl + F\` tradicional é literal e cego ao contexto. Ele procura caracteres idênticos, não **significados**. E é exatamente aqui que a inteligência artificial moderna, através da arquitetura **RAG (Retrieval-Augmented Generation)**, transforma a relação das empresas com seus arquivos.
+
+---
+
+## 1. Por que Jogar Documentos da Empresa no ChatGPT Comum é um Risco Inadmissível
+
+Quando o assunto é dados contratuais, certidões e rotinas corporativas, existem dois grandes perigos em usar ferramentas genéricas de nuvem:
+
+1. **Vazamento e Não Conformidade com a LGPD:** Documentos contendo dados sensíveis, termos confidenciais ou cláusulas financeiras não devem ser enviados a serviços de terceiros sem controle estrito de governança e custódia.
+2. **O Risco da Alucinação:** Se você perguntar a um modelo convencional sobre um contrato que ele desconhece, ele pode inventar uma resposta plausível, com tom de convicção absoluta, mas que nunca existiu no documento original.
+
+No mundo administrativo e jurídico, **uma vírgula inventada pode custar milhares de reais em penalidades**.
+
+A solução exige uma arquitetura fundamentada em dois pilares: **análise semântica avançada** e **ancoragem estrita na fonte documental**.
+
+---
+
+## 2. O Modelo Mental do RAG em 5 Etapas
+
+O **RAG (Geração Aumentada por Recuperação)** opera como um pesquisador de arquivo com memória fotográfica instantânea. Ele divide o processo em 5 etapas transparentes:
+
+\`\`\`
+[Documento PDF] 
+     │
+     ▼  1. Ingestão & Extração de Texto com Metadados
+[Texto Bruto + Nº da Página]
+     │
+     ▼  2. Chunking Semântico com Sobreposição (Overlap)
+[Blocos de 800 caracteres]
+     │
+     ▼  3. Modelo de Embeddings Vetoriais
+[Representação Matemática / Vetores]
+     │
+     ▼  4. Armazenamento no Banco Vetorial (ChromaDB)
+[Índice Vetorial Persistente]
+     │
+     ▼  5. Pergunta em Português -> Busca por Cosseno -> Síntese Ancorada
+[Resposta Precisa com Citação: "Contrato_Alfa.pdf, Pág. 14, Cláusula 7.2"]
+\`\`\`
+
+> [!IMPORTANT]
+> **Eliminação de Alucinações por Design:** O modelo de linguagem (LLM) é instruído a atuar unicamente como sintetizador dos trechos recuperados. Se a resposta para a dúvida não constar nos arquivos indexados, o sistema responde com clareza: *"A informação solicitada não consta na documentação arquivada"*.
+
+---
+
+## 3. Implementação Prática: Indexação e Consulta em Python
+
+Abaixo apresento a essência de como estruturei a pipeline no meu repositório de código aberto [Assistente IA com RAG](https://github.com/SandyMarques/Assistente-IA-com-RAG), utilizando **FastAPI**, **LangChain** e **ChromaDB**:
+
+\`\`\`python
+from langchain_community.document_loaders import PyPDFLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import Chroma
+from langchain_community.embeddings import HuggingFaceEmbeddings
+
+# 1. Carrega modelo de embeddings vetoriais (execução local e segura)
+embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+
+def indexar_contrato_corporativo(caminho_pdf: str, pasta_banco: str = "./chroma_db"):
+    """
+    Lê o PDF, preserva números de páginas nos metadados e indexa no ChromaDB.
+    """
+    # Ingestão preservando estrutura
+    loader = PyPDFLoader(caminho_pdf)
+    paginas = loader.load()
+    
+    # Divisão com sobreposição para não cortar raciocínios ou cláusulas no meio
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=750,
+        chunk_overlap=120,
+        separators=["\\n\\n", "\\n", " ", ""]
+    )
+    blocos = splitter.split_documents(paginas)
+    
+    # Persistência no banco vetorial
+    vectorstore = Chroma.from_documents(
+        documents=blocos,
+        embedding=embeddings,
+        persist_directory=pasta_banco
+    )
+    vectorstore.persist()
+    print(f"Indexados com sucesso {len(blocos)} trechos a partir de {len(paginas)} páginas.")
+
+def consultar_documento(pergunta: str, pasta_banco: str = "./chroma_db"):
+    """
+    Localiza os trechos mais relevantes por similaridade de cosseno e cita a fonte.
+    """
+    vectorstore = Chroma(persist_directory=pasta_banco, embedding_function=embeddings)
+    resultados = vectorstore.similarity_search(pergunta, k=3)
+    
+    print(f"\\n--- Pergunta: '{pergunta}' ---")
+    for idx, doc in enumerate(resultados, 1):
+        origem = doc.metadata.get('source', 'Desconhecido')
+        pagina = doc.metadata.get('page', 0) + 1
+        print(f"Trecho {idx} [Arquivo: {origem} | Página: {pagina}]:")
+        print(f"\\"{doc.page_content.strip()}\\"\\n")
+
+# Exemplo de consulta:
+# consultar_documento("Qual a multa rescisória por encerramento antes do prazo?")
+\`\`\`
+
+---
+
+## 4. O Assistente no Mundo Real: Casos de Uso Corporativo
+
+No repositório [Assistente IA com RAG](https://github.com/SandyMarques/Assistente-IA-com-RAG), empacotei essa tecnologia em uma API moderna com interface intuitiva para equipes:
+
+1. **Onboarding de Novos Analistas:** Em vez de interromper gestores o dia todo, o novo colaborador pergunta: *"Qual o procedimento para emissão de nota de remessa em garantia?"* e o assistente responde citando o manual interno da empresa.
+2. **Atendimento a Auditorias Regulatórias:** Localização de certidões, datas de validade e termos aditivos em segundos, com histórico completo de evidências.
+3. **Consulta de SLAs e Políticas Internas:** Verificação imediata de prazos contratuais de atendimento sem depender de planilhas paralelas de controle.
+
+> [!TIP]
+> **Preservação do Conhecimento Institucional:** Quando um colaborador sênior muda de setor ou sai da empresa, o conhecimento não se perde nas pastas de rede. Ele continua acessível, estruturado e consultável por toda a organização.
+
+---
+
+## Conclusão: Organização Documental + IA Aplicada
+
+O RAG não substitui a necessidade de manter documentos bem salvos e categorizados — pelo contrário, ele é o multiplicador de força de um arquivo bem governado. 
+
+Quando unimos **método de arquivamento** com **inteligência de busca semântica**, o setor administrativo deixa de perder tempo vasculhando pastas para se dedicar àquilo que gera valor real: tomada de decisão ágil e relacionamento de confiança.
+                `
+            },
+            {
+                id: 'padronizacao-e-organizacao-administrativa',
+                title: 'A Casa em Ordem: 5 Regras de Ouro de Governança Administrativa Antes de Escrever a Primeira Linha de Código',
+                subtitle: 'Por que automatizar um processo caótico só gera desastre em alta velocidade. O método de governança, taxonomia e prazos que sustenta operações eficientes.',
+                category: 'Administração & Processos',
+                readTime: '5 min de leitura',
+                date: '01 de Setembro, 2026',
+                tags: ['Administração', 'Governança', 'SLA', 'Gestão de Prazos', 'Processos', 'Organização'],
+                svgKey: 'adminProcesses',
+                summary: 'Antes de falar em IA, Python ou planilhas avançadas, a operação precisa de disciplina e método. Conheça as 5 práticas de ouro que eliminam o retrabalho e criam a base perfeita para automação.',
+                content: `
+Existe uma ilusão recorrente em empresas que buscam modernização a qualquer custo: acreditar que a tecnologia, por si só, é uma varinha mágica capaz de solucionar desordem estrutural.
+
+A liderança percebe que o setor está lento, com prazos estourando e documentos perdidos. A reação imediata costuma ser: *"Vamos contratar um software novo, adotar IA ou criar um script milagroso para resolver isso"*.
+
+Dois meses depois, o novo sistema virou um depósito digital de arquivos desconexos, as planilhas continuam inconsistentes e a equipe está ainda mais estressada.
+
+Na engenharia de processos e na administração corporativa, existe uma máxima fundamental que aprendi a respeitar profundamente:
+> *"Se você automatizar um processo desorganizado, o seu único resultado será produzir caos automatizado em altíssima velocidade."*
+
+Ao longo de mais de **5 anos de vivência contínua na Accenture Brasil (Projeto Vivere)** — lidando com análise documental rigorosa, validação de conformidade cadastral e cumprimento estrito de SLAs — e da minha formação técnica em **Redes de Computadores pelo SENAC-SP**, consolidei **5 regras de ouro** de governança que devem anteceder qualquer linha de código ou iniciativa de automação:
+
+---
+
+## 1. Regra da Taxonomia Uniforme (Padrão ISO 8601)
+
+O primeiro sintoma de uma operação doente é abrir o diretório compartilhado e encontrar arquivos com nomes como:
+- \`planilha_vendas_nova.xlsx\`
+- \`relatorio_final_agora.pdf\`
+- \`doc_cliente_corrigido (1).docx\`
+
+Esse formato impede qualquer ordenação lógica e exige que as pessoas abram arquivo por arquivo para saber do que se trata.
+
+A convenção obrigatória deve seguir a estrutura de data invertida (**ISO 8601**) com nomenclatura semântica estrita:
+
+\`\`\`text
+[AAAA-MM-DD]_[SetorOuArea]_[IdentificadorDoProcesso]_[VersaoOuStatus].[ext]
+\`\`\`
+
+### Matriz de Padronização Corporativa:
+
+| Nome Inadequado (Gera Caos) | Nome Padronizado (Gera Ordem Imediata) | Benefício Operacional Direto |
+| :--- | :--- | :--- |
+| \`contrato_novo.pdf\` | \`2026-09-15_Juridico_Contrato-Alfa_v02-Assinado.pdf\` | Ordenação cronológica nativa do sistema operacional |
+| \`fechamento_setembro.xlsx\` | \`2026-09-15_Financeiro_Consolidado-Filiais_v01-Auditado.xlsx\` | Identificação imediata do escopo sem necessidade de abrir o arquivo |
+| \`certidao_receita.pdf\` | \`2026-09-15_Fiscal_CND-ReceitaFederal_Val-2026-12.pdf\` | Monitoramento visual do prazo de validade no próprio nome |
+
+---
+
+## 2. Gestão Preventiva de Prazos em 3 Níveis de Criticidade
+
+Esperar o dia do vencimento para alertar que um documento ou pagamento está pendente não é gestão; é **apagar incêndios**. 
+
+Toda rotina que envolve prazos regulatórios ou acordos de nível de serviço (SLAs) deve operar em **3 faixas preventivas de escalonamento**:
+
+1. **Faixa Preventiva (D-15 a D-7):** Conferência prévia de toda a documentação comprobatória. Identificação de certidões vencidas e solicitação de renovação com folga hábil.
+2. **Faixa Programada (D-3):** Execução do protocolo formal, emissão da guia ou agendamento bancário no sistema. Nada fica para a última hora.
+3. **Faixa Crítica (D-1):** Verificação de liquidação financeira ou protocolo de recebimento. Envio de confirmação formal à liderança.
+
+> [!IMPORTANT]
+> **Gestão com Margem de Segurança:** Se um imprevisto técnico ou bancário ocorrer na Faixa Crítica (D-1), a equipe ainda tem 24 horas completas para acionar contingências sem estourar o SLA com o cliente.
+
+---
+
+## 3. Princípio da Fonte Única da Verdade (Single Source of Truth)
+
+Um dos maiores ralos de produtividade em escritórios é a circulação de arquivos anexados por e-mail ou WhatsApp. Quando quatro pessoas recebem \`planilha_custos.xlsx\` e cada uma altera uma linha diferente em sua máquina local, nascem **quatro realidades paralelas divergentes**.
+
+**Diretriz inegociável:**
+- Os arquivos operacionais devem residir em um **repositório centralizado** com permissões controladas de leitura e edição.
+- Nunca envie anexos editáveis em conversas de rotina; envie o **link do documento central**.
+- Registre qualquer alteração de peso diretamente nas notas de versão do arquivo.
+
+---
+
+## 4. O Checklist de 15 Minutos de Encerramento de Ciclo
+
+Os últimos 15 minutos do dia de trabalho não servem para começar tarefas novas; servem para **blindar o dia de amanhã**.
+
+Antes de desligar a estação de trabalho, o operador deve percorrer este checklist de 4 pontos:
+
+- [ ] **Auditoria de Entrada:** Todos os e-mails e protocolos recebidos hoje foram triados e arquivados na pasta correta?
+- [ ] **Mapeamento de D+1 e D+2:** As pendências e prazos das próximas 48 horas estão identificados e com responsáveis claros?
+- [ ] **Formalizações Pendentes:** Há algum alinhamento verbal com clientes ou fornecedores que ainda não foi registrado por escrito?
+- [ ] **Limpeza de Área de Trabalho:** A pasta de downloads e a área de trabalho da máquina estão zeradas de arquivos temporários?
+
+---
+
+## 5. Rastreabilidade Cordial: Transformando Alinhamentos Verbais em Registros Formais
+
+Em rotinas de escritório e atendimento ao público (presencial, telefônico ou mensagens instantâneas), o que não está registrado formalmente **não existe**.
+
+Após qualquer alinhamento verbal, reunião ou chamada telefônica, adote o protocolo do e-mail de alinhamento imediato:
+
+> *"Prezado [Nome], agradeço a conversa de hoje às 14h. Conforme alinhamos, ficou acordado o envio da certidão complementar até quinta-feira (18/09), para que possamos emitir o parecer final na sexta-feira (19/09). Permanecemos à disposição."*
+
+Esse hábito protege o colaborador contra esquecimentos, blinda a empresa em caso de auditoria e transmite um nível altíssimo de profissionalismo, seriedade e respeito aos acordos firmados.
+
+---
+
+## Conclusão: O Método é a Base da Automação
+
+Quando essas 5 regras são seguidas com disciplina, o ambiente corporativo se transforma: o estresse diminui, o retrabalho cai a quase zero e os prazos deixam de ser uma fonte de angústia.
+
+E o mais importante: **é sobre essa base organizada que a tecnologia brilha de verdade**. 
+
+Um script em Python ou um assistente de IA só entrega 100% de sua capacidade quando os dados estão higienizados, as pastas seguem uma taxonomia clara e os processos têm dono e prazo definidos. A união entre **método administrativo** e **automação tecnológica** é a chave definitiva da eficiência moderna.
+                `
+            }
+        ];
+
+        // --- RENDERIZADOR DE MARKDOWN ---
+        marked.setOptions({
+            gfm: true,
+            breaks: true,
+        });
+
+        // --- CONTROLE DE ESTADO DA PÁGINA ---
+        let currentCategory = 'all';
+        let currentSearchQuery = '';
+
+        const feedView = document.getElementById('feed-view');
+        const articleView = document.getElementById('article-view');
+        const postsGrid = document.getElementById('posts-grid');
+        const emptyState = document.getElementById('empty-state');
+        const searchInput = document.getElementById('search-input');
+        const progressBar = document.getElementById('reading-progress-bar');
+
+        // Renderiza os cards de artigos no Feed
+        function renderPostsGrid() {
+            postsGrid.innerHTML = '';
+            
+            const filtered = POSTS.filter(post => {
+                const matchesCategory = (currentCategory === 'all' || post.category === currentCategory);
+                const query = currentSearchQuery.toLowerCase().trim();
+                const matchesSearch = !query || 
+                    post.title.toLowerCase().includes(query) ||
+                    post.subtitle.toLowerCase().includes(query) ||
+                    post.tags.some(t => t.toLowerCase().includes(query)) ||
+                    post.summary.toLowerCase().includes(query);
+
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            // Atualiza contagem total de artigos
+            const countAllEl = document.getElementById('count-all');
+            if (countAllEl) countAllEl.textContent = POSTS.length;
+
+            filtered.forEach((post, index) => {
+                const card = document.createElement('div');
+                card.className = 'card rounded-2xl p-6 flex flex-col justify-between card-hover cursor-pointer group animate-card-enter';
+                card.style.animationDelay = `${index * 60}ms`;
+                card.setAttribute('role', 'button');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `Ler artigo: ${post.title}`);
+                card.onclick = () => openArticle(post.id);
+                card.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openArticle(post.id);
+                    }
+                });
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Header do Card com Badge e Data -->
+                        <div class="flex items-center justify-between text-xs mb-4">
+                            <span class="px-2.5 py-1 rounded-full font-bold bg-navy-50 dark:bg-navy-800 text-navy-700 dark:text-navy-300 border border-slate-200 dark:border-navy-700">
+                                ${post.category}
+                            </span>
+                            <span class="text-slate-600 dark:text-slate-400 font-medium">${post.readTime}</span>
+                        </div>
+
+                        <!-- Miniatura SVG Temática com Camada Ambiente -->
+                        <div class="w-full h-32 rounded-xl bg-slate-50 dark:bg-navy-900 border border-slate-200 dark:border-navy-700 p-3 mb-5 flex items-center justify-center overflow-hidden transition-transform duration-300 group-hover:scale-[1.01]">
+                            ${SVG_ILLUSTRATIONS[post.svgKey] || ''}
+                        </div>
+
+                        <!-- Título e Resumo -->
+                        <h2 class="text-lg font-bold font-display text-navy-800 dark:text-white group-hover:text-navy-600 dark:group-hover:text-navy-300 transition-colors mb-2 leading-snug">
+                            ${post.title}
+                        </h2>
+                        <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-3">
+                            ${post.summary}
+                        </p>
+                    </div>
+
+                    <div>
+                        <!-- Tags -->
+                        <div class="flex flex-wrap gap-1.5 mb-4 pt-3 border-t border-slate-100 dark:border-navy-700">
+                            ${post.tags.slice(0, 3).map(tag => `
+                                <span class="text-[11px] font-medium px-2 py-0.5 rounded-md bg-slate-100 dark:bg-navy-800 text-slate-600 dark:text-slate-300">
+                                    #${tag}
+                                </span>
+                            `).join('')}
+                        </div>
+
+                        <!-- Botão de Ação do Card com Micro-interação na Seta -->
+                        <div class="flex items-center justify-between text-xs font-bold text-navy-700 dark:text-navy-300">
+                            <span>${post.date}</span>
+                            <span class="inline-flex items-center gap-1 group-hover:translate-x-1.5 transition-transform duration-200 ease-out">
+                                Ler artigo <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+
+                postsGrid.appendChild(card);
+            });
+
+            // Reexecuta inicialização de ícones Lucide
+            safeCreateIcons();
+        }
+
+        // Atualiza dinamicamente o botão do navbar conforme a view
+        function updateNavbarBackState(isArticleView) {
+            const navBtn = document.getElementById('nav-back-btn');
+            const navBtnText = document.getElementById('nav-back-btn-text');
+            if (!navBtn || !navBtnText) return;
+
+            if (isArticleView) {
+                navBtn.removeAttribute('href');
+                navBtn.onclick = (e) => {
+                    e.preventDefault();
+                    showFeedView();
+                };
+                navBtnText.textContent = 'Voltar aos Artigos';
+                navBtn.setAttribute('aria-label', 'Voltar para a lista de artigos do blog');
+            } else {
+                navBtn.onclick = null;
+                navBtn.setAttribute('href', 'index.html');
+                navBtnText.textContent = 'Voltar ao Portfólio';
+                navBtn.setAttribute('aria-label', 'Voltar ao Portfólio Principal');
+            }
+            safeCreateIcons();
+        }
+
+        // Abre um artigo específico com transição fluida (Modo Leitura)
+        function openArticle(postId, updateHash = true) {
+            const post = POSTS.find(p => p.id === postId);
+            if (!post) {
+                showFeedView();
+                return;
+            }
+
+            if (updateHash) {
+                window.location.hash = post.id;
+            }
+
+            // Atualiza o botão do navbar para "Voltar aos Artigos"
+            updateNavbarBackState(true);
+
+            // Popula elementos do artigo
+            document.getElementById('breadcrumb-title').textContent = post.title;
+            document.getElementById('article-category-badge').textContent = post.category;
+            document.getElementById('article-date').textContent = post.date;
+            document.getElementById('article-read-time').textContent = post.readTime;
+            document.getElementById('article-title').textContent = post.title;
+            document.getElementById('article-lead').textContent = post.subtitle;
+            document.getElementById('article-svg-banner').innerHTML = SVG_ILLUSTRATIONS[post.svgKey] || '';
+
+            // Renderiza o Markdown enriquecido
+            const rawMarkdown = post.content;
+            const htmlContent = marked.parse(rawMarkdown);
+            const markdownContainer = document.getElementById('article-markdown-body');
+            markdownContainer.innerHTML = htmlContent;
+
+            // Insere botões de cópia táteis em todos os blocos <pre>
+            markdownContainer.querySelectorAll('pre').forEach(preBlock => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'code-block-wrapper';
+                preBlock.parentNode.insertBefore(wrapper, preBlock);
+                wrapper.appendChild(preBlock);
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'code-copy-btn';
+                copyBtn.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar`;
+                copyBtn.onclick = () => {
+                    const code = preBlock.querySelector('code') ? preBlock.querySelector('code').innerText : preBlock.innerText;
+                    navigator.clipboard.writeText(code).then(() => {
+                        copyBtn.classList.add('copied');
+                        copyBtn.innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> Copiado!`;
+                        safeCreateIcons();
+                        setTimeout(() => {
+                            copyBtn.classList.remove('copied');
+                            copyBtn.innerHTML = `<i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar`;
+                            safeCreateIcons();
+                        }, 2200);
+                    });
+                };
+                wrapper.appendChild(copyBtn);
+            });
+
+            // Tags do artigo
+            const tagsContainer = document.getElementById('article-tags-container');
+            tagsContainer.innerHTML = post.tags.map(t => `
+                <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-navy-50 dark:bg-navy-800 text-navy-700 dark:text-navy-300 border border-slate-200 dark:border-navy-700">
+                    #${t}
+                </span>
+            `).join('');
+
+            // Injeta navegação para o próximo artigo no rodapé
+            const nextContainer = document.getElementById('article-nav-next-container');
+            if (nextContainer) {
+                const currentIndex = POSTS.findIndex(p => p.id === postId);
+                const nextPost = POSTS[(currentIndex + 1) % POSTS.length];
+                if (nextPost && POSTS.length > 1) {
+                    nextContainer.innerHTML = `
+                        <button onclick="openArticle('${nextPost.id}')" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-xs inline-flex items-center justify-center gap-2 shadow-sm transition-all">
+                            <span>Próximo Artigo</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    `;
+                } else {
+                    nextContainer.innerHTML = '';
+                }
+            }
+
+            // Transição suave de saída do feed e entrada do artigo
+            feedView.classList.add('opacity-0');
+            setTimeout(() => {
+                feedView.classList.add('hidden');
+                feedView.classList.remove('opacity-0');
+                articleView.classList.remove('hidden');
+                articleView.classList.add('animate-card-enter');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                safeCreateIcons();
+            }, 140);
+        }
+
+        // Retorna para a tela de lista de artigos com transição fluida
+        function showFeedView(updateHash = true) {
+            if (updateHash) {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+            }
+            // Atualiza o botão do navbar de volta para "Voltar ao Portfólio"
+            updateNavbarBackState(false);
+
+            articleView.classList.add('opacity-0');
+            setTimeout(() => {
+                articleView.classList.add('hidden');
+                articleView.classList.remove('opacity-0');
+                feedView.classList.remove('hidden');
+                renderPostsGrid();
+                progressBar.style.width = '0%';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                safeCreateIcons();
+            }, 140);
+        }
+
+        // Reseta busca e filtros de categoria
+        function resetFilters() {
+            currentCategory = 'all';
+            currentSearchQuery = '';
+            searchInput.value = '';
+            
+            document.querySelectorAll('#category-filters button').forEach(b => {
+                b.classList.remove('bg-navy-700', 'text-white');
+                b.classList.add('card', 'text-slate-700', 'dark:text-slate-200');
+            });
+            const allBtn = document.querySelector('[data-category="all"]');
+            allBtn.classList.add('bg-navy-700', 'text-white');
+            allBtn.classList.remove('card', 'text-slate-700', 'dark:text-slate-200');
+
+            renderPostsGrid();
+        }
+
+        // Copia o link direto do artigo para o clipboard com micro-feedback tátil
+        function copyArticleLink() {
+            const url = window.location.href;
+            const btn = document.getElementById('share-btn');
+            const btnText = document.getElementById('share-btn-text');
+            navigator.clipboard.writeText(url).then(() => {
+                btn.classList.add('bg-emerald-600', 'text-white');
+                btn.classList.remove('bg-slate-200', 'dark:bg-navy-800', 'text-slate-700', 'dark:text-slate-200');
+                btnText.textContent = 'Link Copiado!';
+                const icon = btn.querySelector('[data-lucide]');
+                if (icon) icon.setAttribute('data-lucide', 'check');
+                safeCreateIcons();
+                setTimeout(() => {
+                    btn.classList.remove('bg-emerald-600', 'text-white');
+                    btn.classList.add('bg-slate-200', 'dark:bg-navy-800', 'text-slate-700', 'dark:text-slate-200');
+                    btnText.textContent = 'Copiar Link';
+                    if (icon) icon.setAttribute('data-lucide', 'link');
+                    safeCreateIcons();
+                }, 2200);
+            });
+        }
+
+        // --- EVENT LISTENERS ---
+
+        // Busca em tempo real
+        searchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+            renderPostsGrid();
+        });
+
+        // Filtro por categorias
+        document.querySelectorAll('#category-filters button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('#category-filters button').forEach(b => {
+                    b.classList.remove('bg-navy-700', 'text-white');
+                    b.classList.add('card', 'text-slate-700', 'dark:text-slate-200');
+                });
+                button.classList.add('bg-navy-700', 'text-white');
+                button.classList.remove('card', 'text-slate-700', 'dark:text-slate-200');
+
+                currentCategory = button.getAttribute('data-category');
+                renderPostsGrid();
+            });
+        });
+
+        // Barra de progresso de leitura
+        window.addEventListener('scroll', () => {
+            if (!articleView.classList.contains('hidden')) {
+                const articleHeight = articleView.offsetHeight;
+                const windowHeight = window.innerHeight;
+                const scrolled = window.scrollY;
+                const progress = Math.min(100, Math.max(0, (scrolled / (articleHeight - windowHeight + 150)) * 100));
+                progressBar.style.width = `${progress}%`;
+            } else {
+                progressBar.style.width = '0%';
+            }
+        });
+
+        // Detecção de Hash na URL (Ex: blog.html#automacao-de-planilhas-com-python)
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (hash) {
+                openArticle(hash, false);
+            } else {
+                showFeedView(false);
+            }
+        });
+
+        // --- SISTEMA DE TEMA CLARO/ESCURO COM PERSISTÊNCIA ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+
+        function refreshThemeIcons() {
+            const isDark = document.documentElement.classList.contains('dark');
+            document.querySelectorAll('#theme-toggle .icon-moon').forEach(el => el.classList.toggle('hidden', isDark));
+            document.querySelectorAll('#theme-toggle .icon-sun').forEach(el => el.classList.toggle('hidden', !isDark));
+            safeCreateIcons();
+        }
+
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+            try { localStorage.setItem('tm-theme', theme); } catch (e) { }
+            refreshThemeIcons();
+        }
+
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.contains('dark');
+            setTheme(isDark ? 'light' : 'dark');
+        }
+
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', toggleTheme);
+        }
+        refreshThemeIcons();
+
+        // Helper seguro para ícones Lucide
+        function safeCreateIcons() {
+            try {
+                if (window.lucide && typeof window.lucide.createIcons === 'function') {
+                    window.lucide.createIcons();
+                }
+            } catch (e) { }
+        }
+
+        // --- INICIALIZAÇÃO DA PÁGINA ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderPostsGrid();
+            const initialHash = window.location.hash.replace('#', '');
+            if (initialHash && POSTS.some(p => p.id === initialHash)) {
+                openArticle(initialHash, false);
+            } else {
+                showFeedView(false);
+            }
+            safeCreateIcons();
+        });
+    </script>
+</body>
+</html>
