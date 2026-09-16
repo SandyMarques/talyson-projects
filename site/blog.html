@@ -75,6 +75,18 @@
     </script>
 
     <style type="text/css">
+        :root {
+            /* Tokens de Movimento (Motion Design System) */
+            --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+            --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-bounce-settle: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-sine: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+            --dur-quick: 180ms;
+            --dur-standard: 300ms;
+            --dur-slow: 450ms;
+            --dur-ambient: 10s;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
@@ -89,9 +101,10 @@
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
         }
         .card-hover {
-            transition: border-color 220ms cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 220ms cubic-bezier(0.16, 1, 0.3, 1),
-                        box-shadow 220ms cubic-bezier(0.16, 1, 0.3, 1);
+            transition: border-color var(--dur-standard) var(--ease-premium),
+                        transform var(--dur-standard) var(--ease-premium),
+                        box-shadow var(--dur-standard) var(--ease-premium);
+            will-change: transform, box-shadow;
         }
         .card-hover:hover {
             border-color: #8fadcf;
@@ -100,8 +113,25 @@
         }
         .dark .card-hover:hover {
             border-color: #5b84b5;
-            box-shadow: 0 14px 28px -6px rgba(0, 0, 0, 0.55);
+            box-shadow: 0 16px 30px -8px rgba(0, 0, 0, 0.55);
         }
+
+        /* Micro-interação tátil para botões */
+        .btn-motion {
+            transition: transform var(--dur-quick) var(--ease-snappy),
+                        box-shadow var(--dur-quick) var(--ease-snappy),
+                        background-color var(--dur-quick) var(--ease-snappy),
+                        border-color var(--dur-quick) var(--ease-snappy),
+                        color var(--dur-quick) var(--ease-snappy);
+            will-change: transform;
+        }
+        .btn-motion:hover {
+            transform: translateY(-2px);
+        }
+        .btn-motion:active {
+            transform: scale(0.97) translateY(0);
+        }
+
         :focus-visible {
             outline: 2px solid #274e78;
             outline-offset: 3px;
@@ -352,6 +382,22 @@
             animation: checkmarkPop 450ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+        /* Camada de Movimento Ambiente: Orbes Flutuantes Suaves */
+        @keyframes floatAmbient1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(25px, -20px) scale(1.08); }
+        }
+        @keyframes floatAmbient2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-20px, 20px) scale(0.94); }
+        }
+        .ambient-glow-1 {
+            animation: floatAmbient1 11s var(--ease-sine) infinite;
+        }
+        .ambient-glow-2 {
+            animation: floatAmbient2 14s var(--ease-sine) infinite;
+        }
+
         .skip-link {
             position: absolute;
             left: -9999px;
@@ -372,17 +418,23 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
-            .svg-flow-line, .svg-node-pulse, .svg-node-pulse-delayed, .svg-check-pop {
+            .svg-flow-line, .svg-node-pulse, .svg-node-pulse-delayed, .svg-check-pop, .ambient-glow-1, .ambient-glow-2, .animate-card-enter {
                 animation: none !important;
             }
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200 antialiased selection:bg-navy-200 selection:text-navy-900 min-h-screen flex flex-col">
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200 antialiased selection:bg-navy-200 selection:text-navy-900 min-h-screen flex flex-col relative overflow-x-hidden">
     <a href="#feed-view" class="skip-link">Pular para os artigos</a>
 
     <!-- Barra de Progresso de Leitura -->
-    <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-navy-600 dark:bg-navy-400 z-50 transition-all duration-150" style="width: 0%;"></div>
+    <div id="reading-progress-bar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-navy-700 via-navy-500 to-sky-500 dark:from-navy-400 dark:via-sky-400 dark:to-teal-300 z-50 pointer-events-none transition-all duration-75" style="width: 0%;"></div>
+
+    <!-- Camada Ambiente: Orbes Flutuantes de Fundo -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden -z-10" aria-hidden="true">
+        <div class="ambient-glow-1 absolute -top-32 -left-32 w-96 h-96 bg-navy-400/10 dark:bg-navy-600/15 rounded-full blur-3xl"></div>
+        <div class="ambient-glow-2 absolute top-1/2 -right-32 w-96 h-96 bg-sky-400/10 dark:bg-sky-600/10 rounded-full blur-3xl"></div>
+    </div>
 
     <!-- Header / Barra de Navegação -->
     <header class="fixed top-0 left-0 w-full z-40 px-4 md:px-8 py-3.5">
@@ -400,16 +452,16 @@
 
             <!-- Links de Ação -->
             <div class="flex items-center gap-2.5 shrink-0">
-                <a id="nav-back-btn" href="index.html" class="inline-flex items-center gap-1.5 sm:gap-2 h-9 px-3 sm:px-3.5 text-xs font-semibold rounded-xl card card-hover text-navy-800 dark:text-white transition-all" aria-label="Voltar ao Portfólio">
+                <a id="nav-back-btn" href="index.html" class="btn-motion inline-flex items-center gap-1.5 sm:gap-2 h-9 px-3 sm:px-3.5 text-xs font-semibold rounded-xl card card-hover text-navy-800 dark:text-white transition-all" aria-label="Voltar ao Portfólio">
                     <i data-lucide="arrow-left" class="w-3.5 h-3.5 shrink-0"></i>
                     <span id="nav-back-btn-text" class="hidden xs:inline sm:inline">Voltar ao Portfólio</span>
                 </a>
                 <div class="h-5 w-px bg-slate-200 dark:bg-navy-700"></div>
-                <button id="theme-toggle" type="button" aria-label="Alternar tema claro/escuro" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-navy-600 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <button id="theme-toggle" type="button" aria-label="Alternar tema claro/escuro" class="btn-motion w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-navy-600 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
                     <i data-lucide="moon" class="w-4 h-4 icon-moon"></i>
                     <i data-lucide="sun" class="w-4 h-4 icon-sun hidden"></i>
                 </button>
-                <a href="index.html#contato" class="inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm hover:shadow transition-all">
+                <a href="index.html#contato" class="btn-motion inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm hover:shadow transition-all">
                     <span>Contato</span>
                     <i data-lucide="send" class="w-3.5 h-3.5"></i>
                 </a>
@@ -450,16 +502,16 @@
 
                 <!-- Pílulas de Categorias / Temas -->
                 <div id="category-filters" class="flex flex-wrap items-center justify-center gap-2 text-xs font-semibold">
-                    <button data-category="all" class="filter-btn active px-4 py-2 rounded-xl bg-navy-700 text-white shadow-sm transition-all">
+                    <button data-category="all" class="filter-btn btn-motion active px-4 py-2 rounded-xl bg-navy-700 text-white shadow-sm transition-all">
                         Todos os Temas (<span id="count-all">3</span>)
                     </button>
-                    <button data-category="Automação com Python" class="filter-btn px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
+                    <button data-category="Automação com Python" class="filter-btn btn-motion px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
                         ⚡ Automação com Python
                     </button>
-                    <button data-category="Inteligência Artificial & RAG" class="filter-btn px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
+                    <button data-category="Inteligência Artificial & RAG" class="filter-btn btn-motion px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
                         🧠 Inteligência Artificial & RAG
                     </button>
-                    <button data-category="Administração & Processos" class="filter-btn px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
+                    <button data-category="Administração & Processos" class="filter-btn btn-motion px-4 py-2 rounded-xl card card-hover text-slate-700 dark:text-slate-200 transition-all">
                         📋 Administração & Processos
                     </button>
                 </div>

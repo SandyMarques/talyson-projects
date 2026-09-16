@@ -72,24 +72,235 @@
     </script>
 
     <style type="text/css">
+        :root {
+            /* Motion Design System Tokens (Corporate/Premium Archetype) */
+            --ease-snappy: cubic-bezier(0.2, 0, 0, 1);
+            --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
+            --ease-bounce-settle: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+            --ease-sine: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+
+            --dur-instant: 90ms;
+            --dur-quick: 160ms;
+            --dur-standard: 280ms;
+            --dur-slow: 450ms;
+            --dur-ambient: 8000ms;
+        }
+
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
         }
+
+        /* Reading / Scroll Progress Bar (Top of Viewport) */
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #1e3a5f, #386293, #5b84b5, #8fadcf);
+            width: 0%;
+            z-index: 100;
+            transition: width 60ms linear;
+            pointer-events: none;
+        }
+        .dark #scroll-progress {
+            background: linear-gradient(90deg, #386293, #5b84b5, #8fadcf, #dce6f1);
+        }
+
+        /* Cards and Elevation with Motion Physics */
         .card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
             box-shadow: 0 1px 3px rgba(16, 30, 51, 0.08);
+            transition: transform var(--dur-standard) var(--ease-snappy),
+                        box-shadow var(--dur-standard) var(--ease-snappy),
+                        border-color var(--dur-standard) var(--ease-snappy);
         }
         .dark .card {
             background: #162945;
             border-color: #2b3f5e;
             box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
         }
-        .card-hover { transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+        .card-hover {
+            will-change: transform, box-shadow;
+        }
         .card-hover:hover {
             border-color: #8fadcf;
+            transform: translateY(-4px);
+            box-shadow: 0 16px 30px -8px rgba(30, 58, 95, 0.12), 0 6px 12px -4px rgba(30, 58, 95, 0.08);
+        }
+        .dark .card-hover:hover {
+            border-color: #5b84b5;
+            box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Tactile Button Feedback (Anticipation + Follow-Through) */
+        .btn-motion {
+            transition: transform var(--dur-quick) var(--ease-snappy),
+                        box-shadow var(--dur-quick) var(--ease-snappy),
+                        background-color var(--dur-quick) var(--ease-snappy),
+                        border-color var(--dur-quick) var(--ease-snappy),
+                        color var(--dur-quick) var(--ease-snappy);
+            will-change: transform;
+            position: relative;
+        }
+        .btn-motion:hover {
+            transform: translateY(-1.5px);
+        }
+        .btn-motion:active {
+            transform: scale(0.97) translateY(0);
+            transition-duration: 70ms;
+        }
+
+        /* Micro-interactions for Icons */
+        .icon-shift {
+            transition: transform var(--dur-standard) var(--ease-snappy);
+        }
+        .group:hover .icon-shift,
+        .btn-motion:hover .icon-shift {
+            transform: translateX(3px);
+        }
+        .icon-bounce {
+            transition: transform var(--dur-standard) var(--ease-bounce-settle);
+        }
+        .group:hover .icon-bounce,
+        .btn-motion:hover .icon-bounce {
             transform: translateY(-2px);
         }
+        .icon-rotate {
+            transition: transform var(--dur-standard) var(--ease-snappy);
+        }
+        .group:hover .icon-rotate,
+        .btn-motion:hover .icon-rotate {
+            transform: rotate(8deg) scale(1.08);
+        }
+
+        /* Ambient Breathing / Pulse for Status Indicators */
+        @keyframes ambient-pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.25);
+                opacity: 0.7;
+            }
+        }
+        .pulse-dot {
+            animation: ambient-pulse 2400ms var(--ease-sine) infinite;
+            will-change: transform, opacity;
+            display: inline-block;
+        }
+
+        /* Ambient Glow Mesh (Hero Background Life) */
+        @keyframes ambient-float-1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(14px, -16px) scale(1.06); }
+        }
+        @keyframes ambient-float-2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-14px, 16px) scale(0.94); }
+        }
+        .ambient-glow-1 {
+            animation: ambient-float-1 9000ms var(--ease-sine) infinite;
+            will-change: transform;
+        }
+        .ambient-glow-2 {
+            animation: ambient-float-2 11000ms var(--ease-sine) infinite;
+            will-change: transform;
+        }
+
+        /* Scroll-Triggered Reveal & Stagger Classes */
+        .motion-reveal {
+            opacity: 0;
+            transform: translateY(22px);
+            transition: opacity var(--dur-slow) var(--ease-snappy),
+                        transform var(--dur-slow) var(--ease-snappy);
+            will-change: opacity, transform;
+        }
+        .motion-reveal.is-revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .motion-reveal-scale {
+            opacity: 0;
+            transform: scale(0.96) translateY(12px);
+            transition: opacity var(--dur-slow) var(--ease-snappy),
+                        transform var(--dur-slow) var(--ease-snappy);
+            will-change: opacity, transform;
+        }
+        .motion-reveal-scale.is-revealed {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* Stagger Delays (kept under 450ms budget) */
+        .stagger-1 { transition-delay: 45ms; }
+        .stagger-2 { transition-delay: 90ms; }
+        .stagger-3 { transition-delay: 135ms; }
+        .stagger-4 { transition-delay: 180ms; }
+        .stagger-5 { transition-delay: 225ms; }
+        .stagger-6 { transition-delay: 270ms; }
+        .stagger-7 { transition-delay: 315ms; }
+
+        /* Milestone Pin Pulse */
+        .milestone-dot {
+            transition: transform var(--dur-standard) var(--ease-bounce-settle),
+                        box-shadow var(--dur-standard) var(--ease-snappy);
+        }
+        .milestone-dot:hover {
+            transform: scale(1.35);
+            box-shadow: 0 0 12px rgba(30, 58, 95, 0.35);
+        }
+
+        /* Terminal Line Stream In */
+        @keyframes terminalLineIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .terminal-msg-enter {
+            animation: terminalLineIn var(--dur-standard) var(--ease-snappy) forwards;
+        }
+
+        /* Mobile Menu Transitions */
+        #mobile-menu {
+            transition: opacity var(--dur-standard) var(--ease-snappy),
+                        transform var(--dur-standard) var(--ease-snappy);
+            transform-origin: top center;
+        }
+        #mobile-menu.menu-closed {
+            opacity: 0;
+            transform: translateY(-8px) scale(0.98);
+            pointer-events: none;
+        }
+        #mobile-menu.menu-open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* Form Input Interaction Focus */
+        .input-motion {
+            transition: border-color var(--dur-quick) var(--ease-snappy),
+                        box-shadow var(--dur-quick) var(--ease-snappy),
+                        background-color var(--dur-quick) var(--ease-snappy);
+        }
+        .input-motion:focus {
+            border-color: #274e78;
+            box-shadow: 0 0 0 3px rgba(39, 78, 120, 0.15);
+        }
+        .dark .input-motion:focus {
+            border-color: #8fadcf;
+            box-shadow: 0 0 0 3px rgba(143, 173, 207, 0.2);
+        }
+
         section[id] { scroll-margin-top: 110px; }
         :focus-visible {
             outline: 2px solid #274e78;
@@ -113,25 +324,46 @@
         #terminal-screen::-webkit-scrollbar-track { background: transparent; }
         #terminal-screen::-webkit-scrollbar-thumb { background: #b9cde3; border-radius: 4px; }
         .dark #terminal-screen::-webkit-scrollbar-thumb { background: #2b3f5e; }
+
+        /* Full Accessibility Support for Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
-                animation-duration: 0.01ms !important;
+                animation-duration: 0.001ms !important;
                 animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
+                transition-duration: 0.001ms !important;
                 scroll-behavior: auto !important;
+            }
+            .motion-reveal,
+            .motion-reveal-scale,
+            .terminal-msg-enter {
+                opacity: 1 !important;
+                transform: none !important;
+                transition: none !important;
+            }
+            .pulse-dot,
+            .ambient-glow-1,
+            .ambient-glow-2 {
+                animation: none !important;
+                transform: none !important;
+            }
+            #scroll-progress {
+                display: none !important;
             }
         }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200 antialiased selection:bg-navy-200 selection:text-navy-900">
+    <!-- Reading / Scroll Progress Indicator (Ambient Layer) -->
+    <div id="scroll-progress" aria-hidden="true"></div>
+
     <a href="#inicio" class="skip-link">Pular para o conteúdo</a>
 
     <!-- Header / Navigation Bar -->
     <header class="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-3.5">
-        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur-md border border-slate-200/90 dark:border-navy-700 px-4 sm:px-5 py-2.5 flex items-center justify-between shadow-sm gap-4">
+        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur-md border border-slate-200/90 dark:border-navy-700 px-4 sm:px-5 py-2.5 flex items-center justify-between shadow-sm gap-4 transition-all">
             <!-- Brand -->
             <a href="#inicio" class="flex items-center gap-3 shrink-0 group focus:outline-none" aria-label="Talyson Marques - Início">
-                <div class="w-9 h-9 rounded-xl bg-navy-700 group-hover:bg-navy-600 text-white flex items-center justify-center font-display font-bold text-base shadow-sm transition-all duration-200 ring-1 ring-black/5 dark:ring-white/10 shrink-0">
+                <div class="w-9 h-9 rounded-xl bg-navy-700 group-hover:bg-navy-600 text-white flex items-center justify-center font-display font-bold text-base shadow-sm transition-all duration-200 ring-1 ring-black/5 dark:ring-white/10 shrink-0 group-hover:scale-105">
                     T
                 </div>
                 <div class="flex flex-col leading-tight shrink-0">
@@ -142,69 +374,69 @@
 
             <!-- Nav Links (Desktop) - Clean typography without icon clutter -->
             <div class="hidden lg:flex items-center gap-1 xl:gap-1.5 text-xs xl:text-[13px] font-medium text-slate-600 dark:text-slate-300">
-                <a href="#sobre" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Sobre</a>
-                <a href="#experiencia" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Trajetória</a>
-                <a href="#competencias" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Competências</a>
-                <a href="#projetos" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Projetos</a>
-                <a href="blog.html" class="px-2.5 xl:px-3 py-1.5 rounded-lg text-navy-700 dark:text-navy-300 font-semibold hover:bg-navy-50 dark:hover:bg-navy-800/80 transition-colors inline-flex items-center gap-1">
+                <a href="#sobre" class="btn-motion px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Sobre</a>
+                <a href="#experiencia" class="btn-motion px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Trajetória</a>
+                <a href="#competencias" class="btn-motion px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Competências</a>
+                <a href="#projetos" class="btn-motion px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Projetos</a>
+                <a href="blog.html" class="btn-motion px-2.5 xl:px-3 py-1.5 rounded-lg text-navy-700 dark:text-navy-300 font-semibold hover:bg-navy-50 dark:hover:bg-navy-800/80 transition-colors inline-flex items-center gap-1">
                     Blog
                     <span class="text-[9px] px-1.5 py-0.5 rounded-md font-bold bg-navy-100 dark:bg-navy-800 text-navy-700 dark:text-navy-300">Artigos</span>
                 </a>
-                <a href="#terminal" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Atendimento</a>
-                <a href="#habilidades" class="px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Habilidades</a>
+                <a href="#terminal" class="btn-motion px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Atendimento</a>
+                <a href="#habilidades" class="btn-motion px-2.5 xl:px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Habilidades</a>
             </div>
 
             <!-- Actions (Theme Toggle + CTA + Mobile trigger) -->
             <div class="flex items-center gap-2 shrink-0">
                 <div class="hidden lg:block h-5 w-px bg-slate-200 dark:bg-navy-700 mr-1"></div>
-                <button id="theme-toggle" type="button" aria-label="Alternar entre tema claro e escuro" class="w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-navy-600 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <button id="theme-toggle" type="button" aria-label="Alternar entre tema claro e escuro" class="btn-motion w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-navy-600 hover:bg-slate-100 dark:hover:bg-navy-800">
                     <i data-lucide="moon" class="w-4 h-4 icon-moon"></i>
                     <i data-lucide="sun" class="w-4 h-4 icon-sun hidden"></i>
                 </button>
-                <a href="#contato" class="hidden lg:inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm hover:shadow transition-all">
+                <a href="#contato" class="btn-motion hidden lg:inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm hover:shadow group">
                     <span>Fale Comigo</span>
-                    <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                    <i data-lucide="send" class="w-3.5 h-3.5 icon-shift"></i>
                 </a>
-                <button id="mobile-menu-btn" class="lg:hidden w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors" aria-label="Abrir Menu">
+                <button id="mobile-menu-btn" class="btn-motion lg:hidden w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800" aria-label="Abrir Menu">
                     <i data-lucide="menu" class="w-4 h-4"></i>
                 </button>
             </div>
         </nav>
 
         <!-- Mobile Menu Panel -->
-        <div id="mobile-menu" class="hidden lg:hidden absolute top-20 left-4 right-4 rounded-2xl bg-white/98 dark:bg-navy-900/98 backdrop-blur-xl border border-slate-200 dark:border-navy-700 p-4 shadow-2xl flex flex-col gap-1 transition-all z-50">
-            <a href="#sobre" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+        <div id="mobile-menu" class="menu-closed lg:hidden absolute top-20 left-4 right-4 rounded-2xl bg-white/98 dark:bg-navy-900/98 backdrop-blur-xl border border-slate-200 dark:border-navy-700 p-4 shadow-2xl flex flex-col gap-1 z-50">
+            <a href="#sobre" class="btn-motion flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
                 <i data-lucide="user" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Sobre
             </a>
-            <a href="#experiencia" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+            <a href="#experiencia" class="btn-motion flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
                 <i data-lucide="briefcase" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Trajetória
             </a>
-            <a href="#competencias" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+            <a href="#competencias" class="btn-motion flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
                 <i data-lucide="list-checks" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Competências
             </a>
-            <a href="#projetos" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+            <a href="#projetos" class="btn-motion flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
                 <i data-lucide="folder" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Projetos
             </a>
-            <a href="blog.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-navy-700 dark:text-navy-300 hover:bg-navy-50 dark:hover:bg-navy-800 transition-colors">
+            <a href="blog.html" class="btn-motion flex items-center justify-between px-3.5 py-2.5 rounded-xl font-medium text-sm text-navy-700 dark:text-navy-300 hover:bg-navy-50 dark:hover:bg-navy-800 transition-colors">
                 <span class="flex items-center gap-3">
                     <i data-lucide="book-open" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Mini Blog & Artigos
                 </span>
                 <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-navy-100 dark:bg-navy-800 text-navy-700 dark:text-navy-200 border border-navy-200 dark:border-navy-700">Artigos</span>
             </a>
-            <a href="#terminal" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+            <a href="#terminal" class="btn-motion flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
                 <i data-lucide="message-square" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Atendimento Virtual
             </a>
-            <a href="#habilidades" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+            <a href="#habilidades" class="btn-motion flex items-center gap-3 px-3.5 py-2.5 rounded-xl font-medium text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
                 <i data-lucide="clipboard-check" class="w-4 h-4 text-navy-600 dark:text-navy-300"></i> Habilidades Técnicas
             </a>
 
             <div class="pt-3 mt-2 border-t border-slate-200 dark:border-navy-700 flex items-center gap-2">
-                <button id="theme-toggle-mobile" type="button" class="flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
+                <button id="theme-toggle-mobile" type="button" class="btn-motion flex-1 py-2.5 rounded-xl border border-slate-200 dark:border-navy-700 text-xs font-semibold text-slate-700 dark:text-slate-200 flex items-center justify-center gap-2 hover:bg-slate-100 dark:hover:bg-navy-800 transition-colors">
                     <i data-lucide="moon" class="w-4 h-4 icon-moon"></i>
                     <i data-lucide="sun" class="w-4 h-4 icon-sun hidden"></i>
                     <span>Alternar tema</span>
                 </button>
-                <a href="#contato" class="flex-1 py-2.5 rounded-xl bg-navy-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
+                <a href="#contato" class="btn-motion flex-1 py-2.5 rounded-xl bg-navy-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-sm">
                     Fale Comigo <i data-lucide="send" class="w-3 h-3"></i>
                 </a>
             </div>
@@ -212,18 +444,22 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="inicio" class="pt-36 pb-16 px-4">
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-6">
-                <span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+    <section id="inicio" class="pt-36 pb-16 px-4 relative overflow-hidden">
+        <!-- Ambient Motion Layer (Subtle Floating Glow Orbs) -->
+        <div class="ambient-glow-1 absolute -top-24 -left-20 w-96 h-96 rounded-full bg-navy-400/10 dark:bg-navy-400/10 blur-3xl pointer-events-none -z-10" aria-hidden="true"></div>
+        <div class="ambient-glow-2 absolute top-1/3 -right-20 w-96 h-96 rounded-full bg-blue-400/10 dark:bg-blue-500/10 blur-3xl pointer-events-none -z-10" aria-hidden="true"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="motion-reveal stagger-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-6 shadow-sm">
+                <span class="w-2 h-2 rounded-full bg-emerald-600 pulse-dot"></span>
                 Disponível para oportunidades em Administração e Tecnologia
             </div>
 
-            <h1 class="text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight mb-6 text-navy-800 dark:text-white leading-tight">
+            <h1 class="motion-reveal stagger-2 text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight mb-6 text-navy-800 dark:text-white leading-tight">
                 Administração e Tecnologia,<br class="hidden sm:block"> com organização e eficiência
             </h1>
 
-            <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed mb-10">
+            <p class="motion-reveal stagger-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed mb-10">
                 Sou formado em <strong class="text-navy-700 dark:text-white font-semibold">Redes de Computadores</strong> e atuo com
                 <strong class="text-navy-700 dark:text-white font-semibold">Administração</strong> e
                 <strong class="text-navy-700 dark:text-white font-semibold">Tecnologia</strong> no mesmo nível:
@@ -231,37 +467,37 @@
                 <strong class="font-semibold">Python e inteligência artificial</strong> para automatizar tarefas e ganhar eficiência.
             </p>
 
-            <div class="flex flex-col sm:flex-row gap-3.5 justify-center items-center">
-                <a href="#projetos" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm tracking-wide shadow-sm hover:shadow transition-all flex items-center justify-center gap-2">
-                    <i data-lucide="folder-open" class="w-4 h-4"></i> Ver projetos
+            <div class="motion-reveal stagger-4 flex flex-col sm:flex-row gap-3.5 justify-center items-center">
+                <a href="#projetos" class="btn-motion w-full sm:w-auto px-7 py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm tracking-wide shadow-sm hover:shadow flex items-center justify-center gap-2 group">
+                    <i data-lucide="folder-open" class="w-4 h-4 icon-bounce"></i> Ver projetos
                 </a>
-                <a href="curriculo-talyson-marques.pdf" target="_blank" rel="noopener" class="w-full sm:w-auto px-7 py-3.5 rounded-xl card card-hover text-navy-800 dark:text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2">
-                    <i data-lucide="download" class="w-4 h-4"></i> Baixar currículo
+                <a href="curriculo-talyson-marques.pdf" target="_blank" rel="noopener" class="btn-motion w-full sm:w-auto px-7 py-3.5 rounded-xl card card-hover text-navy-800 dark:text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2 group">
+                    <i data-lucide="download" class="w-4 h-4 icon-bounce"></i> Baixar currículo
                 </a>
             </div>
 
             <!-- Resumo de pontos fortes (Administração + Tecnologia com peso igual) -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 text-left">
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="folder-check" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-2"></i>
+            <div class="motion-reveal stagger-5 grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 text-left">
+                <div class="card card-hover rounded-2xl p-5 group">
+                    <i data-lucide="folder-check" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-2 icon-bounce"></i>
                     <div class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest font-semibold">Administração</div>
                     <div class="text-lg font-bold text-navy-800 dark:text-white mt-1">Documentos e prazos</div>
                     <div class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Rotinas, arquivos e acompanhamento</div>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="messages-square" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-2"></i>
+                <div class="card card-hover rounded-2xl p-5 group">
+                    <i data-lucide="messages-square" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-2 icon-bounce"></i>
                     <div class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest font-semibold">Atendimento</div>
                     <div class="text-lg font-bold text-navy-800 dark:text-white mt-1">Comunicação clara</div>
                     <div class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Contato com equipes e público</div>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="file-spreadsheet" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-2"></i>
+                <div class="card card-hover rounded-2xl p-5 group">
+                    <i data-lucide="file-spreadsheet" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-2 icon-bounce"></i>
                     <div class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest font-semibold">Tecnologia</div>
                     <div class="text-lg font-bold text-navy-800 dark:text-white mt-1">Planilhas e dados</div>
                     <div class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Excel / CSV, conferência e relatórios</div>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="cpu" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-2"></i>
+                <div class="card card-hover rounded-2xl p-5 group">
+                    <i data-lucide="cpu" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-2 icon-bounce"></i>
                     <div class="text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest font-semibold">Tecnologia</div>
                     <div class="text-lg font-bold text-navy-800 dark:text-white mt-1">Automação com IA</div>
                     <div class="text-xs text-slate-600 dark:text-slate-400 mt-0.5">Python e IA para menos retrabalho</div>
@@ -274,31 +510,31 @@
     <section id="sobre" class="py-16 px-4">
         <div class="max-w-5xl mx-auto">
             <div class="grid md:grid-cols-12 gap-8 items-start">
-                <div class="md:col-span-5">
-                    <div class="card rounded-2xl p-6">
+                <div class="md:col-span-5 motion-reveal">
+                    <div class="card card-hover rounded-2xl p-6">
                         <div class="flex items-center justify-between border-b border-slate-200 dark:border-navy-700 pb-4 mb-5">
                             <span class="text-xs font-semibold tracking-widest text-navy-700 dark:text-slate-200 uppercase">Resumo profissional</span>
-                            <i data-lucide="badge-check" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
+                            <i data-lucide="badge-check" class="w-5 h-5 text-navy-600 dark:text-navy-200 icon-bounce"></i>
                         </div>
                         <ul class="space-y-4 text-sm">
-                            <li class="flex gap-3">
-                                <i data-lucide="building-2" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
+                            <li class="flex gap-3 group">
+                                <i data-lucide="building-2" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0 icon-bounce"></i>
                                 <div><strong class="text-navy-800 dark:text-white">Experiência corporativa (5+ anos)</strong><br><span class="text-slate-600 dark:text-slate-300">Atuação contínua na Accenture Brasil (Projeto Vivere) em processos, compliance e automação.</span></div>
                             </li>
-                            <li class="flex gap-3">
-                                <i data-lucide="graduation-cap" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
+                            <li class="flex gap-3 group">
+                                <i data-lucide="graduation-cap" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0 icon-bounce"></i>
                                 <div><strong class="text-navy-800 dark:text-white">Formação em Redes de Computadores</strong><br><span class="text-slate-600 dark:text-slate-300">SENAC-SP: infraestrutura, segurança de redes e padronização técnica.</span></div>
                             </li>
-                            <li class="flex gap-3">
-                                <i data-lucide="clipboard-list" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
+                            <li class="flex gap-3 group">
+                                <i data-lucide="clipboard-list" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0 icon-bounce"></i>
                                 <div><strong class="text-navy-800 dark:text-white">Foco administrativo</strong><br><span class="text-slate-600 dark:text-slate-300">Conferência documental, gestão de SLAs, planilhas e atendimento.</span></div>
                             </li>
-                            <li class="flex gap-3">
-                                <i data-lucide="bot" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
+                            <li class="flex gap-3 group">
+                                <i data-lucide="bot" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0 icon-bounce"></i>
                                 <div><strong class="text-navy-800 dark:text-white">Tecnologia aplicada</strong><br><span class="text-slate-600 dark:text-slate-300">Python e inteligência artificial para ganho de escala e eficiência operacional.</span></div>
                             </li>
-                            <li class="flex gap-3">
-                                <i data-lucide="languages" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0"></i>
+                            <li class="flex gap-3 group">
+                                <i data-lucide="languages" class="w-5 h-5 text-navy-600 dark:text-navy-200 shrink-0 icon-bounce"></i>
                                 <div><strong class="text-navy-800 dark:text-white">Idiomas</strong><br><span class="text-slate-600 dark:text-slate-300">Português (nativo) • Inglês (básico)</span></div>
                             </li>
                         </ul>
@@ -309,9 +545,9 @@
                     </div>
                 </div>
 
-                <div class="md:col-span-7">
+                <div class="md:col-span-7 motion-reveal stagger-1">
                     <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4">
-                        <i data-lucide="award" class="w-3.5 h-3.5"></i> PERFIL PROFISSIONAL
+                        <i data-lucide="award" class="w-3.5 h-3.5 icon-bounce"></i> PERFIL PROFISSIONAL
                     </div>
                     <h2 class="text-3xl md:text-4xl font-display font-extrabold text-navy-800 dark:text-white mb-6 leading-tight">
                         Perfil híbrido: Administração e Tecnologia no mesmo nível
@@ -338,17 +574,17 @@
                         </p>
                     </div>
 
-                    <div class="grid grid-cols-3 gap-6 mt-8 card rounded-2xl p-5">
-                        <div>
-                            <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display">+5 Anos</div>
+                    <div class="grid grid-cols-3 gap-6 mt-8 card card-hover rounded-2xl p-5">
+                        <div class="group">
+                            <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display stat-count" data-target="5" data-prefix="+" data-suffix=" Anos">+5 Anos</div>
                             <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Vivência corporativa na Accenture</div>
                         </div>
-                        <div>
+                        <div class="group">
                             <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display">Admin + Tech</div>
                             <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Atuação híbrida com peso igual</div>
                         </div>
-                        <div>
-                            <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display">Projetos</div>
+                        <div class="group">
+                            <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display stat-count" data-target="7" data-prefix="" data-suffix=" Projetos">7 Projetos</div>
                             <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Publicados com código e docs</div>
                         </div>
                     </div>
@@ -360,9 +596,9 @@
     <!-- Section: Trajetória -->
     <section id="experiencia" class="py-16 px-4 bg-white dark:bg-navy-900/40 border-y border-slate-200 dark:border-navy-800">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-12">
+            <div class="text-center mb-12 motion-reveal">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-4">
-                    <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> TRAJETÓRIA
+                    <i data-lucide="briefcase" class="w-3.5 h-3.5 icon-bounce"></i> TRAJETÓRIA
                 </div>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Evolução profissional</h2>
                 <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">Mais de 5 anos de vivência corporativa contínua na Accenture Brasil: da análise documental e gestão de SLAs à automação com Python e IA.</p>
@@ -370,73 +606,73 @@
 
             <div class="relative border-l-2 border-slate-200 dark:border-navy-700 ml-3 md:ml-24 pl-8 space-y-10">
                 <!-- Marco 1: 2020 - 2022 -->
-                <div class="relative">
-                    <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center">
+                <div class="relative motion-reveal stagger-1">
+                    <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center milestone-dot cursor-default shadow-sm">
                         <div class="w-2 h-2 rounded-full bg-navy-600"></div>
                     </div>
                     <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">2020 – 2022</div>
                     <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">2020 – 2022</span>
-                    <div class="card rounded-2xl p-6">
+                    <div class="card card-hover rounded-2xl p-6">
                         <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Accenture Brasil • Operações & Compliance</span>
                         <h3 class="text-xl font-bold text-navy-800 dark:text-white mt-1 mb-2 flex items-center gap-2">
-                            Análise Documental e Gestão de SLAs <i data-lucide="building-2" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
+                            Análise Documental e Gestão de SLAs <i data-lucide="building-2" class="w-5 h-5 text-navy-600 dark:text-navy-200 icon-bounce"></i>
                         </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
                             Ingresso na Accenture Brasil (Projeto Vivere) atuando na conferência minuciosa e validação técnica de contratos de financiamento, matrículas imobiliárias e conformidade cadastral sob rigorosas metas de SLA e auditoria. Em paralelo, conclusão da graduação em Redes de Computadores (SENAC-SP), consolidando forte disciplina metodológica e visão de processos estruturados.
                         </p>
                         <div class="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Accenture Brasil</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Análise Documental & Compliance</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Gestão de SLAs</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Redes • SENAC-SP</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Accenture Brasil</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Análise Documental & Compliance</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Gestão de SLAs</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Redes • SENAC-SP</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Marco 2: 2022 - 2024 -->
-                <div class="relative">
-                    <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center">
+                <div class="relative motion-reveal stagger-2">
+                    <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center milestone-dot cursor-default shadow-sm">
                         <div class="w-2 h-2 rounded-full bg-navy-600"></div>
                     </div>
                     <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">2022 – 2024</div>
                     <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">2022 – 2024</span>
-                    <div class="card rounded-2xl p-6">
+                    <div class="card card-hover rounded-2xl p-6">
                         <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Accenture Brasil • Eficiência Operacional</span>
                         <h3 class="text-xl font-bold text-navy-800 dark:text-white mt-1 mb-2 flex items-center gap-2">
-                            Automação de Rotinas e Dados com Python <i data-lucide="file-cog" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
+                            Automação de Rotinas e Dados com Python <i data-lucide="file-cog" class="w-5 h-5 text-navy-600 dark:text-navy-200 icon-bounce"></i>
                         </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
                             Identificação proativa de gargalos operacionais no fluxo corporativo e implementação de rotinas automatizadas em Python combinadas a planilhas avançadas em Excel (PROCV, PROCX e fórmulas lógicas). Substituição sistemática de tarefas manuais repetitivas, mitigação de erros operacionais e ganho consistente de escala e velocidade de processamento.
                         </p>
                         <div class="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Python Corporativo</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Excel Avançado</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Otimização de Processos</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Mitigação de Erros</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Python Corporativo</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Excel Avançado</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Otimização de Processos</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Mitigação de Erros</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Marco 3: 2024 - Atual -->
-                <div class="relative">
-                    <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center">
+                <div class="relative motion-reveal stagger-3">
+                    <div class="absolute -left-[43px] top-1 w-6 h-6 rounded-full bg-white dark:bg-navy-900 border-2 border-navy-600 flex items-center justify-center milestone-dot cursor-default shadow-sm">
                         <div class="w-2 h-2 rounded-full bg-navy-600"></div>
                     </div>
                     <div class="hidden md:block absolute -left-[150px] top-1 text-sm text-navy-700 dark:text-slate-300 font-bold text-right w-24">2024 – Atual</div>
                     <span class="inline-block md:hidden text-xs text-navy-700 dark:text-slate-300 font-bold mb-1">2024 – Atual</span>
-                    <div class="card rounded-2xl p-6">
+                    <div class="card card-hover rounded-2xl p-6">
                         <span class="text-xs uppercase text-slate-600 dark:text-slate-400 font-bold tracking-widest">Accenture Brasil • IA Aplicada ao Negócio</span>
                         <h3 class="text-xl font-bold text-navy-800 dark:text-white mt-1 mb-2 flex items-center gap-2">
-                            Inteligência Artificial e Resolução de Inconsistências <i data-lucide="bot" class="w-5 h-5 text-navy-600 dark:text-navy-200"></i>
+                            Inteligência Artificial e Resolução de Inconsistências <i data-lucide="bot" class="w-5 h-5 text-navy-600 dark:text-navy-200 icon-bounce"></i>
                         </h3>
                         <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-4">
                             Aplicação de ferramentas e APIs de Inteligência Artificial no fluxo diário de trabalho para aceleração na análise técnica de documentos complexos, triagem de dados e diagnóstico de inconsistências sistêmicas. União da sólida bagagem em compliance e rotinas de escritório com tecnologia de ponta para tomada de decisão ágil e alcance de metas de excelência.
                         </p>
                         <div class="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-300">
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Inteligência Artificial Aplicada</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Triagem Documental</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Resolução de Inconsistências</span>
-                            <span class="px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">SLAs de Alta Performance</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Inteligência Artificial Aplicada</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Triagem Documental</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Resolução de Inconsistências</span>
+                            <span class="btn-motion px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700">SLAs de Alta Performance</span>
                         </div>
                     </div>
                 </div>
@@ -447,47 +683,47 @@
     <!-- Section: Competências administrativas (linguagem de RH) -->
     <section id="competencias" class="py-16 px-4">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
+            <div class="text-center mb-12 motion-reveal">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4">
-                    <i data-lucide="list-checks" class="w-3.5 h-3.5"></i> COMPETÊNCIAS ADMINISTRATIVAS
+                    <i data-lucide="list-checks" class="w-3.5 h-3.5 icon-bounce"></i> COMPETÊNCIAS ADMINISTRATIVAS
                 </div>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Competências administrativas</h2>
                 <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">Apoio administrativo e rotinas de escritório descritos em linguagem profissional, prontos para avaliação de RH.</p>
             </div>
 
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="folder-check" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3"></i>
+                <div class="card card-hover motion-reveal stagger-1 rounded-2xl p-5 group">
+                    <i data-lucide="folder-check" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white mb-1">Organização de documentos</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Arquivamento, padronização de nomes e controle de versões para localizar arquivos com rapidez.</p>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="calendar-clock" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3"></i>
+                <div class="card card-hover motion-reveal stagger-2 rounded-2xl p-5 group">
+                    <i data-lucide="calendar-clock" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white mb-1">Gestão de prazos</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Acompanhamento de vencimentos, priorização de tarefas e sinalização de pendências.</p>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="headset" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3"></i>
+                <div class="card card-hover motion-reveal stagger-3 rounded-2xl p-5 group">
+                    <i data-lucide="headset" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white mb-1">Atendimento</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Recepção, telefone, e-mail e contato com equipes, com comunicação clara e cordial.</p>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="building-2" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3"></i>
+                <div class="card card-hover motion-reveal stagger-4 rounded-2xl p-5 group">
+                    <i data-lucide="building-2" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white mb-1">Rotinas de escritório</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Apoio ao fluxo diário, controles internos e suporte às áreas da empresa.</p>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="file-text" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3"></i>
+                <div class="card card-hover motion-reveal stagger-5 rounded-2xl p-5 group">
+                    <i data-lucide="file-text" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white mb-1">Documentação</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Elaboração, revisão e registro de informações com padronização e rastreabilidade.</p>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="table-2" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3"></i>
+                <div class="card card-hover motion-reveal stagger-6 rounded-2xl p-5 group">
+                    <i data-lucide="table-2" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white mb-1">Planilhas e controle</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Excel e CSV para cadastros, conferência de dados e controle de informações.</p>
                 </div>
-                <div class="card rounded-2xl p-5">
-                    <i data-lucide="bar-chart-3" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3"></i>
+                <div class="card card-hover motion-reveal stagger-7 rounded-2xl p-5 group sm:col-span-2 lg:col-span-1">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white mb-1">Acompanhamento e relatórios</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Monitoramento de atividades e produção de relatórios de apoio à decisão.</p>
                 </div>
@@ -498,22 +734,23 @@
     <!-- Section: Projetos -->
     <section id="projetos" class="py-16 px-4">
         <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12">
+            <div class="text-center mb-12 motion-reveal">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4">
-                    <i data-lucide="folder" class="w-3.5 h-3.5"></i> PROJETOS
+                    <i data-lucide="folder" class="w-3.5 h-3.5 icon-bounce"></i> PROJETOS
                 </div>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Projetos em destaque</h2>
                 <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">Trabalhos reais, com código e documentação. Mostram na prática organização, automação e cuidado com dados.</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-6">
-                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> DISPONÍVEL
+                <!-- Projeto 1: RAG -->
+                <div class="card card-hover motion-reveal stagger-1 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 pulse-dot"></span> DISPONÍVEL
                     </div>
                     <div>
-                        <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5">
-                            <i data-lucide="book-open-text" class="w-5 h-5 text-white"></i>
+                        <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105 shadow-sm">
+                            <i data-lucide="book-open-text" class="w-5 h-5 text-white icon-bounce"></i>
                         </div>
                         <h3 class="text-xl font-bold font-display mb-2">
                             <a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Assistente de consulta a documentos</a>
@@ -527,20 +764,21 @@
                         </p>
                     </div>
                     <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
-                        <a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-navy-700 text-white hover:bg-navy-600 transition-colors">
+                        <a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="btn-motion inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-navy-700 text-white hover:bg-navy-600">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-brand="github" class="w-3.5 h-3.5"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> Ver repositório
                         </a>
                         <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">v1.0 • Código Aberto</span>
                     </div>
                 </div>
 
-                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> DISPONÍVEL
+                <!-- Projeto 2: Automatizador Planilhas -->
+                <div class="card card-hover motion-reveal stagger-2 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 pulse-dot"></span> DISPONÍVEL
                     </div>
                     <div>
-                        <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5">
-                            <i data-lucide="file-spreadsheet" class="w-5 h-5 text-white"></i>
+                        <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105 shadow-sm">
+                            <i data-lucide="file-spreadsheet" class="w-5 h-5 text-white icon-bounce"></i>
                         </div>
                         <h3 class="text-xl font-bold font-display mb-2">
                             <a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Automatizador de planilhas por comandos em português</a>
@@ -554,20 +792,21 @@
                         </p>
                     </div>
                     <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
-                        <a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-navy-700 text-white hover:bg-navy-600 transition-colors">
+                        <a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="btn-motion inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-navy-700 text-white hover:bg-navy-600">
                             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-brand="github" class="w-3.5 h-3.5"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg> Ver repositório
                         </a>
                         <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">v1.0 • Código Aberto</span>
                     </div>
                 </div>
 
-                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                <!-- Projeto 3: Validador Documental -->
+                <div class="card card-hover motion-reveal stagger-3 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 pulse-dot"></span> EM DESENVOLVIMENTO
                     </div>
                     <div>
-                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
-                            <i data-lucide="file-check" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105">
+                            <i data-lucide="file-check" class="w-5 h-5 text-navy-700 dark:text-slate-200 icon-bounce"></i>
                         </div>
                         <h3 class="text-xl font-bold font-display mb-2">
                             <a href="projeto-detalhe.html?id=validador-documental" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Validador e auditor inteligente de documentos corporativos</a>
@@ -580,20 +819,21 @@
                         </p>
                     </div>
                     <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
-                        <a href="projeto-detalhe.html?id=validador-documental" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
-                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        <a href="projeto-detalhe.html?id=validador-documental" class="btn-motion inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600 icon-bounce"></i> Ver desenvolvimento
                         </a>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Schemas & MVP</span>
                     </div>
                 </div>
 
-                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                <!-- Projeto 4: Painel Operacional -->
+                <div class="card card-hover motion-reveal stagger-4 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 pulse-dot"></span> EM DESENVOLVIMENTO
                     </div>
                     <div>
-                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
-                            <i data-lucide="activity" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105">
+                            <i data-lucide="activity" class="w-5 h-5 text-navy-700 dark:text-slate-200 icon-bounce"></i>
                         </div>
                         <h3 class="text-xl font-bold font-display mb-2">
                             <a href="projeto-detalhe.html?id=painel-operacional" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Painel de acompanhamento operacional e métricas</a>
@@ -606,20 +846,21 @@
                         </p>
                     </div>
                     <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
-                        <a href="projeto-detalhe.html?id=painel-operacional" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
-                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        <a href="projeto-detalhe.html?id=painel-operacional" class="btn-motion inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600 icon-bounce"></i> Ver desenvolvimento
                         </a>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Telemetria</span>
                     </div>
                 </div>
 
-                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                <!-- Projeto 5: HelpDesk & SLA -->
+                <div class="card card-hover motion-reveal stagger-1 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 pulse-dot"></span> EM DESENVOLVIMENTO
                     </div>
                     <div>
-                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
-                            <i data-lucide="ticket" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105">
+                            <i data-lucide="ticket" class="w-5 h-5 text-navy-700 dark:text-slate-200 icon-bounce"></i>
                         </div>
                         <h3 class="text-xl font-bold font-display mb-2">
                             <a href="projeto-detalhe.html?id=helpdesk-sla" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">HelpDesk AI & Gestor de Métricas de SLA</a>
@@ -632,20 +873,21 @@
                         </p>
                     </div>
                     <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
-                        <a href="projeto-detalhe.html?id=helpdesk-sla" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
-                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        <a href="projeto-detalhe.html?id=helpdesk-sla" class="btn-motion inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600 icon-bounce"></i> Ver desenvolvimento
                         </a>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Matriz de SLA</span>
                     </div>
                 </div>
 
-                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                <!-- Projeto 6: Bot Infraestrutura -->
+                <div class="card card-hover motion-reveal stagger-2 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 pulse-dot"></span> EM DESENVOLVIMENTO
                     </div>
                     <div>
-                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
-                            <i data-lucide="network" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105">
+                            <i data-lucide="network" class="w-5 h-5 text-navy-700 dark:text-slate-200 icon-bounce"></i>
                         </div>
                         <h3 class="text-xl font-bold font-display mb-2">
                             <a href="projeto-detalhe.html?id=bot-infraestrutura" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Bot de Monitoramento de Infraestrutura e Redes</a>
@@ -658,20 +900,21 @@
                         </p>
                     </div>
                     <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
-                        <a href="projeto-detalhe.html?id=bot-infraestrutura" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
-                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        <a href="projeto-detalhe.html?id=bot-infraestrutura" class="btn-motion inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600 icon-bounce"></i> Ver desenvolvimento
                         </a>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Engine de Rede</span>
                     </div>
                 </div>
 
-                <div class="card rounded-2xl p-6 md:p-7 flex flex-col justify-between card-hover relative md:col-span-2">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> EM DESENVOLVIMENTO
+                <!-- Projeto 7: Compliance Tracker -->
+                <div class="card card-hover motion-reveal stagger-3 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative md:col-span-2 group">
+                    <div class="absolute top-5 right-5 text-xs font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 pulse-dot"></span> EM DESENVOLVIMENTO
                     </div>
                     <div>
-                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5">
-                            <i data-lucide="calendar-check" class="w-5 h-5 text-navy-700 dark:text-slate-200"></i>
+                        <div class="w-11 h-11 rounded-xl bg-slate-200 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105">
+                            <i data-lucide="calendar-check" class="w-5 h-5 text-navy-700 dark:text-slate-200 icon-bounce"></i>
                         </div>
                         <h3 class="text-xl font-bold font-display mb-2">
                             <a href="projeto-detalhe.html?id=compliance-tracker" class="text-navy-800 dark:text-white hover:text-navy-600 dark:hover:text-navy-300 transition-colors">Gestor de Prazos, Certidões e Contratos (Compliance Tracker)</a>
@@ -684,8 +927,8 @@
                         </p>
                     </div>
                     <div class="pt-4 border-t border-slate-200 dark:border-navy-700 flex items-center justify-between">
-                        <a href="projeto-detalhe.html?id=compliance-tracker" class="inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700 transition-colors">
-                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600"></i> Ver desenvolvimento
+                        <a href="projeto-detalhe.html?id=compliance-tracker" class="btn-motion inline-flex items-center gap-2 text-xs font-semibold px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-navy-800 dark:hover:bg-navy-700 text-navy-800 dark:text-white border border-slate-200 dark:border-navy-700">
+                            <i data-lucide="hammer" class="w-3.5 h-3.5 text-amber-600 icon-bounce"></i> Ver desenvolvimento
                         </a>
                         <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Fase 1: Cron Engine</span>
                     </div>
@@ -697,36 +940,38 @@
     <!-- SECTION: ATENDIMENTO VIRTUAL (terminal corporativo) -->
     <section id="terminal" class="py-16 px-4 bg-white dark:bg-navy-900/40 border-y border-slate-200 dark:border-navy-800">
         <div class="max-w-4xl mx-auto">
-            <div class="text-center mb-10">
+            <div class="text-center mb-10 motion-reveal">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-4">
-                    <i data-lucide="message-square" class="w-3.5 h-3.5"></i> ATENDIMENTO VIRTUAL
+                    <i data-lucide="message-square" class="w-3.5 h-3.5 icon-bounce"></i> ATENDIMENTO VIRTUAL
                 </div>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Consulta rápida</h2>
                 <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm">Use os botões ou digite um comando simples para conhecer meu perfil profissional.</p>
             </div>
 
-            <div class="card rounded-2xl overflow-hidden flex flex-col min-h-[440px]">
+            <div class="card motion-reveal stagger-1 rounded-2xl overflow-hidden flex flex-col min-h-[440px] shadow-sm">
                 <div class="bg-navy-700 px-5 py-3.5 flex items-center justify-between">
                     <div class="text-sm font-semibold text-white flex items-center gap-2">
-                        <i data-lucide="inbox" class="w-4 h-4"></i> Atendimento — Talyson Marques
+                        <i data-lucide="inbox" class="w-4 h-4 icon-bounce"></i> Atendimento — Talyson Marques
                     </div>
-                    <div class="text-xs text-navy-100">responde na hora</div>
+                    <div class="text-xs text-navy-100 flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> responde na hora
+                    </div>
                 </div>
 
                 <div class="bg-slate-50 dark:bg-navy-800/60 border-b border-slate-200 dark:border-navy-700 p-3.5 flex flex-wrap gap-2 items-center text-xs text-slate-600 dark:text-slate-400">
                     <span class="mr-1 font-semibold">Acesso rápido:</span>
-                    <button type="button" onclick="runCommand('sobre')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">sobre</button>
-                    <button type="button" onclick="runCommand('projetos')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">projetos</button>
-                    <button type="button" onclick="runCommand('blog')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">blog</button>
-                    <button type="button" onclick="runCommand('habilidades')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">habilidades</button>
-                    <button type="button" onclick="runCommand('contato')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">contato</button>
-                    <button type="button" onclick="runCommand('status')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">status</button>
-                    <button type="button" onclick="runCommand('ajuda')" class="px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white transition-colors font-medium">ajuda</button>
-                    <button type="button" onclick="runCommand('limpar')" class="sm:ml-auto px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-red-400 hover:text-red-600 transition-colors font-medium">limpar</button>
+                    <button type="button" onclick="runCommand('sobre')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">sobre</button>
+                    <button type="button" onclick="runCommand('projetos')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">projetos</button>
+                    <button type="button" onclick="runCommand('blog')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">blog</button>
+                    <button type="button" onclick="runCommand('habilidades')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">habilidades</button>
+                    <button type="button" onclick="runCommand('contato')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">contato</button>
+                    <button type="button" onclick="runCommand('status')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">status</button>
+                    <button type="button" onclick="runCommand('ajuda')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">ajuda</button>
+                    <button type="button" onclick="runCommand('limpar')" class="btn-motion sm:ml-auto px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-red-400 hover:text-red-600 font-medium">limpar</button>
                 </div>
 
                 <div id="terminal-screen" class="p-6 text-sm overflow-y-auto max-h-[320px] flex-grow space-y-4 text-slate-700 dark:text-slate-200 bg-white dark:bg-navy-900" aria-live="polite">
-                    <div class="space-y-1">
+                    <div class="space-y-1 terminal-msg-enter">
                         <p class="font-semibold text-navy-800 dark:text-white">Olá! Sou o atendimento virtual do portfólio do Talyson.</p>
                         <p class="text-slate-600 dark:text-slate-400">Digite <span class="font-bold text-navy-700 dark:text-white">ajuda</span> para ver as opções disponíveis.</p>
                     </div>
@@ -734,9 +979,9 @@
 
                 <form id="terminal-form" onsubmit="handleFormSubmit(event)" class="bg-slate-50 dark:bg-navy-800/60 border-t border-slate-200 dark:border-navy-700 p-4 flex items-center gap-3">
                     <span class="text-navy-700 dark:text-slate-200 font-bold text-sm select-none">&gt;</span>
-                    <input id="terminal-input" type="text" autocomplete="off" placeholder="Digite: sobre, projetos, blog, habilidades, contato..." aria-label="Campo de consulta do atendimento virtual" class="bg-transparent border-none outline-none flex-grow text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500">
-                    <button type="submit" aria-label="Enviar consulta" class="w-9 h-9 rounded-lg bg-navy-700 text-white flex items-center justify-center hover:bg-navy-600 transition-colors">
-                        <i data-lucide="corner-down-left" class="w-4 h-4"></i>
+                    <input id="terminal-input" type="text" autocomplete="off" placeholder="Digite: sobre, projetos, blog, habilidades, contato..." aria-label="Campo de consulta do atendimento virtual" class="input-motion bg-transparent border-none outline-none flex-grow text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500 px-2 py-1 rounded-lg">
+                    <button type="submit" aria-label="Enviar consulta" class="btn-motion w-9 h-9 rounded-lg bg-navy-700 text-white flex items-center justify-center hover:bg-navy-600">
+                        <i data-lucide="corner-down-left" class="w-4 h-4 icon-bounce"></i>
                     </button>
                 </form>
             </div>
@@ -746,54 +991,54 @@
     <!-- Section: Habilidades -->
     <section id="habilidades" class="py-16 px-4">
         <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
+            <div class="text-center mb-12 motion-reveal">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4">
-                    <i data-lucide="clipboard-check" class="w-3.5 h-3.5"></i> HABILIDADES TÉCNICAS
+                    <i data-lucide="clipboard-check" class="w-3.5 h-3.5 icon-bounce"></i> HABILIDADES TÉCNICAS
                 </div>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Capacidades comprovadas</h2>
                 <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">Organização de rotinas, dados e tecnologia com o mesmo nível de rigor.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6">
-                <div class="card rounded-2xl p-6">
-                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4">
-                        <i data-lucide="briefcase" class="w-5 h-5 text-white"></i>
+                <div class="card card-hover motion-reveal stagger-1 rounded-2xl p-6 group">
+                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105 shadow-sm">
+                        <i data-lucide="briefcase" class="w-5 h-5 text-white icon-bounce"></i>
                     </div>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white font-display mb-3">Rotinas administrativas</h3>
                     <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2">
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Organização de documentos e arquivos</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Gestão de prazos e acompanhamento</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Atendimento telefônico e presencial</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Redação comercial e comunicados</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Suporte operacional e rotinas gerais</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Organização de documentos e arquivos</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Gestão de prazos e acompanhamento</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Atendimento telefônico e presencial</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Redação comercial e comunicados</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Suporte operacional e rotinas gerais</li>
                     </ul>
                 </div>
 
-                <div class="card rounded-2xl p-6">
-                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4">
-                        <i data-lucide="table" class="w-5 h-5 text-white"></i>
+                <div class="card card-hover motion-reveal stagger-2 rounded-2xl p-6 group">
+                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105 shadow-sm">
+                        <i data-lucide="table" class="w-5 h-5 text-white icon-bounce"></i>
                     </div>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white font-display mb-3">Dados e ferramentas</h3>
                     <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2">
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Excel avançado (fórmulas e relatórios)</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Google Sheets e controle de versões</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Pacote Office completo</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Extração e conferência de dados</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Organização de relatórios gerenciais</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Excel avançado (fórmulas e relatórios)</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Google Sheets e controle de versões</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Pacote Office completo</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Extração e conferência de dados</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Organização de relatórios gerenciais</li>
                     </ul>
                 </div>
 
-                <div class="card rounded-2xl p-6">
-                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4">
-                        <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
+                <div class="card card-hover motion-reveal stagger-3 rounded-2xl p-6 group">
+                    <div class="w-10 h-10 rounded-xl bg-navy-700 flex items-center justify-center mb-4 transition-transform duration-200 group-hover:scale-105 shadow-sm">
+                        <i data-lucide="cpu" class="w-5 h-5 text-white icon-bounce"></i>
                     </div>
                     <h3 class="text-base font-bold text-navy-800 dark:text-white font-display mb-3">Automação com IA</h3>
                     <ul class="text-xs text-slate-600 dark:text-slate-300 space-y-2">
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Python para automação de tarefas</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Pandas e processamento de tabelas</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Integração com modelos de IA (APIs)</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Redes de Computadores (conectividade)</li>
-                        <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Linux básico e Docker para deploys</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Python para automação de tarefas</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Pandas e processamento de tabelas</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Integração com modelos de IA (APIs)</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Redes de Computadores (conectividade)</li>
+                        <li class="flex items-center gap-2 hover:translate-x-1 transition-transform duration-150"><span class="w-1.5 h-1.5 rounded-full bg-navy-600"></span> Linux básico e Docker para deploys</li>
                     </ul>
                 </div>
             </div>
@@ -803,11 +1048,11 @@
     <!-- Section: Contato -->
     <section id="contato" class="py-16 px-4 bg-slate-50 dark:bg-navy-900/40 border-t border-slate-200 dark:border-navy-800">
         <div class="max-w-4xl mx-auto">
-            <div class="card p-8 md:p-10 rounded-2xl">
+            <div class="card motion-reveal p-8 md:p-10 rounded-2xl shadow-sm">
                 <div class="grid md:grid-cols-2 gap-10 items-start">
                     <div>
                         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4">
-                            <i data-lucide="mail" class="w-3.5 h-3.5"></i> CONTATO
+                            <i data-lucide="mail" class="w-3.5 h-3.5 icon-bounce"></i> CONTATO
                         </div>
                         <h2 class="text-3xl font-display font-extrabold text-navy-800 dark:text-white leading-tight">
                             Vamos conversar sobre a vaga?
@@ -817,45 +1062,46 @@
                             rotinas de escritório, organização de documentos e planilhas, atendimento e apoio operacional.
                         </p>
                         <div class="mt-7 space-y-4">
-                            <div class="flex items-center gap-3 min-w-0 text-slate-700 dark:text-slate-200 text-sm">
-                                <div class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 dark:bg-navy-800 flex items-center justify-center border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200">
-                                    <i data-lucide="mail" class="w-4 h-4"></i>
+                            <div class="flex items-center gap-3 min-w-0 text-slate-700 dark:text-slate-200 text-sm group">
+                                <div class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 dark:bg-navy-800 flex items-center justify-center border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 group-hover:scale-105 transition-transform">
+                                    <i data-lucide="mail" class="w-4 h-4 icon-bounce"></i>
                                 </div>
-                                <a href="mailto:talyson14marques@hotmail.com" class="hover:underline break-all">talyson14marques@hotmail.com</a>
+                                <a href="mailto:talyson14marques@hotmail.com" class="hover:underline break-all transition-colors hover:text-navy-700 dark:hover:text-navy-300">talyson14marques@hotmail.com</a>
                             </div>
-                            <div class="flex items-center gap-3 min-w-0 text-slate-700 dark:text-slate-200 text-sm">
-                                <div class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 dark:bg-navy-800 flex items-center justify-center border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200">
+                            <div class="flex items-center gap-3 min-w-0 text-slate-700 dark:text-slate-200 text-sm group">
+                                <div class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 dark:bg-navy-800 flex items-center justify-center border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 group-hover:scale-105 transition-transform">
                                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-brand="linkedin" class="w-4 h-4"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
                                 </div>
-                                <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener" aria-label="Perfil de Talyson Marques no LinkedIn" class="hover:underline break-all">linkedin.com/in/talysonmarques</a>
+                                <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener" aria-label="Perfil de Talyson Marques no LinkedIn" class="hover:underline break-all transition-colors hover:text-navy-700 dark:hover:text-navy-300">linkedin.com/in/talysonmarques</a>
                             </div>
-                            <div class="flex items-center gap-3 min-w-0 text-slate-700 dark:text-slate-200 text-sm">
-                                <div class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 dark:bg-navy-800 flex items-center justify-center border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200">
+                            <div class="flex items-center gap-3 min-w-0 text-slate-700 dark:text-slate-200 text-sm group">
+                                <div class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 dark:bg-navy-800 flex items-center justify-center border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 group-hover:scale-105 transition-transform">
                                     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" data-brand="github" class="w-4 h-4"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
                                 </div>
-                                <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="hover:underline break-all">github.com/SandyMarques</a>
+                                <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="hover:underline break-all transition-colors hover:text-navy-700 dark:hover:text-navy-300">github.com/SandyMarques</a>
                             </div>
                         </div>
-                        <a href="curriculo-talyson-marques.pdf" target="_blank" rel="noopener" class="mt-7 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm transition-colors">
-                            <i data-lucide="download" class="w-4 h-4"></i> Baixar currículo
+                        <a href="curriculo-talyson-marques.pdf" target="_blank" rel="noopener" class="btn-motion mt-7 inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm shadow-sm group">
+                            <i data-lucide="download" class="w-4 h-4 icon-bounce"></i> Baixar currículo
                         </a>
                     </div>
 
                     <form onsubmit="handleContactSubmit(event)" class="space-y-4" aria-label="Formulário de contato">
                         <div>
                             <label for="contact-name" class="block text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mb-1.5 font-bold">Seu nome</label>
-                            <input required type="text" id="contact-name" name="name" autocomplete="name" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-slate-800 dark:text-white placeholder-slate-400 focus:border-navy-500 focus:outline-none transition-colors text-sm" placeholder="Nome Sobrenome">
+                            <input required type="text" id="contact-name" name="name" autocomplete="name" class="input-motion w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-slate-800 dark:text-white placeholder-slate-400 text-sm outline-none" placeholder="Nome Sobrenome">
                         </div>
                         <div>
                             <label for="contact-email" class="block text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mb-1.5 font-bold">Seu e-mail</label>
-                            <input required type="email" id="contact-email" name="email" autocomplete="email" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-slate-800 dark:text-white placeholder-slate-400 focus:border-navy-500 focus:outline-none transition-colors text-sm" placeholder="exemplo@email.com">
+                            <input required type="email" id="contact-email" name="email" autocomplete="email" class="input-motion w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-slate-800 dark:text-white placeholder-slate-400 text-sm outline-none" placeholder="exemplo@email.com">
                         </div>
                         <div>
                             <label for="contact-msg" class="block text-xs text-slate-600 dark:text-slate-400 uppercase tracking-widest mb-1.5 font-bold">Sua mensagem</label>
-                            <textarea required id="contact-msg" name="message" rows="4" class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-slate-800 dark:text-white placeholder-slate-400 focus:border-navy-500 focus:outline-none transition-colors text-sm" placeholder="Olá Talyson, gostaria de falar sobre..."></textarea>
+                            <textarea required id="contact-msg" name="message" rows="4" class="input-motion w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-slate-800 dark:text-white placeholder-slate-400 text-sm outline-none" placeholder="Olá Talyson, gostaria de falar sobre..."></textarea>
                         </div>
-                        <button type="submit" class="w-full py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm tracking-wide transition-colors flex items-center justify-center gap-2">
-                            Enviar mensagem <i data-lucide="send" class="w-4 h-4"></i>
+                        <button id="contact-submit-btn" type="submit" class="btn-motion w-full py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2 group shadow-sm">
+                            <span id="contact-submit-text">Enviar mensagem</span>
+                            <i id="contact-submit-icon" data-lucide="send" class="w-4 h-4 icon-shift"></i>
                         </button>
                     </form>
                 </div>
@@ -868,16 +1114,16 @@
         <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p>© 2026 TALYSON MARQUES. TODOS OS DIREITOS RESERVADOS.</p>
             <div class="flex items-center gap-4">
-                <a href="blog.html" class="hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium">Mini Blog & Artigos</a>
+                <a href="blog.html" class="btn-motion hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium">Mini Blog & Artigos</a>
                 <span>•</span>
-                <a href="#inicio" class="hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium inline-flex items-center gap-1">
-                    Voltar ao topo <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i>
+                <a href="#inicio" class="btn-motion hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium inline-flex items-center gap-1 group">
+                    Voltar ao topo <i data-lucide="arrow-up" class="w-3.5 h-3.5 icon-bounce"></i>
                 </a>
             </div>
         </div>
     </footer>
 
-    <!-- Scripting for interactivity -->
+    <!-- Scripting for interactivity and motion choreography -->
     <script>
         // --- Init de ícones: nunca derruba o restante do script se o CDN falhar ---
         function safeCreateIcons() {
@@ -889,31 +1135,112 @@
         }
         safeCreateIcons();
 
-        // Responsive Mobile Menu (registrado independentemente do Lucide)
+        // --- INTERSECTION OBSERVER FOR MOTION DESIGN REVEALS ---
+        function initMotionObserver() {
+            if ('IntersectionObserver' in window) {
+                const revealObserver = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-revealed');
+                            // Dispara contadores se estiverem dentro do elemento revelado
+                            initCounters(entry.target);
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -40px 0px'
+                });
+
+                document.querySelectorAll('.motion-reveal, .motion-reveal-scale').forEach(el => {
+                    revealObserver.observe(el);
+                });
+            } else {
+                // Fallback para navegadores sem suporte
+                document.querySelectorAll('.motion-reveal, .motion-reveal-scale').forEach(el => {
+                    el.classList.add('is-revealed');
+                });
+            }
+        }
+
+        // --- ANIMATED NUMERICAL COUNTERS (Secondary Layer) ---
+        function initCounters(parentEl) {
+            const counters = parentEl.querySelectorAll ? parentEl.querySelectorAll('.stat-count') : [];
+            counters.forEach(counter => {
+                if (counter.dataset.animated) return;
+                counter.dataset.animated = 'true';
+
+                const target = parseInt(counter.dataset.target, 10);
+                if (isNaN(target)) return;
+
+                const prefix = counter.dataset.prefix || '';
+                const suffix = counter.dataset.suffix || '';
+                const duration = 1200; // 1.2s decelerated curve
+                const startTime = performance.now();
+
+                function update(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // ease-out-cubic: 1 - (1 - t)^3
+                    const easeOut = 1 - Math.pow(1 - progress, 3);
+                    const currentVal = Math.floor(easeOut * target);
+
+                    counter.textContent = `${prefix}${currentVal}${suffix}`;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    } else {
+                        counter.textContent = `${prefix}${target}${suffix}`;
+                    }
+                }
+                requestAnimationFrame(update);
+            });
+        }
+
+        // --- READING / SCROLL PROGRESS BAR (Ambient Layer) ---
+        const progressBar = document.getElementById('scroll-progress');
+        if (progressBar) {
+            window.addEventListener('scroll', () => {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                if (totalHeight > 0) {
+                    const progress = Math.min(100, Math.max(0, (window.scrollY / totalHeight) * 100));
+                    progressBar.style.width = `${progress}%`;
+                }
+            }, { passive: true });
+        }
+
+        // --- RESPONSIVE MOBILE MENU (Animated Entrance & Exit) ---
         const mobileMenuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
 
         if (mobileMenuBtn && mobileMenu) {
             mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+                const isOpen = mobileMenu.classList.contains('menu-open');
+                if (isOpen) {
+                    mobileMenu.classList.remove('menu-open');
+                    mobileMenu.classList.add('menu-closed');
+                } else {
+                    mobileMenu.classList.remove('menu-closed');
+                    mobileMenu.classList.add('menu-open');
+                }
             });
 
             document.querySelectorAll('#mobile-menu a').forEach(link => {
                 link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.remove('menu-open');
+                    mobileMenu.classList.add('menu-closed');
                 });
             });
         }
 
-        // --- THEME TOGGLE (claro / escuro com persistência) ---
+        // --- THEME TOGGLE (claro / escuro com persistência e rotação) ---
         const themeToggleBtn = document.getElementById('theme-toggle');
         const themeToggleMobileBtn = document.getElementById('theme-toggle-mobile');
 
         function refreshThemeIcons() {
             const isDark = document.documentElement.classList.contains('dark');
-            document.querySelectorAll('#theme-toggle .icon-moon').forEach(el => el.classList.toggle('hidden', isDark));
-            document.querySelectorAll('#theme-toggle .icon-sun').forEach(el => el.classList.toggle('hidden', !isDark));
-            // Re-renderiza ícones caso o toggle tenha trocado visibilidade
+            document.querySelectorAll('.icon-moon').forEach(el => el.classList.toggle('hidden', isDark));
+            document.querySelectorAll('.icon-sun').forEach(el => el.classList.toggle('hidden', !isDark));
             safeCreateIcons();
         }
 
@@ -936,7 +1263,7 @@
         if (themeToggleMobileBtn) themeToggleMobileBtn.addEventListener('click', toggleTheme);
         refreshThemeIcons();
 
-        // --- ATENDIMENTO VIRTUAL (terminal corporativo) ---
+        // --- ATENDIMENTO VIRTUAL (terminal corporativo com stream-in motion) ---
         const terminalScreen = document.getElementById('terminal-screen');
         const terminalInput = document.getElementById('terminal-input');
 
@@ -1037,21 +1364,21 @@ Use o formulário na seção de contato ou envie uma mensagem direta.`,
             cmdString = cmdString.trim().toLowerCase();
 
             const promptLine = document.createElement('div');
-            promptLine.className = 'text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-200 dark:border-navy-700 text-xs';
+            promptLine.className = 'text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-200 dark:border-navy-700 text-xs terminal-msg-enter';
             const safeCmd = cmdString.replace(/</g, '&lt;');
             promptLine.innerHTML = `<span class="font-bold text-navy-700 dark:text-white">&gt; </span>${safeCmd || '&nbsp;'}`;
             terminalScreen.appendChild(promptLine);
 
             if (cmdString === 'limpar' || cmdString === 'clear' || cmdString === '') {
                 if (cmdString === '') { terminalScreen.scrollTop = terminalScreen.scrollHeight; return; }
-                terminalScreen.innerHTML = '<p class="text-slate-600 dark:text-slate-400 text-sm">Conversa limpa. Digite <strong>ajuda</strong> para ver as opções.</p>';
+                terminalScreen.innerHTML = '<p class="text-slate-600 dark:text-slate-400 text-sm terminal-msg-enter">Conversa limpa. Digite <strong>ajuda</strong> para ver as opções.</p>';
                 return;
             }
 
             const resolved = Object.prototype.hasOwnProperty.call(ALIASES, cmdString) ? ALIASES[cmdString] : cmdString;
 
             const resultLine = document.createElement('div');
-            resultLine.className = 'text-slate-700 dark:text-slate-200 pl-3 leading-relaxed text-sm';
+            resultLine.className = 'text-slate-700 dark:text-slate-200 pl-3 leading-relaxed text-sm terminal-msg-enter';
 
             if (Object.prototype.hasOwnProperty.call(COMMANDS, resolved)) {
                 resultLine.innerHTML = COMMANDS[resolved];
@@ -1062,7 +1389,7 @@ Use o formulário na seção de contato ou envie uma mensagem direta.`,
             }
 
             terminalScreen.appendChild(resultLine);
-            terminalScreen.scrollTop = terminalScreen.scrollHeight;
+            terminalScreen.scrollTo({ top: terminalScreen.scrollHeight, behavior: 'smooth' });
         }
 
         function handleFormSubmit(e) {
@@ -1074,9 +1401,18 @@ Use o formulário na seção de contato ou envie uma mensagem direta.`,
             }
         }
 
-        // --- CONTATO: envio real via mailto ---
+        // --- CONTATO: envio com feedback tátil ---
         function handleContactSubmit(e) {
             e.preventDefault();
+            const submitBtn = document.getElementById('contact-submit-btn');
+            const submitText = document.getElementById('contact-submit-text');
+
+            if (submitText) submitText.textContent = 'Abrindo cliente de e-mail...';
+            if (submitBtn) {
+                submitBtn.classList.add('bg-emerald-600');
+                submitBtn.classList.remove('bg-navy-700');
+            }
+
             const name = document.getElementById('contact-name').value.trim();
             const email = document.getElementById('contact-email').value.trim();
             const message = document.getElementById('contact-msg').value.trim();
@@ -1086,9 +1422,24 @@ Use o formulário na seção de contato ou envie uma mensagem direta.`,
             const mailtoUrl = 'mailto:talyson14marques@hotmail.com?subject=' +
                 encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 
-            window.location.href = mailtoUrl;
+            setTimeout(() => {
+                window.location.href = mailtoUrl;
+                setTimeout(() => {
+                    if (submitText) submitText.textContent = 'Enviar mensagem';
+                    if (submitBtn) {
+                        submitBtn.classList.remove('bg-emerald-600');
+                        submitBtn.classList.add('bg-navy-700');
+                    }
+                }, 1500);
+            }, 300);
+
             e.target.reset();
         }
+
+        // Inicializa observador de motion e animações de entrada
+        document.addEventListener('DOMContentLoaded', () => {
+            initMotionObserver();
+        });
     </script>
 </body>
 </html>
