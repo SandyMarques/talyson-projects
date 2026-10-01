@@ -30,6 +30,8 @@ Toda vez que uma nova funcionalidade, correção de bug, refatoração ou altera
   - `node --check` no JavaScript embutido, quando alterado;
   - conferência de que todo link/arquivo interno referenciado existe (`Test-Path`).
   - Não aceitar implementação-fachada: botão de download que não baixa, formulário que não usa `mailto:` ou toggle de tema inerte.
+  - Bibliotecas via CDN sempre com versão fixa (nunca `@latest` ou sem versão) e, quando possível, com `integrity` (SRI). Sem versão, o CDN entrega a mais recente: o `marked.min.js` deixou de existir no `marked` 16 e o blog ficou em branco.
+- **Veracidade do conteúdo (portfólio e blog):** nenhuma informação sem fonte. Trajetória, cargos, datas e formação seguem o currículo em PDF; descrições de projetos seguem o código dos repositórios. Métricas e "resultados" só se tiverem sido medidos; projetos não publicados usam "Objetivo", nunca "Resultado". Cenários ilustrativos nos artigos devem ser apresentados como exemplo, não como fato.
 - **Validação de Sintaxe e Compilação:** Verificar se não há imports ausentes, erros de tipagem óbvios ou dependências não declaradas no `requirements.txt` / `package.json`.
 - **Auto-Correção:** Se qualquer teste ou checagem falhar, corrigir a causa raiz antes de prosseguir. Nunca ignorar testes quebrados.
 

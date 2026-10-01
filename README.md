@@ -28,29 +28,28 @@ Portfólio profissional de posicionamento **híbrido — Administração e Tecno
 
 | Arquivo | Descrição |
 | :--- | :--- |
-| `site/index.html` | Página principal: hero, perfil, trajetória, competências administrativas, projetos, atendimento virtual, habilidades e contato. |
-| `site/blog.html` | Mini blog com artigos sobre automação, IA/RAG e organização de processos administrativos. |
+| `site/index.html` | Página principal: hero, perfil, trajetória, projetos, competências, atendimento virtual e contato. |
+| `site/blog.html` | Mini blog (lista + modo leitura via `#id-do-artigo`) com artigos sobre automação, IA/RAG e organização administrativa. |
 | `site/projeto-detalhe.html` | Especificações, arquitetura e roadmap dos projetos em desenvolvimento (navegação por `?id=`). |
-| `site/curriculo-talyson-marques.pdf` | Currículo para download (abre em nova aba). |
+| `site/curriculo-talyson-marques.pdf` | Currículo para download (botões com atributo `download`). |
 
 ### Seções do `index.html`
 
-- **Início** (`#inicio`) — apresentação e resumo de pontos fortes (Administração, Atendimento, Dados, Automação com IA).
-- **Sobre** (`#sobre`) — perfil híbrido, formação em Redes de Computadores (SENAC-SP), idiomas (Português nativo • Inglês básico).
-- **Trajetória** (`#experiencia`) — linha do tempo corporativa (Accenture Brasil / Projeto Vivere).
-- **Competências administrativas** (`#competencias`) — descrição em linguagem de RH.
-- **Projetos** (`#projetos`) — cards com status (disponível / em desenvolvimento) e links reais.
-- **Atendimento virtual** (`#terminal`) — terminal corporativo com comandos (`sobre`, `projetos`, `blog`, `habilidades`, `contato`, `status`, `ajuda`, `limpar`).
-- **Habilidades** (`#habilidades`) — rotinas administrativas, dados/ferramentas e automação com IA.
+- **Início** (`#inicio`) — nome, cargo, resumo, local/formato de trabalho e pontos fortes (Administração, Atendimento, Dados, Automação com IA).
+- **Sobre** (`#sobre`) — perfil híbrido, Accenture Brasil desde nov/2020, formação em Redes de Computadores (SENAC-SP), idiomas.
+- **Trajetória** (`#experiencia`) — experiência e formação com o mesmo conteúdo do currículo em PDF (Accenture, SENAC-SP, SENAI-SP).
+- **Projetos** (`#projetos`) — 2 publicados (com links para repositório e artigo) e 5 em desenvolvimento, separados visualmente.
+- **Competências** (`#competencias`) — Administração, Dados e planilhas, Automação e IA, Redes e infraestrutura.
+- **Atendimento virtual** (`#terminal`) — terminal com comandos (`sobre`, `projetos`, `blog`, `habilidades`, `contato`, `status`, `ajuda`, `limpar`).
 - **Contato** (`#contato`) — e-mail `talyson14marques@hotmail.com`, LinkedIn, GitHub e formulário via `mailto:`.
 
 ### Mini blog — artigos publicados
 
 | Artigo | Categoria | Data |
 | :--- | :--- | :--- |
-| Do Caos da "Planilha Mestre" à Execução em 3 Segundos (Python e IA) | Automação com Python | 14/09/2026 |
-| Além do "Ctrl + F": pasta corporativa em assistente inteligente com RAG | Inteligência Artificial & RAG | 08/09/2026 |
-| A Casa em Ordem: 5 regras de governança administrativa antes do código | Administração & Processos | 01/09/2026 |
+| Da planilha bagunçada ao relatório confiável: padronizando dados com Python | Automação com Python | 14/09/2026 |
+| Além do Ctrl+F: como um assistente com RAG encontra respostas nos seus documentos | Inteligência Artificial & RAG | 08/09/2026 |
+| A casa em ordem: 5 práticas de organização antes de automatizar qualquer processo | Administração & Processos | 01/09/2026 |
 
 ### Projetos em desenvolvimento
 
@@ -67,6 +66,8 @@ Detalhados em `site/projeto-detalhe.html`:
 - **Tema claro/escuro** com persistência em `localStorage` (`tm-theme`) e sem flash na carga.
 - **Acessibilidade**: skip-link, `:focus-visible`, `aria-label` e `prefers-reduced-motion`.
 - **SEO/Compartilhamento**: `title`, meta `description`, `canonical` e Open Graph por página.
+- **Bibliotecas via CDN com versão fixa** (`lucide@1.49.0`, `marked@18.0.14`) e SRI (`integrity`). Sem versão, o CDN entrega a mais recente — e o `marked.min.js` deixou de existir a partir do `marked` 16, o que deixava o blog em branco.
+- **Blog resiliente**: se o `marked` não carregar, os artigos aparecem como texto simples; navegação por hash (`blog.html#id`), voltar para a lista na mesma posição, sumário, caixas `> [!NOTE]`/`[!TIP]`/`[!IMPORTANT]`/`[!WARNING]` e tempo de leitura calculado.
 - **Deploy**: `.github/workflows/static.yml` publica a pasta `./site` no GitHub Pages a cada push em `main`.
 
 ---
@@ -76,7 +77,7 @@ Detalhados em `site/projeto-detalhe.html`:
 > Os 5 projetos em desenvolvimento estão listados na seção [Projetos em desenvolvimento](#projetos-em-desenvolvimento) e detalhados em `site/projeto-detalhe.html`.
 
 ### 🧠 1. [Assistente IA com RAG](https://github.com/SandyMarques/Assistente-IA-com-RAG)
-> Chat inteligente corporativo com RAG (Retrieval-Augmented Generation) baseado em documentos locais (PDFs, TXT, Markdown, CSV, JSON), com eliminação de alucinações e citação de fontes em tempo real.
+> Chat com RAG (Retrieval-Augmented Generation) baseado em documentos locais (PDFs, TXT, Markdown, CSV, JSON), com instruções para responder só com base nos trechos recuperados e citação de fontes.
 
 - **Stack:** Python 3.10+, FastAPI, LangChain, ChromaDB, Sentence-Transformers / OpenAI Embeddings, DeepSeek / OpenAI API, Docker & Docker Compose.
 - **Destaques:**
@@ -95,7 +96,7 @@ Detalhados em `site/projeto-detalhe.html`:
 - **Destaques:**
   - Extração automática de metadados e schema de DataFrames multi-abas.
   - Geração de código Python seguro e auto-recuperação (Self-Healing Loop) em caso de erro de execução.
-  - Histórico de versões de planilhas com funcionalidade de Desfazer/Refazer.
+  - Histórico de etapas com Desfazer e Resetar (volta à planilha original).
   - Exportação instantânea em formatos `.xlsx` e `.csv`.
 - 🔗 **Repositório dedicado:** [SandyMarques/Automatizador-de-Planilhas-com-IA](https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA)
 
