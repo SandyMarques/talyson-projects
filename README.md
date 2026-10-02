@@ -30,6 +30,7 @@ Portfólio profissional de posicionamento **híbrido — Administração e Tecno
 | :--- | :--- |
 | `site/index.html` | Página principal: hero, perfil, trajetória, projetos, competências, atendimento virtual e contato. |
 | `site/blog.html` | Mini blog (lista + modo leitura via `#id-do-artigo`) com artigos sobre automação, IA/RAG e organização administrativa. |
+| `site/caso-tapioca-delegusty.html` | Estudo de caso do sistema de pedidos Tapioca Delegusty (visão geral e decisões de projeto, sem código nem dados internos). |
 | `site/projeto-detalhe.html` | Especificações, arquitetura e roadmap dos projetos em desenvolvimento (navegação por `?id=`). |
 | `site/curriculo-talyson-marques.pdf` | Currículo para download (botões com atributo `download`). |
 
@@ -38,7 +39,7 @@ Portfólio profissional de posicionamento **híbrido — Administração e Tecno
 - **Início** (`#inicio`) — nome, cargo, resumo, local/formato de trabalho e pontos fortes (Administração, Atendimento, Dados, Automação com IA).
 - **Sobre** (`#sobre`) — perfil híbrido, Accenture Brasil desde nov/2020, formação em Redes de Computadores (SENAC-SP), idiomas.
 - **Trajetória** (`#experiencia`) — experiência e formação com o mesmo conteúdo do currículo em PDF (Accenture, SENAC-SP, SENAI-SP).
-- **Projetos** (`#projetos`) — 2 publicados (com links para repositório e artigo) e 5 em desenvolvimento, separados visualmente.
+- **Projetos** (`#projetos`) — 2 publicados (com links para repositório e artigo), 1 estudo de caso (repositório privado) e 5 em desenvolvimento, separados visualmente.
 - **Competências** (`#competencias`) — Administração, Dados e planilhas, Automação e IA, Redes e infraestrutura.
 - **Atendimento virtual** (`#terminal`) — terminal com comandos (`sobre`, `projetos`, `blog`, `habilidades`, `contato`, `status`, `ajuda`, `limpar`).
 - **Contato** (`#contato`) — e-mail `talyson14marques@hotmail.com`, LinkedIn, GitHub e formulário via `mailto:`.
@@ -47,6 +48,7 @@ Portfólio profissional de posicionamento **híbrido — Administração e Tecno
 
 | Artigo | Categoria | Data |
 | :--- | :--- | :--- |
+| Tapioca Delegusty: como organizei pedidos, cozinha e entrega em um só sistema | Estudo de caso | 02/10/2026 |
 | Da planilha bagunçada ao relatório confiável: padronizando dados com Python | Automação com Python | 14/09/2026 |
 | Além do Ctrl+F: como um assistente com RAG encontra respostas nos seus documentos | Inteligência Artificial & RAG | 08/09/2026 |
 | A casa em ordem: 5 práticas de organização antes de automatizar qualquer processo | Administração & Processos | 01/09/2026 |

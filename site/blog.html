@@ -760,6 +760,38 @@
                     <rect x="465" y="119" width="85" height="8" rx="4" fill="#94a3b8"/>
                     <text x="500" y="178" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#059669" class="dark:fill-[#34d399]">Checklist do dia</text>
                 </svg>
+            `,
+            tapiocaOrders: `
+                <svg viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-lg h-auto" aria-hidden="true" focusable="false">
+                    <rect x="20" y="40" width="100" height="150" rx="16" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#334155]"/>
+                    <rect x="32" y="56" width="76" height="22" rx="6" fill="#386293" opacity="0.25"/>
+                    <rect x="32" y="86" width="76" height="22" rx="6" fill="#386293" opacity="0.15"/>
+                    <rect x="32" y="116" width="76" height="22" rx="6" fill="#386293" opacity="0.15"/>
+                    <rect x="32" y="150" width="76" height="26" rx="8" fill="#1e3a5f"/>
+                    <text x="70" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#475569" class="dark:fill-[#94a3b8]">Cliente</text>
+
+                    <path d="M130 115 H175" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 5"/>
+                    <path d="M170 108 L180 115 L170 122" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <rect x="190" y="40" width="130" height="150" rx="16" fill="#f8fafc" stroke="#386293" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#5b84b5]"/>
+                    <rect x="190" y="40" width="130" height="30" rx="14" fill="#1e3a5f"/>
+                    <text x="255" y="60" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="12" font-weight="700" fill="#ffffff">Painel da loja</text>
+                    <rect x="204" y="84" width="40" height="40" rx="8" fill="#fde68a"/>
+                    <rect x="256" y="84" width="40" height="40" rx="8" fill="#10b981" opacity="0.8"/>
+                    <rect x="204" y="134" width="40" height="40" rx="8" fill="#93c5fd"/>
+                    <rect x="256" y="134" width="40" height="40" rx="8" fill="#e2e8f0" class="dark:fill-[#334155]"/>
+                    <text x="255" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#274e78" class="dark:fill-[#93c5fd]">Loja e cozinha</text>
+
+                    <path d="M330 115 H375" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 5"/>
+                    <path d="M370 108 L380 115 L370 122" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                    <rect x="390" y="40" width="190" height="150" rx="16" fill="#f8fafc" stroke="#10b981" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#10b981]"/>
+                    <path d="M410 150 C430 90 470 90 490 130 S540 160 560 100" stroke="#10b981" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <circle cx="410" cy="150" r="7" fill="#1e3a5f"/>
+                    <circle cx="560" cy="100" r="9" fill="#10b981"/>
+                    <path d="M556 100 L559 103 L564 97" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <text x="485" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#059669" class="dark:fill-[#34d399]">Entrega</text>
+                </svg>
             `
         };
 
@@ -767,6 +799,7 @@
             { name: 'Automação com Python', icon: 'file-spreadsheet' },
             { name: 'Inteligência Artificial & RAG', icon: 'bot' },
             { name: 'Administração & Processos', icon: 'clipboard-list' },
+            { name: 'Estudo de caso', icon: 'store' },
         ];
 
         // --- ARTIGOS EM MARKDOWN ---
@@ -1074,6 +1107,82 @@ Esse hábito evita esquecimentos, deixa um histórico claro para auditorias e mo
 Com essas práticas, a rotina fica mais previsível: menos retrabalho, menos correria e prazos sob controle.
 
 E é sobre essa base que a tecnologia funciona de verdade. Um script em Python ou um assistente de IA rende muito mais quando os dados estão limpos, as pastas seguem um padrão e cada processo tem dono e prazo.
+                `
+            },
+            {
+                id: 'sistema-de-pedidos-tapioca-delegusty',
+                title: 'Tapioca Delegusty: como organizei pedidos, cozinha e entrega em um só sistema',
+                subtitle: 'Cardápio digital, PIX, painel em tempo real, tela da cozinha, app do motoboy e uma atendente virtual no WhatsApp: o que foi construído, quais decisões importaram e o que eu aprendi.',
+                category: 'Estudo de caso',
+                date: '2026-10-02',
+                tags: ['React', 'TypeScript', 'Supabase', 'IA generativa', 'Sistemas de pedidos'],
+                svgKey: 'tapiocaOrders',
+                summary: 'Um estudo de caso sobre um sistema completo de pedidos para uma tapiocaria: da escolha no celular até a entrega, com painel, cozinha e atendimento por IA.',
+                content: `
+Quando o assunto é delivery, o produto é só uma parte da história. O restante é **organização**: quem fez o pedido, se já pagou, o que a cozinha precisa preparar primeiro e para onde o motoboy deve ir.
+
+Este artigo conta como esse fluxo foi resolvido no sistema da **Tapioca Delegusty**, um projeto que desenhei e desenvolvi de ponta a ponta. A ideia é mostrar o raciocínio, não o código: o repositório é privado, porque o sistema lida com dados de clientes e com pagamentos.
+
+> [!NOTE]
+> Por segurança, este texto não detalha regras internas, integrações ou acessos. Ele descreve o que o sistema faz e as decisões de projeto que mais importaram.
+
+## O ponto de partida
+
+Uma tapiocaria com entrega precisa atender quatro pessoas ao mesmo tempo, cada uma com uma necessidade diferente:
+
+- **O cliente** quer escolher, pagar e saber quando o pedido chega.
+- **A loja** quer ver tudo o que acontece e controlar preços e produtos.
+- **A cozinha** quer receber só o que já pode ser preparado.
+- **O motoboy** quer o endereço certo e a rota sem perder tempo.
+
+O desafio era ligar essas quatro pontas ao mesmo pedido, sem deixar passar informação incompleta.
+
+## O que foi construído
+
+| Frente | O que entrega |
+| :--- | :--- |
+| Cliente | Cardápio digital com 55 produtos, sacola com observação por item, retirada ou entrega, frete pela distância real, PIX com QR Code, cartão ou dinheiro e acompanhamento do pedido |
+| Loja | Painel em tempo real com aviso sonoro, comanda para impressora térmica, ajuste de preços e pausa de produto em falta |
+| Cozinha | Tela própria para TV ou tablet, que só mostra o pedido quando ele pode ir para a chapa |
+| Entrega | App instalável para o motoboy, com acesso protegido e rota em um toque |
+| Atendimento | Atendente virtual no WhatsApp, que entende texto e voz, consulta o cardápio e registra o pedido |
+
+## Cinco decisões que fizeram diferença
+
+### 1. O cardápio nunca some
+
+O site busca o cardápio no banco de dados, mas guarda uma cópia local. Se o servidor falhar, o cliente continua vendo os produtos. Para um negócio que vende no horário de pico, indisponibilidade é perda direta.
+
+### 2. Quem decide é o servidor
+
+O navegador do cliente é um lugar fácil de manipular. Por isso, preços e totais são recalculados no servidor, e cada tipo de usuário acessa somente o que precisa. Cliente, loja e motoboy enxergam partes diferentes do mesmo pedido.
+
+### 3. O pedido só vai para a chapa quando pode
+
+Um pedido pago por PIX, confirmado pela loja quando necessário e dentro do horário pode ser preparado. Um pedido de teste ou agendado para depois não aparece para a cozinha. Essa regra única evita o erro mais caro: preparar algo que ainda não está certo.
+
+### 4. Endereço completo ou nada
+
+Para entrega, o sistema exige rua e número. A busca de CEP consulta vários serviços em sequência, de modo que a falha de um não impede o pedido. O frete usa a distância real do trajeto, e não a linha reta.
+
+### 5. IA com supervisão humana
+
+A atendente virtual trabalha sobre o cardápio real e valida os dados antes de registrar um pedido. A equipe pode assumir a conversa quando quiser e devolvê-la depois. A IA tira o trabalho repetitivo, mas a loja continua no controle.
+
+## Como foi testado
+
+O sistema tem um simulador de pedidos de teste, que não chegam à cozinha nem ao motoboy, e baterias de testes automatizados para pedidos, entrega, frete, atendimento e relatórios. Cada versão foi publicada com registro das mudanças: foram 10 versões, de 1.0 a 1.9, entre 09/09 e 02/10/2026.
+
+## O que eu aprendi
+
+- **Regras de negócio em um só lugar.** Quando a regra de "pode ir para a chapa" vale para o painel, a cozinha e o motoboy, o comportamento fica previsível.
+- **Cada tela tem um público.** A mesma informação aparece de formas diferentes para o cliente, a cozinha e o entregador.
+- **Automatizar exige organizar antes.** O mesmo princípio dos processos administrativos vale aqui: sem regras claras, a automação só acelera a confusão.
+- **IA funciona melhor com limites.** Dar à atendente apenas o que ela precisa (cardápio, horário, regras) e manter a equipe no circuito deu confiança ao resultado.
+
+## Conclusão
+
+O Tapioca Delegusty reúne o que mais me interessa no trabalho: **organizar uma rotina, automatizar o que é repetitivo e manter pessoas no controle**. Se quiser ver o sistema em funcionamento ou conversar sobre como aplicar essa abordagem na sua equipe, fale comigo pela [página de contato](index.html#contato).
                 `
             }
         ];
