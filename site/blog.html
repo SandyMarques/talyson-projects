@@ -246,6 +246,9 @@
         }
         .dark .markdown-content h3 { color: #b9cde3; }
         .markdown-content p { margin-bottom: 1.25rem; }
+        .markdown-content img { display: block; max-width: 100%; height: auto; margin: 1.75rem auto 0.5rem; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 8px 24px -10px rgba(16, 30, 51, 0.25); }
+        .dark .markdown-content img { border-color: #2b3f5e; }
+        .markdown-content img + em { display: block; text-align: center; font-size: 0.8rem; color: #64748b; margin-bottom: 1.75rem; }
         .markdown-content strong { font-weight: 700; color: #0f172a; }
         .dark .markdown-content strong { color: #ffffff; }
         .markdown-content a {
@@ -1146,6 +1149,16 @@ O desafio era ligar essas quatro pontas ao mesmo pedido, sem deixar passar infor
 | Cozinha | Tela própria para TV ou tablet, que só mostra o pedido quando ele pode ir para a chapa |
 | Entrega | App instalável para o motoboy, com acesso protegido e rota em um toque |
 | Atendimento | Atendente virtual no WhatsApp, que entende texto e voz, consulta o cardápio e registra o pedido |
+
+### Como fica na prática
+
+Os dois exemplos abaixo vêm de um ambiente de demonstração, com clientes, pedidos e valores inventados.
+
+![Painel da loja com os pedidos separados em Novos, Em preparo, Prontos e Em rota](assets/tapioca-delegusty/painel.webp)
+*Painel da loja: cada pedido avança de coluna conforme o status. Dados fictícios.*
+
+![Tela da cozinha com os pedidos novos e em preparo](assets/tapioca-delegusty/cozinha.webp)
+*Tela da cozinha, pensada para TV ou tablet. Dados fictícios.*
 
 ## Cinco decisões que fizeram diferença
 
