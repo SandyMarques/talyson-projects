@@ -474,6 +474,311 @@
         }
         .dark .toc a::before { background: #162945; color: #dce6f1; }
 
+        /* ---------- Modo narrativa (estudos de caso) ----------
+           Componentes inseridos no Markdown com [[story:nome]]. As animações só são
+           "armadas" (estado inicial oculto) quando o JS liga .story-armed; sem JS ou
+           sem IntersectionObserver o conteúdo aparece normalmente. */
+        .story-mode { counter-reset: chapter; }
+        .story-mode > h2 { counter-increment: chapter; }
+        .story-mode > h2::before {
+            content: "Capítulo " counter(chapter);
+            display: block;
+            margin-bottom: 0.4rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: #5b84b5;
+        }
+        .story-mode > p:first-of-type::first-letter {
+            float: left;
+            margin: 0.1em 0.12em 0 0;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.4em;
+            font-weight: 700;
+            line-height: 0.85;
+            color: #1e3a5f;
+        }
+        .dark .story-mode > p:first-of-type::first-letter { color: #b9cde3; }
+
+        /* Os componentes não herdam o espaçamento de parágrafos/listas/imagens do Markdown */
+        .markdown-content .story-block p,
+        .markdown-content .story-block ul,
+        .markdown-content .story-block ol { margin: 0; }
+        .markdown-content .story-block ul,
+        .markdown-content .story-block ol { list-style: none; padding: 0; }
+        .markdown-content .story-block li { margin: 0; padding-left: 0; }
+        .markdown-content .story-block img { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+        .markdown-content .story-block h3 { margin: 0; }
+        .story-block { margin: 2rem 0 2.25rem; }
+
+        /* Entrada genérica ao rolar */
+        .story-armed .story-reveal {
+            opacity: 0;
+            transform: translateY(14px);
+            transition: opacity 500ms var(--ease-premium), transform 500ms var(--ease-premium);
+            transition-delay: var(--d, 0ms);
+        }
+        .story-armed .story-reveal.is-visible { opacity: 1; transform: none; }
+
+        /* Números */
+        .stat-tile {
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+        }
+        .dark .stat-tile { border-color: #2b3f5e; background: #101e33; }
+
+        /* Quatro pessoas, um pedido */
+        .story-armed .story-personas .persona-card {
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 450ms var(--ease-premium), transform 450ms var(--ease-premium);
+        }
+        .story-personas.is-visible .persona-card { opacity: 1; transform: none; }
+        .story-personas .persona-card:nth-child(2) { transition-delay: 90ms; }
+        .story-personas .persona-card:nth-child(3) { transition-delay: 180ms; }
+        .story-personas .persona-card:nth-child(4) { transition-delay: 270ms; }
+        .persona-line {
+            fill: none;
+            stroke: #8fadcf;
+            stroke-width: 2;
+            stroke-linecap: round;
+        }
+        .dark .persona-line { stroke: #5b84b5; }
+        .story-armed .story-personas .persona-lines {
+            clip-path: inset(0 0 100% 0);
+            transition: clip-path 750ms var(--ease-premium) 380ms;
+        }
+        .story-personas.is-visible .persona-lines { clip-path: inset(0 0 0 0); }
+        .story-armed .story-personas .persona-order {
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 400ms var(--ease-premium) 1000ms, transform 500ms cubic-bezier(0.34, 1.56, 0.64, 1) 1000ms;
+        }
+        .story-personas.is-visible .persona-order { opacity: 1; transform: none; }
+
+        /* Jornada de um pedido (scrollytelling) */
+        .journey-steps { position: relative; }
+        .journey-steps::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0.5rem;
+            bottom: 0.5rem;
+            width: 2px;
+            background: #dce6f1;
+        }
+        .dark .journey-steps::before { background: #2b3f5e; }
+        .journey-step { position: relative; padding-bottom: 2.25rem; }
+        .journey-step:last-child { padding-bottom: 0; }
+        .journey-body { position: relative; padding-left: 3rem; }
+        .journey-num {
+            position: absolute;
+            left: 0;
+            top: -0.1rem;
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1e3a5f;
+            border: 2px solid #1e3a5f;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 800;
+            transition: background-color 300ms, color 300ms, border-color 300ms, transform 300ms var(--ease-premium);
+        }
+        .journey-who {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #5b84b5;
+        }
+        .markdown-content .story-block .journey-title {
+            margin: 0.2rem 0 0.4rem;
+            font-size: 1.15rem;
+            line-height: 1.3;
+            color: #1e3a5f;
+        }
+        .dark .markdown-content .story-block .journey-title { color: #dce6f1; }
+        .markdown-content .journey-text { font-size: 0.975rem; line-height: 1.7; color: #475569; }
+        .dark .markdown-content .journey-text { color: #cbd5e1; }
+        .journey-inline { margin-top: 1rem; }
+        .journey-stage { display: none; }
+        .journey-sticky { position: sticky; top: 7rem; }
+        .journey-screens { position: relative; height: 31rem; }
+        .journey-screen {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(14px) scale(0.97);
+            transition: opacity 450ms ease, transform 550ms var(--ease-premium), visibility 0s linear 450ms;
+        }
+        .journey-screen.is-active {
+            opacity: 1;
+            visibility: visible;
+            transform: none;
+            transition: opacity 450ms ease, transform 550ms var(--ease-premium), visibility 0s;
+        }
+        .journey-dots { display: flex; justify-content: center; gap: 0.4rem; margin-top: 1rem; }
+        .journey-dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 999px;
+            background: #b9cde3;
+            transition: width 300ms var(--ease-premium), background-color 300ms;
+        }
+        .journey-dot.is-active { width: 1.5rem; background: #1e3a5f; }
+        .dark .journey-dot { background: #2b3f5e; }
+        .dark .journey-dot.is-active { background: #b9cde3; }
+        .journey-caption { margin-top: 0.6rem; text-align: center; font-size: 0.75rem; font-weight: 600; color: #64748b; }
+        .dark .journey-caption { color: #94a3b8; }
+
+        /* Com o JS ativo: etapa atual em destaque */
+        .story-journey.is-armed .journey-step { opacity: 0.45; transition: opacity 400ms ease; }
+        .story-journey.is-armed .journey-step.is-active { opacity: 1; }
+        .story-journey.is-armed .journey-num { background: #ffffff; color: #1e3a5f; border-color: #b9cde3; }
+        .story-journey.is-armed .journey-step.is-active .journey-num { background: #1e3a5f; color: #ffffff; border-color: #1e3a5f; transform: scale(1.08); }
+        .dark .story-journey.is-armed .journey-num { background: #101e33; color: #dce6f1; border-color: #2b3f5e; }
+        .dark .story-journey.is-armed .journey-step.is-active .journey-num { background: #dce6f1; color: #101e33; border-color: #dce6f1; }
+        @media (min-width: 768px) {
+            .story-journey.is-armed .journey-grid {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 15.5rem;
+                gap: 1.75rem;
+            }
+            .story-journey.is-armed .journey-step {
+                min-height: 52vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding-bottom: 0;
+            }
+            .story-journey.is-armed .journey-stage { display: block; }
+            .story-journey.is-armed .journey-inline { display: none; }
+        }
+        @media (min-width: 768px) and (max-height: 720px) {
+            .journey-sticky { top: 6rem; }
+            .journey-screens { height: 24rem; }
+            .journey-screens .device-phone { width: 10.5rem; }
+        }
+
+        /* Molduras das capturas */
+        .device-phone {
+            width: 13.75rem;
+            margin: 0 auto;
+            border: 7px solid #162945;
+            border-radius: 2rem;
+            background: #ffffff;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -22px rgba(16, 30, 51, 0.45);
+        }
+        .dark .device-phone { border-color: #2b3f5e; }
+        .device-screen {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            border-radius: 0.85rem;
+            background: #ffffff;
+            overflow: hidden;
+            box-shadow: 0 24px 48px -22px rgba(16, 30, 51, 0.4);
+        }
+        .dark .device-screen { border-color: #2b3f5e; }
+        .device-bar { display: flex; gap: 4px; padding: 6px 8px; background: #e2e8f0; }
+        .dark .device-bar { background: #162945; }
+        .device-bar span { width: 7px; height: 7px; border-radius: 999px; background: #94a3b8; }
+        .device-phone img,
+        .device-screen img { display: block; width: 100%; height: auto; }
+        .device-link { position: relative; display: block; border-radius: inherit; }
+        .device-zoom {
+            position: absolute;
+            right: 0.5rem;
+            bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.75rem;
+            height: 1.75rem;
+            border-radius: 999px;
+            background: rgba(16, 30, 51, 0.75);
+            color: #ffffff;
+            transition: transform var(--dur-quick) var(--ease-snappy), background-color var(--dur-quick) var(--ease-snappy);
+        }
+        .device-link:hover .device-zoom { transform: scale(1.1); background: #1e3a5f; }
+
+        /* "E se...?" → como o sistema evita */
+        .risk-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #ffffff;
+        }
+        .dark .risk-card { border-color: #2b3f5e; background: #101e33; }
+        .story-armed .risk-then {
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 450ms var(--ease-premium), transform 450ms var(--ease-premium);
+            transition-delay: calc(var(--d, 0ms) + 280ms);
+        }
+        .story-armed .risk-card.is-visible .risk-then { opacity: 1; transform: none; }
+
+        /* Linha do tempo das versões (preenche conforme a rolagem) */
+        .story-timeline { position: relative; padding-left: 2.25rem; }
+        .timeline-track {
+            position: absolute;
+            left: 11px;
+            top: 0.4rem;
+            bottom: 0.4rem;
+            width: 2px;
+            border-radius: 2px;
+            background: #dce6f1;
+            overflow: hidden;
+        }
+        .dark .timeline-track { background: #2b3f5e; }
+        .timeline-fill {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(#386293, #10b981);
+            transform-origin: top;
+            transform: scaleY(1);
+        }
+        .story-armed .timeline-fill { transform: scaleY(var(--p, 0)); }
+        .timeline-item { position: relative; padding-bottom: 1.4rem; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-dot {
+            position: absolute;
+            left: -2.25rem;
+            top: 0.15rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 999px;
+            border: 2px solid #1e3a5f;
+            background: #1e3a5f;
+            transition: background-color 300ms, border-color 300ms, transform 300ms var(--ease-premium);
+        }
+        .timeline-item:last-child .timeline-dot { border-color: #059669; background: #059669; }
+        .story-armed .timeline-item:not(.is-passed) .timeline-dot { background: #ffffff; border-color: #b9cde3; transform: scale(0.8); }
+        .dark .story-armed .timeline-item:not(.is-passed) .timeline-dot { background: #101e33; border-color: #2b3f5e; }
+
+        /* Ilustração do topo: o trajeto da entrega se desenha uma vez */
+        .svg-draw {
+            stroke-dasharray: 1;
+            animation: svgDraw 1400ms var(--ease-premium) 200ms both;
+        }
+        @keyframes svgDraw {
+            from { stroke-dashoffset: 1; }
+            to { stroke-dashoffset: 0; }
+        }
+
         /* Respeito às diretrizes de acessibilidade (sensibilidade vestibular) */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -482,7 +787,7 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
-            .ambient-glow-1, .ambient-glow-2, .animate-card-enter, .view-enter, .svg-check-pop {
+            .ambient-glow-1, .ambient-glow-2, .animate-card-enter, .view-enter, .svg-check-pop, .svg-draw {
                 animation: none !important;
             }
             #reading-progress { display: none !important; }
@@ -789,10 +1094,12 @@
                     <path d="M370 108 L380 115 L370 122" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 
                     <rect x="390" y="40" width="190" height="150" rx="16" fill="#f8fafc" stroke="#10b981" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#10b981]"/>
-                    <path d="M410 150 C430 90 470 90 490 130 S540 160 560 100" stroke="#10b981" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <path d="M410 150 C430 90 470 90 490 130 S540 160 560 100" stroke="#10b981" stroke-width="3" stroke-linecap="round" fill="none" pathLength="1" class="svg-draw"/>
                     <circle cx="410" cy="150" r="7" fill="#1e3a5f"/>
-                    <circle cx="560" cy="100" r="9" fill="#10b981"/>
-                    <path d="M556 100 L559 103 L564 97" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <g class="svg-check-pop" style="animation-delay: 1400ms">
+                        <circle cx="560" cy="100" r="9" fill="#10b981"/>
+                        <path d="M556 100 L559 103 L564 97" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </g>
                     <text x="485" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#059669" class="dark:fill-[#34d399]">Entrega</text>
                 </svg>
             `
@@ -804,6 +1111,303 @@
             { name: 'Administração & Processos', icon: 'clipboard-list' },
             { name: 'Estudo de caso', icon: 'store' },
         ];
+
+        // --- COMPONENTES DE NARRATIVA ([[story:nome]] dentro do Markdown) ---
+        // Conteúdo factual vindo do artigo original e do estudo de caso; as capturas são
+        // de um ambiente de demonstração, com dados fictícios.
+        const TAPIOCA_IMG = 'assets/tapioca-delegusty/';
+
+        function deviceFrame(shot) {
+            const img = `<img src="${TAPIOCA_IMG}${shot.img}" width="${shot.w}" height="${shot.h}" alt="${escapeHtml(shot.alt)}" loading="lazy" decoding="async">`;
+            const link = `<a href="${TAPIOCA_IMG}${shot.img}" target="_blank" rel="noopener noreferrer" class="device-link" aria-label="Abrir em tamanho maior: ${escapeHtml(shot.label)}">${img}</a>`;
+            const zoom = '<span class="device-zoom" aria-hidden="true"><i data-lucide="maximize-2" class="w-3.5 h-3.5"></i></span>';
+            return shot.frame === 'screen'
+                ? `<div class="device-screen"><div class="device-bar" aria-hidden="true"><span></span><span></span><span></span></div>${link.replace('</a>', zoom + '</a>')}</div>`
+                : `<div class="device-phone">${link}</div>`;
+        }
+
+        const JOURNEY_STEPS = [
+            { who: 'Cliente', label: 'Escolha', title: 'O cliente escolhe pelo celular',
+              text: 'O cardápio digital mostra os 55 produtos com fotos e busca, e cada produto tem um link direto.',
+              img: 'cardapio.webp', w: 780, h: 1688, frame: 'phone', alt: 'Cardápio digital no celular com a lista de tapiocas salgadas e o botão de adicionar à sacola' },
+            { who: 'Cliente', label: 'Sacola', title: 'Monta a sacola',
+              text: 'Cada item aceita uma observação. Na entrega, rua e número são obrigatórios, e o frete é calculado pela distância real do trajeto, não em linha reta.',
+              img: 'sacola.webp', w: 780, h: 1688, frame: 'phone', alt: 'Sacola com os itens, as opções de entrega ou retirada e o botão de pagar com PIX' },
+            { who: 'Cliente', label: 'Pagamento', title: 'Paga por PIX, cartão ou dinheiro',
+              text: 'No PIX, o QR Code aparece com o tempo de validade e um botão para copiar o código. A confirmação do pagamento é automática.',
+              img: 'pix.webp', w: 780, h: 1688, frame: 'phone', alt: 'Tela de pagamento por PIX com QR Code, tempo de validade e botão para copiar o código' },
+            { who: 'Loja', label: 'Painel', title: 'O pedido aparece no painel da loja',
+              text: 'Em tempo real, com aviso sonoro gerado no próprio navegador. A comanda sai na impressora térmica, e pedidos grandes ou agendados esperam a confirmação da loja.',
+              img: 'painel.webp', w: 1280, h: 800, frame: 'screen', alt: 'Painel da loja com os pedidos organizados em colunas: novos, em preparo, prontos e em rota' },
+            { who: 'Cozinha', label: 'Preparo', title: 'A cozinha só vê o que pode ir para a chapa',
+              text: 'Na tela da cozinha, pensada para TV ou tablet, o pedido só aparece quando está pago, confirmado quando necessário e dentro do horário. Pedido de teste ou agendado para depois fica de fora.',
+              img: 'cozinha.webp', w: 1280, h: 800, frame: 'screen', alt: 'Tela da cozinha com cartões dos pedidos novos e em preparo, com as observações de cada item' },
+            { who: 'Motoboy', label: 'Entrega', title: 'O motoboy sai para a entrega',
+              text: 'No app instalável, com acesso protegido, ele vê os dados da entrega e tem botões de contato e de rota, que abre o aplicativo de mapas em um toque.',
+              img: 'motoboy.webp', w: 780, h: 1600, frame: 'phone', alt: 'App do motoboy com as entregas, os dados do cliente e os botões de contato e rota' },
+            { who: 'Cliente', label: 'Rastreio', title: 'E o cliente acompanha tudo',
+              text: 'Cada mudança de status aparece na hora na tela de rastreio, até o pedido chegar.',
+              img: 'rastreio.webp', w: 860, h: 1800, frame: 'phone', alt: 'Rastreio do pedido com o status atual e as etapas de preparo' },
+        ];
+
+        const PERSONAS = [
+            { icon: 'smartphone', who: 'Cliente', wants: 'quer escolher, pagar e saber quando o pedido chega.' },
+            { icon: 'layout-dashboard', who: 'Loja', wants: 'quer ver tudo o que acontece e controlar preços e produtos.' },
+            { icon: 'chef-hat', who: 'Cozinha', wants: 'quer receber só o que já pode ser preparado.' },
+            { icon: 'bike', who: 'Motoboy', wants: 'quer o endereço certo e a rota sem perder tempo.' },
+        ];
+
+        const RISKS = [
+            { risk: 'o servidor sair do ar no horário de pico?',
+              fix: 'O site guarda uma cópia local do cardápio. O cliente continua vendo os produtos.' },
+            { risk: 'alguém alterar o preço pelo navegador?',
+              fix: 'Preços e totais são recalculados no servidor, e cada tipo de usuário acessa somente o que precisa.' },
+            { risk: 'a cozinha preparar um pedido que ainda não está certo?',
+              fix: 'Uma regra única decide: só vai para a chapa o pedido pago, confirmado quando necessário e dentro do horário.' },
+            { risk: 'o endereço vier incompleto ou a busca de CEP falhar?',
+              fix: 'Entrega exige rua e número, e o CEP é consultado em vários serviços em sequência: a falha de um não impede o pedido.' },
+            { risk: 'um pedido chegar e ninguém perceber?',
+              fix: 'Painel e cozinha atualizam em tempo real, com aviso sonoro gerado no próprio navegador.' },
+            { risk: 'a atendente virtual errar?',
+              fix: 'Ela trabalha sobre o cardápio real e valida os dados antes de registrar. A equipe pode assumir a conversa e devolvê-la depois.' },
+        ];
+
+        const VERSIONS = [
+            { when: '09/09/2026', what: 'Versões 1.0 e 1.1', detail: 'Cardápio, sacola, banco de dados seguro e painel em tempo real' },
+            { when: '10 e 11/09', what: 'Versões 1.2 e 1.3', detail: 'Pagamento online, frete, app do motoboy, rastreio e WhatsApp' },
+            { when: '22 a 26/09', what: 'Versões 1.4 a 1.6', detail: 'Atendimento misto com a equipe, endereço confiável e gestão de entregas' },
+            { when: '01/10', what: 'Versões 1.7 e 1.8', detail: 'Novo visual da cozinha e do painel, sacola reorganizada' },
+            { when: '02/10', what: 'Versão 1.9', detail: 'Atendente virtual com horário, equipe na conversa e confirmação de pedidos' },
+        ];
+
+        const STORY_BLOCKS = {
+            'tapioca-numeros': () => `
+                <div class="story-block grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <div class="stat-tile story-reveal" style="--d:0ms"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white" data-count="55">55</div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">produtos no cardápio digital</div></div>
+                    <div class="stat-tile story-reveal" style="--d:80ms"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white" data-count="4">4</div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">frentes: cliente, loja, cozinha e entrega</div></div>
+                    <div class="stat-tile story-reveal" style="--d:160ms"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white" data-count="10">10</div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">versões publicadas em menos de um mês</div></div>
+                    <div class="stat-tile story-reveal" style="--d:240ms"><div class="h-9 flex items-center text-navy-700 dark:text-white"><i data-lucide="flask-conical" class="w-7 h-7"></i></div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">testes automatizados para pedidos, entrega e frete</div></div>
+                </div>`,
+
+            'tapioca-personas': () => `
+                <div class="story-block story-personas" data-story-observe>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        ${PERSONAS.map(p => `
+                            <div class="persona-card stat-tile text-center">
+                                <span class="mx-auto mb-2 w-10 h-10 rounded-xl bg-navy-700 text-white flex items-center justify-center"><i data-lucide="${p.icon}" class="w-5 h-5"></i></span>
+                                <div class="font-display font-bold text-navy-800 dark:text-white text-sm">${p.who}</div>
+                                <div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">${p.wants}</div>
+                            </div>`).join('')}
+                    </div>
+                    <svg class="persona-lines hidden sm:block w-full h-14" viewBox="0 0 400 56" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                        <path class="persona-line" vector-effect="non-scaling-stroke" d="M50 0 C50 34 200 22 200 56"/>
+                        <path class="persona-line" vector-effect="non-scaling-stroke" d="M150 0 C150 30 200 26 200 56"/>
+                        <path class="persona-line" vector-effect="non-scaling-stroke" d="M250 0 C250 30 200 26 200 56"/>
+                        <path class="persona-line" vector-effect="non-scaling-stroke" d="M350 0 C350 34 200 22 200 56"/>
+                    </svg>
+                    <div class="sm:hidden flex justify-center py-3 text-navy-400" aria-hidden="true"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+                    <div class="persona-order mx-auto max-w-xs rounded-2xl bg-navy-700 dark:bg-navy-600 text-white px-4 py-3 flex items-center gap-3 shadow-lg">
+                        <span class="w-10 h-10 shrink-0 rounded-xl bg-white/15 flex items-center justify-center"><i data-lucide="receipt" class="w-5 h-5"></i></span>
+                        <span class="leading-tight"><span class="block text-[11px] uppercase tracking-widest font-bold text-navy-100">Um só pedido</span><span class="block text-sm font-semibold">visto por cada um do seu jeito</span></span>
+                    </div>
+                </div>`,
+
+            'tapioca-jornada': () => `
+                <div class="story-block story-journey" data-story-journey>
+                    <div class="journey-grid">
+                        <ol class="journey-steps">
+                            ${JOURNEY_STEPS.map((s, i) => `
+                                <li class="journey-step" data-step="${i}">
+                                    <div class="journey-body">
+                                        <span class="journey-num" aria-hidden="true">${i + 1}</span>
+                                        <span class="journey-who">${s.who} · ${s.label}</span>
+                                        <h3 class="journey-title font-display font-bold">${s.title}</h3>
+                                        <p class="journey-text">${s.text}</p>
+                                        <div class="journey-inline">${deviceFrame(s)}</div>
+                                    </div>
+                                </li>`).join('')}
+                        </ol>
+                        <div class="journey-stage">
+                            <div class="journey-sticky">
+                                <div class="journey-screens">
+                                    ${JOURNEY_STEPS.map((s, i) => `<div class="journey-screen${i === 0 ? ' is-active' : ''}" data-step="${i}">${deviceFrame(s)}</div>`).join('')}
+                                </div>
+                                <div class="journey-dots">
+                                    ${JOURNEY_STEPS.map((s, i) => `<button type="button" class="journey-dot${i === 0 ? ' is-active' : ''}" data-step="${i}" aria-label="Ir para a etapa ${i + 1}: ${s.label}"></button>`).join('')}
+                                </div>
+                                <p class="journey-caption" aria-live="polite">Etapa 1 de ${JOURNEY_STEPS.length} · ${JOURNEY_STEPS[0].label}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="mt-6 text-xs text-slate-500 dark:text-slate-400 text-center">Capturas de um ambiente de demonstração, com clientes, pedidos e valores fictícios. Toque numa tela para ampliar.</p>
+                </div>`,
+
+            'tapioca-riscos': () => `
+                <div class="story-block grid sm:grid-cols-2 gap-4">
+                    ${RISKS.map((r, i) => `
+                        <div class="risk-card story-reveal" style="--d:${(i % 2) * 90}ms">
+                            <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-100 dark:border-amber-900/40">
+                                <div class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-300"><i data-lucide="triangle-alert" class="w-3.5 h-3.5"></i> E se…</div>
+                                <div class="mt-1 text-sm font-semibold text-slate-800 dark:text-slate-100 leading-snug">${r.risk}</div>
+                            </div>
+                            <div class="risk-then p-4">
+                                <div class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-300"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> O sistema</div>
+                                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${r.fix}</div>
+                            </div>
+                        </div>`).join('')}
+                </div>`,
+
+            'tapioca-versoes': () => `
+                <div class="story-block story-timeline" data-story-timeline>
+                    <div class="timeline-track" aria-hidden="true"><div class="timeline-fill"></div></div>
+                    <ol>
+                        ${VERSIONS.map(v => `
+                            <li class="timeline-item">
+                                <span class="timeline-dot" aria-hidden="true"></span>
+                                <span class="block text-xs font-bold text-navy-600 dark:text-navy-300">${v.when}</span>
+                                <span class="block font-display font-bold text-navy-800 dark:text-white">${v.what}</span>
+                                <span class="block text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${v.detail}</span>
+                            </li>`).join('')}
+                    </ol>
+                </div>`,
+        };
+
+        const STORY_PATTERN = /^\[\[story:([a-z0-9-]+)\]\]$/;
+
+        // Palavras dos componentes contam no tempo de leitura
+        function storyWords(markdown) {
+            return (markdown.match(/\[\[story:[a-z0-9-]+\]\]/g) || []).reduce((total, tag) => {
+                const block = STORY_BLOCKS[tag.slice(8, -2)];
+                if (!block) return total;
+                const text = block().replace(/<[^>]+>/g, ' ');
+                return total + text.split(/\s+/).filter(Boolean).length;
+            }, 0);
+        }
+
+        // Troca cada parágrafo [[story:nome]] pelo componente correspondente
+        function insertStoryBlocks(container) {
+            container.querySelectorAll('p').forEach(p => {
+                const match = p.textContent.trim().match(STORY_PATTERN);
+                if (!match || !STORY_BLOCKS[match[1]]) return;
+                const holder = document.createElement('div');
+                holder.innerHTML = STORY_BLOCKS[match[1]]().trim();
+                p.replaceWith(holder.firstElementChild);
+            });
+        }
+
+        let storyTeardown = [];
+
+        function teardownStory() {
+            storyTeardown.forEach(fn => { try { fn(); } catch (e) { } });
+            storyTeardown = [];
+        }
+
+        function countUp(el) {
+            const target = parseInt(el.getAttribute('data-count'), 10);
+            if (isNaN(target)) return;
+            const start = performance.now();
+            const step = now => {
+                const p = Math.min((now - start) / 1100, 1);
+                el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
+                if (p < 1) requestAnimationFrame(step);
+            };
+            el.textContent = '0';
+            requestAnimationFrame(step);
+        }
+
+        function initJourney(root) {
+            const steps = Array.from(root.querySelectorAll('.journey-step'));
+            const screens = Array.from(root.querySelectorAll('.journey-screen'));
+            const dots = Array.from(root.querySelectorAll('.journey-dot'));
+            const caption = root.querySelector('.journey-caption');
+            let current = -1;
+
+            function activate(index) {
+                if (index === current) return;
+                current = index;
+                steps.forEach((s, i) => s.classList.toggle('is-active', i === index));
+                screens.forEach((s, i) => s.classList.toggle('is-active', i === index));
+                dots.forEach((d, i) => {
+                    d.classList.toggle('is-active', i === index);
+                    d.setAttribute('aria-current', i === index ? 'step' : 'false');
+                });
+                caption.textContent = `Etapa ${index + 1} de ${steps.length} · ${JOURNEY_STEPS[index].label}`;
+            }
+
+            root.classList.add('is-armed');
+            activate(0);
+            // A etapa que cruza o meio da tela é a etapa atual
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) activate(Number(entry.target.getAttribute('data-step')));
+                });
+            }, { rootMargin: '-45% 0px -45% 0px' });
+            steps.forEach(step => io.observe(step));
+
+            const onDot = event => {
+                const dot = event.target.closest('.journey-dot');
+                if (!dot) return;
+                const step = steps[Number(dot.getAttribute('data-step'))];
+                step.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+            };
+            root.addEventListener('click', onDot);
+            return () => { io.disconnect(); root.removeEventListener('click', onDot); };
+        }
+
+        function initTimeline(root) {
+            const items = Array.from(root.querySelectorAll('.timeline-item'));
+            let ticking = false;
+            const update = () => {
+                ticking = false;
+                const rect = root.getBoundingClientRect();
+                if (!rect.height) return;
+                // Enche a linha conforme o meio da tela atravessa o bloco
+                const progress = Math.min(1, Math.max(0, (window.innerHeight * 0.6 - rect.top) / rect.height));
+                root.style.setProperty('--p', progress.toFixed(3));
+                const filled = rect.top + progress * rect.height;
+                items.forEach(item => {
+                    const dot = item.querySelector('.timeline-dot').getBoundingClientRect();
+                    item.classList.toggle('is-passed', dot.top + dot.height / 2 <= filled + 1);
+                });
+            };
+            const onScroll = () => {
+                if (!ticking) { ticking = true; requestAnimationFrame(update); }
+            };
+            window.addEventListener('scroll', onScroll, { passive: true });
+            window.addEventListener('resize', onScroll, { passive: true });
+            const timer = setTimeout(update, 200);
+            update();
+            return () => {
+                clearTimeout(timer);
+                window.removeEventListener('scroll', onScroll);
+                window.removeEventListener('resize', onScroll);
+            };
+        }
+
+        // Liga animações e interações dos componentes do artigo aberto
+        function initStoryBlocks(container) {
+            teardownStory();
+            container.classList.remove('story-armed');
+            if (!container.querySelector('.story-block') || !('IntersectionObserver' in window)) return;
+
+            // A jornada funciona mesmo com movimento reduzido (as trocas ficam instantâneas)
+            container.querySelectorAll('[data-story-journey]').forEach(root => storyTeardown.push(initJourney(root)));
+            if (prefersReducedMotion()) return;
+
+            container.classList.add('story-armed');
+            const io = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    entry.target.querySelectorAll('[data-count]').forEach(countUp);
+                    io.unobserve(entry.target);
+                });
+            }, { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+            container.querySelectorAll('.story-reveal, [data-story-observe]').forEach(el => io.observe(el));
+            storyTeardown.push(() => io.disconnect());
+            container.querySelectorAll('[data-story-timeline]').forEach(root => storyTeardown.push(initTimeline(root)));
+        }
+
 
         // --- ARTIGOS EM MARKDOWN ---
         // Regras editoriais: nada de métricas inventadas ou histórias apresentadas como reais.
@@ -1121,70 +1725,54 @@ E é sobre essa base que a tecnologia funciona de verdade. Um script em Python o
                 tags: ['React', 'TypeScript', 'Supabase', 'IA generativa', 'Sistemas de pedidos'],
                 svgKey: 'tapiocaOrders',
                 summary: 'Um estudo de caso sobre um sistema completo de pedidos para uma tapiocaria: da escolha no celular até a entrega, com painel, cozinha e atendimento por IA.',
+                layout: 'story',
                 content: `
-Quando o assunto é delivery, o produto é só uma parte da história. O restante é **organização**: quem fez o pedido, se já pagou, o que a cozinha precisa preparar primeiro e para onde o motoboy deve ir.
+Sexta-feira, 19h. Imagine o horário de pico de uma tapiocaria com delivery. O WhatsApp não para. Um cliente manda o endereço sem o número da casa. Outro garante que já pagou o PIX. A cozinha quer saber qual pedido vem primeiro, e o motoboy espera a rota para sair.
 
-Este artigo conta como esse fluxo foi resolvido no sistema da **Tapioca Delegusty**, um projeto que desenhei e desenvolvi de ponta a ponta. A ideia é mostrar o raciocínio, não o código: o repositório é privado, porque o sistema lida com dados de clientes e com pagamentos.
+Cada mensagem solta é uma chance de erro: endereço incompleto, pedido esquecido, frete combinado no olho. O sistema da **Tapioca Delegusty**, que desenhei e desenvolvi de ponta a ponta, foi pensado para que nada disso dependa da memória de alguém.
 
 > [!NOTE]
-> Por segurança, este texto não detalha regras internas, integrações ou acessos. Ele descreve o que o sistema faz e as decisões de projeto que mais importaram.
+> O repositório é privado, porque o sistema lida com dados de clientes e com pagamentos. Por isso este texto mostra o raciocínio e as decisões de projeto, sem código, regras internas ou acessos. As telas vêm de um ambiente de demonstração, com clientes, pedidos e valores inventados.
 
-## O ponto de partida
+[[story:tapioca-numeros]]
 
-Uma tapiocaria com entrega precisa atender quatro pessoas ao mesmo tempo, cada uma com uma necessidade diferente:
+## Quatro pessoas, um mesmo pedido
 
-- **O cliente** quer escolher, pagar e saber quando o pedido chega.
-- **A loja** quer ver tudo o que acontece e controlar preços e produtos.
-- **A cozinha** quer receber só o que já pode ser preparado.
-- **O motoboy** quer o endereço certo e a rota sem perder tempo.
+Todo pedido de delivery envolve, ao mesmo tempo, quatro pessoas com necessidades diferentes. O desafio era ligar as quatro ao mesmo pedido, sem deixar passar informação incompleta.
 
-O desafio era ligar essas quatro pontas ao mesmo pedido, sem deixar passar informação incompleta.
+[[story:tapioca-personas]]
 
-## O que foi construído
+## Acompanhe um pedido, do toque à entrega
 
-| Frente | O que entrega |
-| :--- | :--- |
-| Cliente | Cardápio digital com 55 produtos, sacola com observação por item, retirada ou entrega, frete pela distância real, PIX com QR Code, cartão ou dinheiro e acompanhamento do pedido |
-| Loja | Painel em tempo real com aviso sonoro, comanda para impressora térmica, ajuste de preços e pausa de produto em falta |
-| Cozinha | Tela própria para TV ou tablet, que só mostra o pedido quando ele pode ir para a chapa |
-| Entrega | App instalável para o motoboy, com acesso protegido e rota em um toque |
-| Atendimento | Atendente virtual no WhatsApp, que entende texto e voz, consulta o cardápio e registra o pedido |
+Role a página e siga um pedido pelo sistema. Em cada etapa aparece a tela de quem está trabalhando naquele momento.
 
-### Como fica na prática
+[[story:tapioca-jornada]]
 
-Os dois exemplos abaixo vêm de um ambiente de demonstração, com clientes, pedidos e valores inventados.
+## E quando o pedido chega pelo WhatsApp?
 
-![Painel da loja com os pedidos separados em Novos, Em preparo, Prontos e Em rota](assets/tapioca-delegusty/painel.webp)
-*Painel da loja: cada pedido avança de coluna conforme o status. Dados fictícios.*
+Nem todo cliente quer abrir um site. Para esses, existe uma atendente virtual no WhatsApp. Ela entende texto e mensagens de voz, consulta o cardápio real, confere se o endereço está completo, registra o pedido e gera o PIX, sempre respeitando o horário de funcionamento da loja.
 
-![Tela da cozinha com os pedidos novos e em preparo](assets/tapioca-delegusty/cozinha.webp)
-*Tela da cozinha, pensada para TV ou tablet. Dados fictícios.*
+![Aba de conversas do WhatsApp no painel, com a conversa de uma cliente com a atendente virtual](assets/tapioca-delegusty/conversas.webp)
+*A equipe acompanha as conversas pelo painel e pode assumir o atendimento a qualquer momento. Dados fictícios.*
 
-## Cinco decisões que fizeram diferença
+## O que poderia dar errado — e como o sistema evita
 
-### 1. O cardápio nunca some
+Em um sistema de pedidos, cada falha custa caro: um cliente sem cardápio, um preço alterado, um pedido preparado antes da hora. Estas foram as decisões de projeto que mais importaram.
 
-O site busca o cardápio no banco de dados, mas guarda uma cópia local. Se o servidor falhar, o cliente continua vendo os produtos. Para um negócio que vende no horário de pico, indisponibilidade é perda direta.
+[[story:tapioca-riscos]]
 
-### 2. Quem decide é o servidor
+## No fim do dia
 
-O navegador do cliente é um lugar fácil de manipular. Por isso, preços e totais são recalculados no servidor, e cada tipo de usuário acessa somente o que precisa. Cliente, loja e motoboy enxergam partes diferentes do mesmo pedido.
+Com todos os pedidos registrados em um só lugar, a loja também enxerga o próprio movimento. Os relatórios de faturamento por período ainda estão em evolução.
 
-### 3. O pedido só vai para a chapa quando pode
+![Relatório de faturamento com indicadores, melhor dia, horário de pico e gráfico diário](assets/tapioca-delegusty/relatorios.webp)
+*Relatório de faturamento no ambiente de demonstração. Dados fictícios.*
 
-Um pedido pago por PIX, confirmado pela loja quando necessário e dentro do horário pode ser preparado. Um pedido de teste ou agendado para depois não aparece para a cozinha. Essa regra única evita o erro mais caro: preparar algo que ainda não está certo.
+## Como foi construído e testado
 
-### 4. Endereço completo ou nada
+O sistema tem um simulador de pedidos de teste, que não chegam à cozinha nem ao motoboy, e baterias de testes automatizados para pedidos, entrega, frete, atendimento e relatórios. Cada versão foi publicada com registro das mudanças:
 
-Para entrega, o sistema exige rua e número. A busca de CEP consulta vários serviços em sequência, de modo que a falha de um não impede o pedido. O frete usa a distância real do trajeto, e não a linha reta.
-
-### 5. IA com supervisão humana
-
-A atendente virtual trabalha sobre o cardápio real e valida os dados antes de registrar um pedido. A equipe pode assumir a conversa quando quiser e devolvê-la depois. A IA tira o trabalho repetitivo, mas a loja continua no controle.
-
-## Como foi testado
-
-O sistema tem um simulador de pedidos de teste, que não chegam à cozinha nem ao motoboy, e baterias de testes automatizados para pedidos, entrega, frete, atendimento e relatórios. Cada versão foi publicada com registro das mudanças: foram 10 versões, de 1.0 a 1.9, entre 09/09 e 02/10/2026.
+[[story:tapioca-versoes]]
 
 ## O que eu aprendi
 
@@ -1195,7 +1783,9 @@ O sistema tem um simulador de pedidos de teste, que não chegam à cozinha nem a
 
 ## Conclusão
 
-O Tapioca Delegusty reúne o que mais me interessa no trabalho: **organizar uma rotina, automatizar o que é repetitivo e manter pessoas no controle**. Se quiser ver o sistema em funcionamento ou conversar sobre como aplicar essa abordagem na sua equipe, fale comigo pela [página de contato](index.html#contato).
+O Tapioca Delegusty reúne o que mais me interessa no trabalho: **organizar uma rotina, automatizar o que é repetitivo e manter pessoas no controle**.
+
+Todas as telas estão no [estudo de caso completo](caso-tapioca-delegusty.html). Se quiser ver o sistema funcionando ou conversar sobre como aplicar essa abordagem na sua equipe, fale comigo pela [página de contato](index.html#contato).
                 `
             }
         ];
@@ -1218,8 +1808,8 @@ O Tapioca Delegusty reúne o que mais me interessa no trabalho: **organizar uma 
         }
 
         // ~200 palavras por minuto, contando o artigo inteiro
-        function readingMinutes(markdown) {
-            const words = markdown.trim().split(/\s+/).filter(Boolean).length;
+        function readingMinutes(markdown, extraWords = 0) {
+            const words = markdown.trim().split(/\s+/).filter(Boolean).length + extraWords;
             return Math.max(1, Math.round(words / 200));
         }
 
@@ -1230,7 +1820,7 @@ O Tapioca Delegusty reúne o que mais me interessa no trabalho: **organizar uma 
 
         // Mais recente primeiro; tempo de leitura calculado a partir do texto
         POSTS.sort((a, b) => b.date.localeCompare(a.date));
-        POSTS.forEach(post => { post.minutes = readingMinutes(post.content); });
+        POSTS.forEach(post => { post.minutes = readingMinutes(post.content, storyWords(post.content)); });
 
         function renderMarkdown(markdown) {
             if (window.marked && typeof window.marked.parse === 'function') {
@@ -1380,6 +1970,9 @@ O Tapioca Delegusty reúne o que mais me interessa no trabalho: **organizar uma 
 
         // Ajusta o HTML gerado pelo Markdown e devolve os subtítulos para o sumário
         function enhanceArticleBody(container) {
+            // 0. Componentes de narrativa ([[story:nome]])
+            insertStoryBlocks(container);
+
             // 1. Alertas no estilo GitHub (> [!NOTE]) viram caixas de destaque
             container.querySelectorAll('blockquote').forEach(quote => {
                 const first = quote.querySelector('p');
@@ -1508,6 +2101,8 @@ O Tapioca Delegusty reúne o que mais me interessa no trabalho: **organizar uma 
             const body = document.getElementById('article-body');
             body.innerHTML = renderMarkdown(post.content);
             renderToc(enhanceArticleBody(body));
+            body.classList.toggle('story-mode', post.layout === 'story');
+            initStoryBlocks(body);
 
             document.getElementById('article-tags').innerHTML = post.tags.map(tag => `
                 <span class="text-xs font-semibold px-2.5 py-1 rounded-lg bg-navy-50 dark:bg-navy-800 text-navy-700 dark:text-navy-200 border border-slate-200 dark:border-navy-700">#${escapeHtml(tag)}</span>
@@ -1583,6 +2178,7 @@ O Tapioca Delegusty reúne o que mais me interessa no trabalho: **organizar uma 
                     scrollToInstant(0);
                 } else {
                     articleView.classList.add('hidden');
+                    teardownStory();
                     feedView.classList.remove('hidden');
                     document.title = FEED_TITLE;
                     scrollToInstant(isFirstRender ? 0 : feedScrollY);
