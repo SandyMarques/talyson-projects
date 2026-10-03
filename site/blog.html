@@ -1433,9 +1433,11 @@ Você abre o arquivo e, em poucos minutos, aparecem os problemas de sempre:
 - Valores salvos como texto, com \`R$\` no meio, que nenhuma fórmula consegue somar.
 - Um PROCV arrastado por milhares de linhas, deixando o Excel lento.
 
-O cansaço nem é o maior problema. O risco real é o **erro silencioso**: uma data lida ao contrário ou uma linha deslocada que passa despercebida e chega ao relatório final.
+Nenhum desses problemas é difícil sozinho. Juntos, com o relógio correndo, viram um campo minado. E o cansaço nem é o pior: o risco real é o **erro silencioso**, aquela data lida ao contrário ou aquela linha deslocada que passa despercebida e chega ao relatório final com cara de número confiável.
 
-## Por que vale automatizar essa parte
+Este artigo mostra como um script curto em Python resolve a parte repetitiva e, mais importante, como ele pode ser escrito para **nunca esconder um erro**.
+
+## Onde as pessoas erram e o script não
 
 Conferir linha por linha é o tipo de tarefa em que pessoas cansadas erram e computadores não se cansam. Macros gravadas ajudam, mas costumam quebrar quando a ordem das colunas muda ou quando o arquivo chega com outra codificação de caracteres.
 
@@ -1446,6 +1448,8 @@ Um script em Python com a biblioteca **Pandas** faz a parte repetitiva sempre do
 
 ## O que muda na prática
 
+A diferença aparece tarefa por tarefa:
+
 | Tarefa | No braço | Com um script |
 | :--- | :--- | :--- |
 | Padronizar cabeçalhos | Corrigir coluna por coluna | Uma regra aplicada a todas |
@@ -1453,7 +1457,7 @@ Um script em Python com a biblioteca **Pandas** faz a parte repetitiva sempre do
 | Valores com "R$" salvos como texto | Localizar e substituir, várias vezes | Conversão automática para número |
 | Saber o que foi alterado | Depende da memória de quem fez | O próprio script é o registro do passo a passo |
 
-## O script, passo a passo
+## O script: a regra de ouro é não consertar nada em silêncio
 
 O exemplo abaixo trata uma planilha com as colunas \`Filial\`, \`Data\` e \`Valor\` (precisa do pandas 2.1 ou mais recente e do openpyxl). A regra mais importante está no final: **nada é apagado ou "consertado" em silêncio**. O que não pôde ser convertido vai para uma aba chamada \`revisar\`.
 
@@ -1507,9 +1511,9 @@ padronizar_planilha("fechamento_filiais.xlsx", "fechamento_padronizado.xlsx")
 > [!TIP]
 > Repare no passo 3: as datas são lidas com o formato informado (\`%d/%m/%Y\` e \`%Y-%m-%d\`). Deixar a biblioteca "adivinhar" o formato pode trocar dia e mês sem avisar — exatamente o tipo de erro silencioso que queremos evitar.
 
-## E para quem não programa?
+## E quando quem precisa da planilha não programa?
 
-Foi essa pergunta que me levou ao projeto [Automatizador de Planilhas com IA](https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA). Nele, a pessoa envia um arquivo \`.xlsx\` ou \`.csv\` e escreve o que quer em português, por exemplo:
+Um script resolve para quem sabe rodá-lo. Mas e para quem não sabe? Foi essa pergunta que me levou ao projeto [Automatizador de Planilhas com IA](https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA). Nele, a pessoa envia um arquivo \`.xlsx\` ou \`.csv\` e escreve o que quer em português, por exemplo:
 
 > "Filtre os contratos que vencem nos próximos 15 dias e some o valor por gestor."
 
@@ -1518,7 +1522,9 @@ A aplicação usa a API da DeepSeek para gerar o código Pandas correspondente e
 > [!IMPORTANT]
 > Mesmo com IA, a conferência continua sendo de quem entende o processo. A ferramenta acelera o trabalho repetitivo; a decisão sobre o que está certo continua sendo humana.
 
-## Conclusão
+## De volta à sexta-feira, 16h45
+
+Com um script assim, a tarde não precisa ser gasta caçando vírgulas e espaços invisíveis. A pessoa abre a aba \`revisar\`, olha só as linhas que realmente pedem julgamento e entrega o relatório sabendo o que foi tratado automaticamente e o que passou por conferência humana.
 
 Automatizar não é tirar a pessoa do processo. É tirar dela a parte repetitiva, para que o tempo vá para o que exige julgamento: as exceções, os prazos e a qualidade da entrega.
                 `
@@ -1543,18 +1549,22 @@ Na pasta compartilhada, a cena conhecida:
 
 Você abre o PDF, aperta \`Ctrl + F\` e procura **"multa"**. Nada. Procura **"rescisão"**. Nada. Depois de ler várias páginas, encontra a cláusula com outro título: *"Das penalidades por resilição contratual"*.
 
-O \`Ctrl + F\` procura letras iguais, não significados. É aqui que entra o **RAG** (*Retrieval-Augmented Generation*, ou geração aumentada por recuperação).
+O \`Ctrl + F\` procura letras iguais, não significados. A resposta estava no documento o tempo todo; o que faltava era um jeito de perguntar pelo **sentido**, e não pela palavra exata. É aqui que entra o **RAG** (*Retrieval-Augmented Generation*, ou geração aumentada por recuperação).
 
-## O que é RAG, em uma frase
+## RAG em uma frase: primeiro buscar, depois responder
 
 Em vez de perguntar direto a um modelo de IA, que não conhece os seus documentos, o sistema primeiro **busca os trechos mais relevantes** nos seus arquivos e só então pede ao modelo uma resposta **baseada apenas nesses trechos**, mostrando de onde cada informação veio.
 
-## Por que não colar tudo em um chat genérico
+## Por que não simplesmente colar tudo em um chat?
+
+É a primeira ideia que costuma surgir, e tem dois problemas sérios:
 
 1. **Dados sensíveis.** Contratos e documentos internos podem ter dados pessoais e informações sigilosas. Antes de enviar qualquer coisa a um serviço externo, é preciso respeitar a LGPD e as regras da empresa.
 2. **Respostas inventadas.** Sem acesso ao documento, um modelo pode produzir uma resposta convincente e errada. Em contratos, uma cláusula inventada é um problema sério.
 
-## Como funciona, em 5 etapas
+## Do PDF à resposta, em cinco etapas
+
+Por dentro, o caminho é este:
 
 1. **Leitura:** o texto de cada página do PDF é extraído, guardando o nome do arquivo e o número da página.
 2. **Divisão:** o texto é dividido em blocos de cerca de 1.000 caracteres, com sobreposição de 200, para não cortar uma cláusula ao meio.
@@ -1562,7 +1572,7 @@ Em vez de perguntar direto a um modelo de IA, que não conhece os seus documento
 4. **Banco vetorial:** os vetores são guardados no **ChromaDB**.
 5. **Pergunta e resposta:** a pergunta também vira vetor, o sistema recupera os blocos mais próximos e o modelo de linguagem responde usando só esses blocos, citando a fonte.
 
-## O código essencial
+## O código essencial: indexar e buscar
 
 Este é um exemplo simplificado do fluxo que uso no projeto [Assistente IA com RAG](https://github.com/SandyMarques/Assistente-IA-com-RAG). O projeto completo inclui uma API com FastAPI, interface web e testes automatizados.
 
@@ -1608,9 +1618,9 @@ def buscar_trechos(pergunta: str, k: int = 4) -> None:
         print(doc.page_content[:200], "...\\n")
 \`\`\`
 
-## Como reduzir o risco de respostas inventadas
+## O medo certo: respostas inventadas
 
-No projeto, o modelo recebe instruções explícitas: responder **somente** com base nos trechos recuperados, citar a fonte no formato \`[Fonte N]\` e, quando a informação não estiver nos documentos, dizer isso com clareza:
+O maior risco de um assistente desses é responder com segurança algo que não está nos documentos. Por isso, no projeto, o modelo recebe instruções explícitas: responder **somente** com base nos trechos recuperados, citar a fonte no formato \`[Fonte N]\` e, quando a informação não estiver nos documentos, dizer isso com clareza:
 
 > "Com base nos documentos fornecidos, não encontrei informações suficientes para responder a esta pergunta."
 
@@ -1622,15 +1632,17 @@ Além disso, trechos muito distantes da pergunta são descartados antes de chega
 > [!WARNING]
 > PDF escaneado é imagem, não texto. Sem uma etapa de OCR (reconhecimento de caracteres) antes, ele não tem conteúdo para ser indexado.
 
-## Onde isso pode ajudar
+## Onde isso pode ajudar no dia a dia
 
 - **Integração de novas pessoas:** perguntar sobre um procedimento interno e receber a resposta junto com o trecho do manual.
 - **Consulta a contratos e políticas:** localizar prazos, cláusulas e condições sem ler o documento inteiro.
 - **Conhecimento que não se perde:** o que está documentado continua consultável mesmo quando quem sabia de cor muda de área.
 
-## Conclusão
+## De volta à multa do fornecedor Alfa
 
-RAG não substitui um arquivo bem organizado — funciona melhor justamente quando os documentos estão atualizados e bem nomeados. A combinação de **organização documental** com **busca por significado** devolve tempo para o que importa: analisar e decidir.
+A busca por significado existe para esse tipo de aproximação: ligar a pergunta sobre "multa por rescisão" ao trecho que fala em "penalidades por resilição contratual", e mostrar a página de onde veio, para que a pessoa confira com os próprios olhos.
+
+RAG não substitui um arquivo bem organizado: funciona melhor justamente quando os documentos estão atualizados e bem nomeados. A combinação de **organização documental** com **busca por significado** devolve tempo para o que importa: analisar e decidir.
                 `
             },
             {
@@ -1645,17 +1657,17 @@ RAG não substitui um arquivo bem organizado — funciona melhor justamente quan
                 content: `
 Existe uma ilusão comum: achar que um software novo, sozinho, resolve um setor desorganizado.
 
-O setor está lento, prazos estouram e documentos se perdem. A reação costuma ser: *"vamos adotar uma ferramenta nova"*. Meses depois, a ferramenta virou mais um lugar com arquivos soltos, e as planilhas continuam inconsistentes.
+O setor está lento, prazos estouram e documentos se perdem. A reação costuma ser: *"vamos adotar uma ferramenta nova"*. Meses depois, a ferramenta virou mais um lugar com arquivos soltos, e as planilhas continuam inconsistentes. A ferramenta não era o problema; só mudou o endereço da bagunça.
 
 Uma máxima conhecida de quem trabalha com processos:
 
 > Se você automatizar um processo desorganizado, o resultado é bagunça automatizada — só que mais rápida.
 
-As cinco práticas abaixo são simples, mas fazem diferença em qualquer rotina com documentos, dados e prazos — e preparam o terreno para automatizar depois.
+Por isso, antes de falar em Python ou em IA, vale começar pelo básico. As cinco práticas abaixo são simples, mas fazem diferença em qualquer rotina com documentos, dados e prazos — e preparam o terreno para automatizar depois.
 
-## 1. Nomes de arquivo com padrão
+## 1. Dê aos arquivos nomes que se explicam
 
-Arquivos como estes não dizem nada:
+Quem nunca perdeu dez minutos procurando "a versão certa"? Nomes como estes não ajudam em nada:
 
 - \`planilha_vendas_nova.xlsx\`
 - \`relatorio_final_agora.pdf\`
@@ -1675,7 +1687,7 @@ AAAA-MM-DD_Area_Assunto_Versao.ext
 
 ## 2. Prazos com três alertas, não um
 
-Avisar no dia do vencimento não é gestão de prazo; é apagar incêndio. Uma régua simples, com três momentos:
+Avisar no dia do vencimento não é gestão de prazo; é apagar incêndio. A saída é uma régua simples, com três momentos:
 
 1. **D-15 a D-7 — preparação:** conferir documentos, identificar certidões vencidas e pedir renovações com folga.
 2. **D-3 — execução:** protocolar, emitir guias, agendar pagamentos. Nada fica para a última hora.
@@ -1684,7 +1696,7 @@ Avisar no dia do vencimento não é gestão de prazo; é apagar incêndio. Uma r
 > [!TIP]
 > Se algo der errado no D-1, ainda sobra um dia inteiro para agir antes de o prazo estourar.
 
-## 3. Uma fonte única da verdade
+## 3. Uma única fonte da verdade
 
 Quando quatro pessoas recebem \`planilha_custos.xlsx\` por e-mail e cada uma altera uma linha no próprio computador, nascem quatro versões diferentes da mesma informação.
 
@@ -1694,7 +1706,7 @@ Quando quatro pessoas recebem \`planilha_custos.xlsx\` por e-mail e cada uma alt
 
 ## 4. Quinze minutos para fechar o dia
 
-Os últimos 15 minutos do expediente servem para preparar o dia seguinte:
+O dia seguinte começa a ser decidido no fim do anterior. Os últimos 15 minutos do expediente servem para prepará-lo:
 
 - [ ] Todos os e-mails e protocolos de hoje foram triados e arquivados no lugar certo?
 - [ ] As pendências e os prazos das próximas 48 horas têm responsável definido?
@@ -1709,11 +1721,11 @@ O que foi combinado por telefone, em reunião ou por mensagem e não foi registr
 
 Esse hábito evita esquecimentos, deixa um histórico claro para auditorias e mostra cuidado com o que foi combinado.
 
-## Conclusão
+## A base que sustenta o resto
 
-Com essas práticas, a rotina fica mais previsível: menos retrabalho, menos correria e prazos sob controle.
+Nenhuma dessas práticas exige software novo, só constância. Com elas, a rotina fica mais previsível: menos retrabalho, menos correria e prazos sob controle.
 
-E é sobre essa base que a tecnologia funciona de verdade. Um script em Python ou um assistente de IA rende muito mais quando os dados estão limpos, as pastas seguem um padrão e cada processo tem dono e prazo.
+E é sobre essa base que a tecnologia funciona de verdade. Voltando à ideia do começo: automatizar uma rotina em ordem multiplica o que já funciona. Um script em Python ou um assistente de IA rende muito mais quando os dados estão limpos, as pastas seguem um padrão e cada processo tem dono e prazo.
                 `
             },
             {
