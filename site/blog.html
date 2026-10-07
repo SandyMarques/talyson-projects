@@ -41,6 +41,10 @@
                     document.documentElement.classList.add('dark');
                 }
             } catch (e) { }
+            // Artigo com identidade visual própria: aplica o tema antes da pintura (o route() confirma depois)
+            if (window.location.hash === '#sistema-de-pedidos-tapioca-delegusty') {
+                document.documentElement.classList.add('theme-tapioca');
+            }
         })();
     </script>
 
@@ -66,7 +70,21 @@
                             700: '#1e3a5f',
                             800: '#162945',
                             900: '#101e33',
-                        }
+                        },
+                        // Paleta do sistema da Tapioca Delegusty (usada só no artigo dela)
+                        goma: {
+                            50: '#fefaf0',
+                            100: '#fdf2c3',
+                            200: '#fbe58a',
+                            300: '#f8d64f',
+                            400: '#f4c81c',
+                            500: '#dcae0c',
+                            600: '#b48a07',
+                            700: '#8a6a09',
+                            800: '#6b520d',
+                            900: '#4a390b',
+                        },
+                        creme: '#fbf6ec',
                     }
                 }
             }
@@ -524,12 +542,19 @@
 
         /* Números */
         .stat-tile {
-            border: 1px solid #e2e8f0;
+            border: 1px solid #efe4d2;
             border-radius: 1rem;
             padding: 1rem;
-            background: #f8fafc;
+            background: #fdf8ee;
         }
-        .dark .stat-tile { border-color: #2b3f5e; background: #101e33; }
+        .dark .stat-tile { border-color: #2c2724; background: #141110; }
+        /* Faixa no topo com o degradê da marca (goma → chapa → brasa) */
+        .stat-tile--accent {
+            background: linear-gradient(90deg, #f4c81c, #ea580c, #dc2626) top / 100% 4px no-repeat, #fdf8ee;
+        }
+        .dark .stat-tile--accent {
+            background: linear-gradient(90deg, #f4c81c, #ea580c, #dc2626) top / 100% 4px no-repeat, #141110;
+        }
 
         /* Quatro pessoas, um pedido */
         .story-armed .story-personas .persona-card {
@@ -543,11 +568,11 @@
         .story-personas .persona-card:nth-child(4) { transition-delay: 270ms; }
         .persona-line {
             fill: none;
-            stroke: #8fadcf;
+            stroke: #f4c81c;
             stroke-width: 2;
             stroke-linecap: round;
         }
-        .dark .persona-line { stroke: #5b84b5; }
+        .dark .persona-line { stroke: #b48a07; }
         .story-armed .story-personas .persona-lines {
             clip-path: inset(0 0 100% 0);
             transition: clip-path 750ms var(--ease-premium) 380ms;
@@ -569,9 +594,9 @@
             top: 0.5rem;
             bottom: 0.5rem;
             width: 2px;
-            background: #dce6f1;
+            background: #f3e6c4;
         }
-        .dark .journey-steps::before { background: #2b3f5e; }
+        .dark .journey-steps::before { background: #2c2724; }
         .journey-step { position: relative; padding-bottom: 2.25rem; }
         .journey-step:last-child { padding-bottom: 0; }
         .journey-body { position: relative; padding-left: 3rem; }
@@ -585,8 +610,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #1e3a5f;
-            border: 2px solid #1e3a5f;
+            background: #dc2626;
+            border: 2px solid #dc2626;
             color: #ffffff;
             font-size: 0.8rem;
             font-weight: 800;
@@ -598,17 +623,18 @@
             font-weight: 800;
             letter-spacing: 0.12em;
             text-transform: uppercase;
-            color: #5b84b5;
+            color: #b91c1c;
         }
+        .dark .journey-who { color: #f87171; }
         .markdown-content .story-block .journey-title {
             margin: 0.2rem 0 0.4rem;
             font-size: 1.15rem;
             line-height: 1.3;
-            color: #1e3a5f;
+            color: #1c1917;
         }
-        .dark .markdown-content .story-block .journey-title { color: #dce6f1; }
-        .markdown-content .journey-text { font-size: 0.975rem; line-height: 1.7; color: #475569; }
-        .dark .markdown-content .journey-text { color: #cbd5e1; }
+        .dark .markdown-content .story-block .journey-title { color: #fafaf9; }
+        .markdown-content .journey-text { font-size: 0.975rem; line-height: 1.7; color: #57534e; }
+        .dark .markdown-content .journey-text { color: #d6d3d1; }
         .journey-inline { margin-top: 1rem; }
         .journey-stage { display: none; }
         .journey-sticky { position: sticky; top: 7rem; }
@@ -635,22 +661,22 @@
             width: 0.5rem;
             height: 0.5rem;
             border-radius: 999px;
-            background: #b9cde3;
+            background: #e7dcc8;
             transition: width 300ms var(--ease-premium), background-color 300ms;
         }
-        .journey-dot.is-active { width: 1.5rem; background: #1e3a5f; }
-        .dark .journey-dot { background: #2b3f5e; }
-        .dark .journey-dot.is-active { background: #b9cde3; }
-        .journey-caption { margin-top: 0.6rem; text-align: center; font-size: 0.75rem; font-weight: 600; color: #64748b; }
-        .dark .journey-caption { color: #94a3b8; }
+        .journey-dot.is-active { width: 1.5rem; background: #dc2626; }
+        .dark .journey-dot { background: #2c2724; }
+        .dark .journey-dot.is-active { background: #f4c81c; }
+        .journey-caption { margin-top: 0.6rem; text-align: center; font-size: 0.75rem; font-weight: 600; color: #78716c; }
+        .dark .journey-caption { color: #a8a29e; }
 
         /* Com o JS ativo: etapa atual em destaque */
         .story-journey.is-armed .journey-step { opacity: 0.45; transition: opacity 400ms ease; }
         .story-journey.is-armed .journey-step.is-active { opacity: 1; }
-        .story-journey.is-armed .journey-num { background: #ffffff; color: #1e3a5f; border-color: #b9cde3; }
-        .story-journey.is-armed .journey-step.is-active .journey-num { background: #1e3a5f; color: #ffffff; border-color: #1e3a5f; transform: scale(1.08); }
-        .dark .story-journey.is-armed .journey-num { background: #101e33; color: #dce6f1; border-color: #2b3f5e; }
-        .dark .story-journey.is-armed .journey-step.is-active .journey-num { background: #dce6f1; color: #101e33; border-color: #dce6f1; }
+        .story-journey.is-armed .journey-num { background: #ffffff; color: #a8a29e; border-color: #e7dcc8; }
+        .story-journey.is-armed .journey-step.is-active .journey-num { background: #dc2626; color: #ffffff; border-color: #dc2626; transform: scale(1.08); box-shadow: 0 6px 14px -4px rgba(220, 38, 38, 0.45); }
+        .dark .story-journey.is-armed .journey-num { background: #1c1917; color: #a8a29e; border-color: #2c2724; }
+        .dark .story-journey.is-armed .journey-step.is-active .journey-num { background: #f4c81c; color: #1c1917; border-color: #f4c81c; box-shadow: 0 6px 14px -4px rgba(244, 200, 28, 0.35); }
         @media (min-width: 768px) {
             .story-journey.is-armed .journey-grid {
                 display: grid;
@@ -677,25 +703,27 @@
         .device-phone {
             width: 13.75rem;
             margin: 0 auto;
-            border: 7px solid #162945;
+            border: 7px solid #1c1917;
             border-radius: 2rem;
             background: #ffffff;
             overflow: hidden;
-            box-shadow: 0 30px 60px -22px rgba(16, 30, 51, 0.45);
+            box-shadow: 0 30px 60px -22px rgba(68, 44, 16, 0.45);
         }
-        .dark .device-phone { border-color: #2b3f5e; }
+        .dark .device-phone { border-color: #44403c; box-shadow: 0 30px 60px -22px rgba(0, 0, 0, 0.8); }
         .device-screen {
             width: 100%;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #e7dcc8;
             border-radius: 0.85rem;
             background: #ffffff;
             overflow: hidden;
-            box-shadow: 0 24px 48px -22px rgba(16, 30, 51, 0.4);
+            box-shadow: 0 24px 48px -22px rgba(68, 44, 16, 0.4);
         }
-        .dark .device-screen { border-color: #2b3f5e; }
-        .device-bar { display: flex; gap: 4px; padding: 6px 8px; background: #e2e8f0; }
-        .dark .device-bar { background: #162945; }
-        .device-bar span { width: 7px; height: 7px; border-radius: 999px; background: #94a3b8; }
+        .dark .device-screen { border-color: #2c2724; }
+        .device-bar { display: flex; gap: 4px; padding: 6px 8px; background: #f3ece0; }
+        .dark .device-bar { background: #1c1917; }
+        .device-bar span { width: 7px; height: 7px; border-radius: 999px; background: #dc2626; }
+        .device-bar span:nth-child(2) { background: #f4c81c; }
+        .device-bar span:nth-child(3) { background: #10b981; }
         .device-phone img,
         .device-screen img { display: block; width: 100%; height: auto; }
         .device-link { position: relative; display: block; border-radius: inherit; }
@@ -709,20 +737,39 @@
             width: 1.75rem;
             height: 1.75rem;
             border-radius: 999px;
-            background: rgba(16, 30, 51, 0.75);
+            background: rgba(28, 25, 23, 0.75);
             color: #ffffff;
             transition: transform var(--dur-quick) var(--ease-snappy), background-color var(--dur-quick) var(--ease-snappy);
         }
-        .device-link:hover .device-zoom { transform: scale(1.1); background: #1e3a5f; }
+        .device-link:hover .device-zoom { transform: scale(1.1); background: #dc2626; }
 
         /* "E se...?" → como o sistema evita */
+        /* Cada risco é uma comanda da cozinha: cabeçalho amarelo com borda serrilhada */
         .risk-card {
-            border: 1px solid #e2e8f0;
+            border: 1px solid #efe4d2;
             border-radius: 1rem;
             overflow: hidden;
-            background: #ffffff;
+            background: #fdf8ee;
+            box-shadow: 0 10px 22px -16px rgba(68, 44, 16, 0.45);
         }
-        .dark .risk-card { border-color: #2b3f5e; background: #101e33; }
+        .dark .risk-card { border-color: #2c2724; background: #141110; box-shadow: none; }
+        .risk-head {
+            position: relative;
+            padding: 0.9rem 1rem 0.8rem;
+            background: #f4c81c;
+        }
+        .risk-head::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            height: 7px;
+            background: #f4c81c;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 0h12L6 7z'/%3E%3C/svg%3E") repeat-x 0 0 / 12px 7px;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 0h12L6 7z'/%3E%3C/svg%3E") repeat-x 0 0 / 12px 7px;
+        }
+        .risk-then { padding: 1.35rem 1rem 1rem; }
         .story-armed .risk-then {
             opacity: 0;
             transform: translateX(-8px);
@@ -740,14 +787,14 @@
             bottom: 0.4rem;
             width: 2px;
             border-radius: 2px;
-            background: #dce6f1;
+            background: #f3e6c4;
             overflow: hidden;
         }
-        .dark .timeline-track { background: #2b3f5e; }
+        .dark .timeline-track { background: #2c2724; }
         .timeline-fill {
             position: absolute;
             inset: 0;
-            background: linear-gradient(#386293, #10b981);
+            background: linear-gradient(#dc2626, #ea580c, #f97316, #f4c81c);
             transform-origin: top;
             transform: scaleY(1);
         }
@@ -761,13 +808,16 @@
             width: 24px;
             height: 24px;
             border-radius: 999px;
-            border: 2px solid #1e3a5f;
-            background: #1e3a5f;
+            border: 2px solid #dc2626;
+            background: #dc2626;
             transition: background-color 300ms, border-color 300ms, transform 300ms var(--ease-premium);
         }
+        .timeline-item:nth-child(2) .timeline-dot { border-color: #ea580c; background: #ea580c; }
+        .timeline-item:nth-child(3) .timeline-dot { border-color: #f97316; background: #f97316; }
+        .timeline-item:nth-child(4) .timeline-dot { border-color: #f4c81c; background: #f4c81c; }
         .timeline-item:last-child .timeline-dot { border-color: #059669; background: #059669; }
-        .story-armed .timeline-item:not(.is-passed) .timeline-dot { background: #ffffff; border-color: #b9cde3; transform: scale(0.8); }
-        .dark .story-armed .timeline-item:not(.is-passed) .timeline-dot { background: #101e33; border-color: #2b3f5e; }
+        .story-armed .timeline-item:not(.is-passed) .timeline-dot { background: #ffffff; border-color: #e7dcc8; transform: scale(0.8); }
+        .dark .story-armed .timeline-item:not(.is-passed) .timeline-dot { background: #1c1917; border-color: #2c2724; }
 
         /* Ilustração do topo: o trajeto da entrega se desenha uma vez */
         .svg-draw {
@@ -778,6 +828,164 @@
             from { stroke-dashoffset: 1; }
             to { stroke-dashoffset: 0; }
         }
+
+        /* ---------- Tema Tapioca Delegusty ----------
+           Ligado em <html> pelo route() só enquanto o artigo da tapiocaria está aberto.
+           Paleta tirada das telas do próprio sistema: vermelho do cardápio, amarelo da
+           comanda, creme da goma, laranja do rastreio, verde do PIX e o preto quente do painel.
+           Os seletores usam #id ou html.theme-tapioca.dark para vencer as classes do Tailwind. */
+        body { transition: background-color 300ms ease; }
+        html.theme-tapioca body {
+            background-color: #fbf6ec;
+            background-image: radial-gradient(rgba(120, 84, 30, 0.10) 1px, transparent 1.2px);
+            background-size: 22px 22px;
+            color: #292524;
+        }
+        html.theme-tapioca.dark body {
+            background-color: #0c0a09;
+            background-image: radial-gradient(rgba(255, 244, 214, 0.06) 1px, transparent 1.2px);
+            color: #e7e5e4;
+        }
+        html.theme-tapioca ::selection { background: #fdf2c3; color: #1c1917; }
+        html.theme-tapioca :focus-visible { outline-color: #dc2626; }
+        html.theme-tapioca.dark :focus-visible { outline-color: #f4c81c; }
+        html.theme-tapioca .ambient-glow-1 { background-color: rgba(248, 214, 79, 0.28); }
+        html.theme-tapioca .ambient-glow-2 { background-color: rgba(251, 146, 60, 0.18); }
+        html.theme-tapioca.dark .ambient-glow-1 { background-color: rgba(220, 38, 38, 0.14); }
+        html.theme-tapioca.dark .ambient-glow-2 { background-color: rgba(244, 200, 28, 0.08); }
+        html.theme-tapioca #reading-progress { background: linear-gradient(90deg, #f4c81c, #ea580c, #dc2626); }
+        html.theme-tapioca.dark #reading-progress { background: linear-gradient(90deg, #f8d64f, #f97316, #ef4444); }
+
+        /* Barra de navegação */
+        html.theme-tapioca #site-nav { background-color: rgba(255, 255, 255, 0.95); border-color: #efe4d2; }
+        html.theme-tapioca.dark #site-nav { background-color: rgba(28, 25, 23, 0.95); border-color: #292524; }
+        html.theme-tapioca #site-nav .nav-logo,
+        html.theme-tapioca #site-nav .nav-cta { background-color: #dc2626; }
+        html.theme-tapioca #site-nav a:hover .nav-logo,
+        html.theme-tapioca #site-nav .nav-cta:hover { background-color: #b91c1c; }
+        html.theme-tapioca #site-nav .font-display { color: #1c1917; }
+        html.theme-tapioca.dark #site-nav .font-display { color: #ffffff; }
+        html.theme-tapioca #site-nav .nav-btn { border-color: #e7dcc8; color: #44403c; }
+        html.theme-tapioca #site-nav .nav-btn:hover { background-color: #f5efe4; }
+        html.theme-tapioca.dark #site-nav .nav-btn { border-color: #292524; color: #e7e5e4; }
+        html.theme-tapioca.dark #site-nav .nav-btn:hover { background-color: #292524; }
+
+        /* Cartões e controles do artigo */
+        html.theme-tapioca .card { background: #ffffff; border-color: #efe4d2; box-shadow: 0 1px 3px rgba(68, 44, 16, 0.07); }
+        html.theme-tapioca.dark .card { background: #1c1917; border-color: #2c2724; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45); }
+        html.theme-tapioca .card-hover:hover { border-color: #fca5a5; box-shadow: 0 12px 24px -6px rgba(220, 38, 38, 0.14), 0 6px 12px -4px rgba(68, 44, 16, 0.08); }
+        html.theme-tapioca.dark .card-hover:hover { border-color: #8a6a09; }
+        html.theme-tapioca #article-card {
+            background: linear-gradient(90deg, #f4c81c, #ea580c, #dc2626) top / 100% 5px no-repeat, #ffffff;
+            box-shadow: 0 24px 50px -30px rgba(68, 44, 16, 0.35);
+        }
+        html.theme-tapioca.dark #article-card {
+            background: linear-gradient(90deg, #f4c81c, #ea580c, #dc2626) top / 100% 5px no-repeat, #1c1917;
+        }
+        html.theme-tapioca #article-view .article-back { color: #292524; }
+        html.theme-tapioca #article-view .article-back:hover { background-color: #ffffff; }
+        html.theme-tapioca.dark #article-view .article-back { color: #ffffff; }
+        html.theme-tapioca.dark #article-view .article-back:hover { background-color: #1c1917; }
+        html.theme-tapioca #share-btn { border-color: #e7dcc8; color: #44403c; }
+        html.theme-tapioca #share-btn:hover { border-color: #fca5a5; }
+        html.theme-tapioca.dark #share-btn { background-color: #1c1917; border-color: #2c2724; color: #e7e5e4; }
+        html.theme-tapioca.dark #share-btn:hover { border-color: #8a6a09; }
+        html.theme-tapioca #article-category { background-color: #dc2626; border-color: #dc2626; color: #ffffff; }
+        html.theme-tapioca #article-title { color: #1c1917; }
+        html.theme-tapioca.dark #article-title { color: #ffffff; }
+        html.theme-tapioca #article-lead { color: #57534e; }
+        html.theme-tapioca.dark #article-lead { color: #d6d3d1; }
+        html.theme-tapioca #article-banner {
+            background-color: #fdf8ee;
+            background-image: radial-gradient(rgba(120, 84, 30, 0.12) 1px, transparent 1.2px);
+            background-size: 18px 18px;
+            border-color: #efe4d2;
+        }
+        html.theme-tapioca.dark #article-banner {
+            background-color: #141110;
+            background-image: radial-gradient(rgba(255, 244, 214, 0.07) 1px, transparent 1.2px);
+            border-color: #2c2724;
+        }
+
+        /* Sumário: números como a quantidade nas comandas ("1×") */
+        html.theme-tapioca #article-toc { background-color: #fdf8ee; border-color: #efe4d2; }
+        html.theme-tapioca.dark #article-toc { background-color: #141110; border-color: #2c2724; }
+        html.theme-tapioca #article-toc a { color: #44403c; }
+        html.theme-tapioca #article-toc a:hover { color: #b91c1c; }
+        html.theme-tapioca.dark #article-toc a { color: #d6d3d1; }
+        html.theme-tapioca.dark #article-toc a:hover { color: #f8d64f; }
+        html.theme-tapioca .toc a::before { background: #1c1917; color: #ffffff; }
+        html.theme-tapioca.dark .toc a::before { background: #f4c81c; color: #1c1917; }
+
+        /* Corpo do texto */
+        html.theme-tapioca .markdown-content { color: #44403c; }
+        html.theme-tapioca.dark .markdown-content { color: #d6d3d1; }
+        html.theme-tapioca .markdown-content h2 { color: #1c1917; }
+        html.theme-tapioca.dark .markdown-content h2 { color: #fafaf9; }
+        html.theme-tapioca .markdown-content h3 { color: #292524; }
+        html.theme-tapioca.dark .markdown-content h3 { color: #e7e5e4; }
+        html.theme-tapioca .markdown-content strong { color: #1c1917; }
+        html.theme-tapioca.dark .markdown-content strong { color: #ffffff; }
+        html.theme-tapioca .markdown-content a { color: #b91c1c; text-decoration-color: #fca5a5; }
+        html.theme-tapioca .markdown-content a:hover { text-decoration-color: currentColor; }
+        html.theme-tapioca.dark .markdown-content a { color: #f8d64f; text-decoration-color: #8a6a09; }
+        html.theme-tapioca .markdown-content li::marker { color: #dc2626; }
+        html.theme-tapioca.dark .markdown-content li::marker { color: #f4c81c; }
+        html.theme-tapioca .markdown-content hr { border-color: #efe4d2; }
+        html.theme-tapioca.dark .markdown-content hr { border-color: #2c2724; }
+        html.theme-tapioca .markdown-content blockquote { border-left-color: #f4c81c; color: #57534e; }
+        html.theme-tapioca.dark .markdown-content blockquote { color: #d6d3d1; }
+        html.theme-tapioca .markdown-content img { border-color: #efe4d2; box-shadow: 0 12px 28px -14px rgba(68, 44, 16, 0.35); }
+        html.theme-tapioca.dark .markdown-content img { border-color: #2c2724; box-shadow: 0 12px 28px -14px rgba(0, 0, 0, 0.8); }
+        html.theme-tapioca .markdown-content img + em { color: #78716c; }
+        html.theme-tapioca.dark .markdown-content img + em { color: #a8a29e; }
+        html.theme-tapioca .callout-note { background: #fefaf0; border-color: #fbe58a; border-left-color: #f4c81c; }
+        html.theme-tapioca .callout-note .callout-title { color: #8a6a09; }
+        html.theme-tapioca.dark .callout-note { background: rgba(244, 200, 28, 0.07); border-color: #4a390b; border-left-color: #f4c81c; }
+        html.theme-tapioca.dark .callout-note .callout-title { color: #f8d64f; }
+
+        /* Capítulos e capitular */
+        html.theme-tapioca .story-mode > h2::before { color: #dc2626; }
+        html.theme-tapioca.dark .story-mode > h2::before { color: #f87171; }
+        html.theme-tapioca .story-mode > p:first-of-type::first-letter { color: #dc2626; }
+        html.theme-tapioca.dark .story-mode > p:first-of-type::first-letter { color: #f4c81c; }
+
+        /* Tags, autor e "continue lendo" */
+        html.theme-tapioca #article-tags-row { border-color: #efe4d2; }
+        html.theme-tapioca.dark #article-tags-row { border-color: #2c2724; }
+        html.theme-tapioca #article-tags span { background-color: #fdf8ee; border-color: #efe4d2; color: #b91c1c; }
+        html.theme-tapioca.dark #article-tags span { background-color: #141110; border-color: #2c2724; color: #f8d64f; }
+        html.theme-tapioca #article-author { background-color: #fdf8ee; border-color: #efe4d2; }
+        html.theme-tapioca.dark #article-author { background-color: #141110; border-color: #2c2724; }
+        html.theme-tapioca #article-author .author-avatar { background-color: #dc2626; }
+        html.theme-tapioca #more-articles .more-icon { background-color: #fdf8ee; border-color: #efe4d2; color: #b91c1c; }
+        html.theme-tapioca.dark #more-articles .more-icon { background-color: #141110; border-color: #2c2724; color: #f8d64f; }
+        html.theme-tapioca #article-meta,
+        html.theme-tapioca #more-articles .more-meta { color: #78716c; }
+        html.theme-tapioca.dark #article-meta,
+        html.theme-tapioca.dark #more-articles .more-meta { color: #a8a29e; }
+        html.theme-tapioca #toc-title,
+        html.theme-tapioca #more-title,
+        html.theme-tapioca #article-tags-row > span { color: #8a6a09; }
+        html.theme-tapioca.dark #toc-title,
+        html.theme-tapioca.dark #more-title,
+        html.theme-tapioca.dark #article-tags-row > span { color: #d6b84a; }
+        html.theme-tapioca #article-author .author-name { color: #1c1917; }
+        html.theme-tapioca.dark #article-author .author-name { color: #ffffff; }
+        html.theme-tapioca #article-author p:not(.author-name) { color: #57534e; }
+        html.theme-tapioca.dark #article-author p:not(.author-name) { color: #d6d3d1; }
+        html.theme-tapioca #article-author .card,
+        html.theme-tapioca #more-articles + div .card { color: #44403c; }
+        html.theme-tapioca.dark #article-author .card,
+        html.theme-tapioca.dark #more-articles + div .card { color: #e7e5e4; }
+        html.theme-tapioca #site-footer { background-color: #fffdf8; border-color: #efe4d2; color: #78716c; }
+        html.theme-tapioca.dark #site-footer { background-color: #141110; border-color: #292524; color: #a8a29e; }
+        html.theme-tapioca #site-footer a:hover { color: #b91c1c; }
+        html.theme-tapioca.dark #site-footer a:hover { color: #f8d64f; }
+        html.theme-tapioca #more-articles .more-title { color: #1c1917; }
+        html.theme-tapioca.dark #more-articles .more-title { color: #ffffff; }
+        html.theme-tapioca #more-articles a:hover .more-title { color: #b91c1c; }
+        html.theme-tapioca.dark #more-articles a:hover .more-title { color: #f8d64f; }
 
         /* Respeito às diretrizes de acessibilidade (sensibilidade vestibular) */
         @media (prefers-reduced-motion: reduce) {
@@ -808,9 +1016,9 @@
 
     <!-- Header / Barra de Navegação -->
     <header class="fixed top-0 left-0 w-full z-40 px-3 sm:px-4 md:px-8 py-3.5">
-        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur-md border border-slate-200/90 dark:border-navy-700 px-3 sm:px-5 py-2.5 flex items-center justify-between shadow-sm gap-2 sm:gap-3" aria-label="Navegação principal">
+        <nav id="site-nav" class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur-md border border-slate-200/90 dark:border-navy-700 px-3 sm:px-5 py-2.5 flex items-center justify-between shadow-sm gap-2 sm:gap-3" aria-label="Navegação principal">
             <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 min-w-0 group" aria-label="Talyson Marques — página inicial do portfólio">
-                <div class="w-9 h-9 rounded-xl bg-navy-700 group-hover:bg-navy-600 text-white flex items-center justify-center font-display font-bold text-base shadow-sm transition-colors ring-1 ring-black/5 dark:ring-white/10 shrink-0">
+                <div class="nav-logo w-9 h-9 rounded-xl bg-navy-700 group-hover:bg-navy-600 text-white flex items-center justify-center font-display font-bold text-base shadow-sm transition-colors ring-1 ring-black/5 dark:ring-white/10 shrink-0">
                     T
                 </div>
                 <div class="flex flex-col leading-tight min-w-0">
@@ -820,15 +1028,15 @@
             </a>
 
             <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
-                <a href="index.html" class="btn-motion inline-flex items-center gap-2 h-9 px-2.5 sm:px-3 text-xs font-semibold rounded-xl border border-slate-200 dark:border-navy-700 text-navy-800 dark:text-white hover:bg-slate-100 dark:hover:bg-navy-800" aria-label="Voltar ao portfólio">
+                <a href="index.html" class="nav-btn btn-motion inline-flex items-center gap-2 h-9 px-2.5 sm:px-3 text-xs font-semibold rounded-xl border border-slate-200 dark:border-navy-700 text-navy-800 dark:text-white hover:bg-slate-100 dark:hover:bg-navy-800" aria-label="Voltar ao portfólio">
                     <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
                     <span class="hidden sm:inline">Portfólio</span>
                 </a>
-                <button id="theme-toggle" type="button" aria-label="Alternar tema claro/escuro" class="btn-motion w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800">
+                <button id="theme-toggle" type="button" aria-label="Alternar tema claro/escuro" class="nav-btn btn-motion w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800">
                     <i data-lucide="moon" class="w-4 h-4 icon-moon"></i>
                     <i data-lucide="sun" class="w-4 h-4 icon-sun hidden"></i>
                 </button>
-                <a href="index.html#contato" class="btn-motion inline-flex items-center gap-2 h-9 px-3 sm:px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm" aria-label="Entrar em contato">
+                <a href="index.html#contato" class="nav-cta btn-motion inline-flex items-center gap-2 h-9 px-3 sm:px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm" aria-label="Entrar em contato">
                     <span class="hidden sm:inline">Contato</span>
                     <i data-lucide="send" class="w-3.5 h-3.5"></i>
                 </a>
@@ -878,7 +1086,7 @@
         <article id="article-view" class="hidden max-w-[44rem] mx-auto" aria-labelledby="article-title">
 
             <div class="flex items-center justify-between gap-3 mb-5">
-                <a href="blog.html" data-back-to-feed class="btn-motion inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-navy-800 dark:text-white hover:bg-white dark:hover:bg-navy-800">
+                <a href="blog.html" data-back-to-feed class="article-back btn-motion inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold text-navy-800 dark:text-white hover:bg-white dark:hover:bg-navy-800">
                     <i data-lucide="arrow-left" class="w-4 h-4"></i> Todos os artigos
                 </a>
                 <button id="share-btn" type="button" class="btn-motion inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-slate-200 dark:border-navy-700 bg-white dark:bg-navy-800 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:border-navy-300 dark:hover:border-navy-500" aria-live="polite">
@@ -888,7 +1096,7 @@
 
             <div id="article-card" class="card rounded-3xl p-6 sm:p-10">
                 <header class="mb-8">
-                    <div class="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs mb-4 text-slate-600 dark:text-slate-400">
+                    <div id="article-meta" class="flex flex-wrap items-center gap-x-3 gap-y-2 text-xs mb-4 text-slate-600 dark:text-slate-400">
                         <span id="article-category" class="px-3 py-1 rounded-full font-bold bg-navy-100 dark:bg-navy-800 text-navy-700 dark:text-navy-200 border border-navy-200 dark:border-navy-700"></span>
                         <span class="inline-flex items-center gap-1.5"><i data-lucide="calendar" class="w-3.5 h-3.5"></i><time id="article-date"></time></span>
                         <span class="inline-flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i><span id="article-read-time"></span></span>
@@ -908,16 +1116,16 @@
 
                 <div id="article-body" class="markdown-content"></div>
 
-                <div class="border-t border-slate-200 dark:border-navy-700 mt-10 pt-6 flex flex-wrap items-center gap-2">
+                <div id="article-tags-row" class="border-t border-slate-200 dark:border-navy-700 mt-10 pt-6 flex flex-wrap items-center gap-2">
                     <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mr-1">Tags</span>
                     <div id="article-tags" class="flex flex-wrap gap-2"></div>
                 </div>
 
                 <!-- Mini bio do autor -->
-                <footer class="mt-8 flex flex-col sm:flex-row items-center gap-5 bg-slate-50 dark:bg-navy-900/60 border border-slate-200 dark:border-navy-700 p-6 rounded-2xl">
-                    <div class="w-14 h-14 rounded-2xl bg-navy-700 flex items-center justify-center font-display font-bold text-white text-2xl shrink-0 shadow-sm" aria-hidden="true">T</div>
+                <footer id="article-author" class="mt-8 flex flex-col sm:flex-row items-center gap-5 bg-slate-50 dark:bg-navy-900/60 border border-slate-200 dark:border-navy-700 p-6 rounded-2xl">
+                    <div class="author-avatar w-14 h-14 rounded-2xl bg-navy-700 flex items-center justify-center font-display font-bold text-white text-2xl shrink-0 shadow-sm" aria-hidden="true">T</div>
                     <div class="text-center sm:text-left flex-grow">
-                        <p class="font-display font-bold text-navy-800 dark:text-white text-base">Escrito por Talyson Marques</p>
+                        <p class="author-name font-display font-bold text-navy-800 dark:text-white text-base">Escrito por Talyson Marques</p>
                         <p class="text-sm text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                             Analista Administrativo com foco em automação e processos, formado em Redes de Computadores pelo SENAC-SP.
                             Escrevo sobre organização de rotinas, planilhas, Python e IA aplicada.
@@ -952,7 +1160,7 @@
     </main>
 
     <!-- Rodapé -->
-    <footer class="text-center py-10 text-slate-600 dark:text-slate-400 text-xs border-t border-slate-200 dark:border-navy-800 bg-white dark:bg-navy-900/60">
+    <footer id="site-footer" class="text-center py-10 text-slate-600 dark:text-slate-400 text-xs border-t border-slate-200 dark:border-navy-800 bg-white dark:bg-navy-900/60">
         <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p>© 2026 TALYSON MARQUES. TODOS OS DIREITOS RESERVADOS.</p>
             <div class="flex items-center gap-4">
@@ -1071,36 +1279,35 @@
             `,
             tapiocaOrders: `
                 <svg viewBox="0 0 600 240" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full max-w-lg h-auto" aria-hidden="true" focusable="false">
-                    <rect x="20" y="40" width="100" height="150" rx="16" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#334155]"/>
-                    <rect x="32" y="56" width="76" height="22" rx="6" fill="#386293" opacity="0.25"/>
-                    <rect x="32" y="86" width="76" height="22" rx="6" fill="#386293" opacity="0.15"/>
-                    <rect x="32" y="116" width="76" height="22" rx="6" fill="#386293" opacity="0.15"/>
-                    <rect x="32" y="150" width="76" height="26" rx="8" fill="#1e3a5f"/>
-                    <text x="70" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#475569" class="dark:fill-[#94a3b8]">Cliente</text>
+                    <rect x="20" y="40" width="100" height="150" rx="16" fill="#ffffff" stroke="#e7dcc8" stroke-width="2" class="dark:fill-[#1c1917] dark:stroke-[#44403c]"/>
+                    <rect x="32" y="56" width="76" height="22" rx="6" fill="#f4c81c" opacity="0.45"/>
+                    <rect x="32" y="86" width="76" height="22" rx="6" fill="#f4c81c" opacity="0.25"/>
+                    <rect x="32" y="116" width="76" height="22" rx="6" fill="#f4c81c" opacity="0.25"/>
+                    <rect x="32" y="150" width="76" height="26" rx="13" fill="#dc2626"/>
+                    <text x="70" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#57534e" class="dark:fill-[#a8a29e]">Cliente</text>
 
-                    <path d="M130 115 H175" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 5"/>
-                    <path d="M170 108 L180 115 L170 122" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M130 115 H175" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 5"/>
+                    <path d="M170 108 L180 115 L170 122" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 
-                    <rect x="190" y="40" width="130" height="150" rx="16" fill="#f8fafc" stroke="#386293" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#5b84b5]"/>
-                    <rect x="190" y="40" width="130" height="30" rx="14" fill="#1e3a5f"/>
-                    <text x="255" y="60" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="12" font-weight="700" fill="#ffffff">Painel da loja</text>
-                    <rect x="204" y="84" width="40" height="40" rx="8" fill="#fde68a"/>
-                    <rect x="256" y="84" width="40" height="40" rx="8" fill="#10b981" opacity="0.8"/>
-                    <rect x="204" y="134" width="40" height="40" rx="8" fill="#93c5fd"/>
-                    <rect x="256" y="134" width="40" height="40" rx="8" fill="#e2e8f0" class="dark:fill-[#334155]"/>
-                    <text x="255" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#274e78" class="dark:fill-[#93c5fd]">Loja e cozinha</text>
+                    <rect x="190" y="40" width="130" height="150" rx="16" fill="#1c1917" stroke="#1c1917" stroke-width="2" class="dark:stroke-[#44403c]"/>
+                    <text x="255" y="61" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="12" font-weight="700" fill="#f4c81c">Painel da loja</text>
+                    <rect x="204" y="84" width="40" height="40" rx="8" fill="#f4c81c"/>
+                    <rect x="256" y="84" width="40" height="40" rx="8" fill="#10b981"/>
+                    <rect x="204" y="134" width="40" height="40" rx="8" fill="#ea580c"/>
+                    <rect x="256" y="134" width="40" height="40" rx="8" fill="#44403c"/>
+                    <text x="255" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#b91c1c" class="dark:fill-[#f8d64f]">Loja e cozinha</text>
 
-                    <path d="M330 115 H375" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 5"/>
-                    <path d="M370 108 L380 115 L370 122" stroke="#386293" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M330 115 H375" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 5"/>
+                    <path d="M370 108 L380 115 L370 122" stroke="#ea580c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
 
-                    <rect x="390" y="40" width="190" height="150" rx="16" fill="#f8fafc" stroke="#10b981" stroke-width="2" class="dark:fill-[#1e293b] dark:stroke-[#10b981]"/>
+                    <rect x="390" y="40" width="190" height="150" rx="16" fill="#ffffff" stroke="#10b981" stroke-width="2" class="dark:fill-[#1c1917] dark:stroke-[#10b981]"/>
                     <path d="M410 150 C430 90 470 90 490 130 S540 160 560 100" stroke="#10b981" stroke-width="3" stroke-linecap="round" fill="none" pathLength="1" class="svg-draw"/>
-                    <circle cx="410" cy="150" r="7" fill="#1e3a5f"/>
+                    <circle cx="410" cy="150" r="7" fill="#dc2626"/>
                     <g class="svg-check-pop" style="animation-delay: 1400ms">
                         <circle cx="560" cy="100" r="9" fill="#10b981"/>
                         <path d="M556 100 L559 103 L564 97" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                     </g>
-                    <text x="485" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#059669" class="dark:fill-[#34d399]">Entrega</text>
+                    <text x="485" y="214" text-anchor="middle" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="700" fill="#047857" class="dark:fill-[#34d399]">Entrega</text>
                 </svg>
             `
         };
@@ -1151,10 +1358,10 @@
         ];
 
         const PERSONAS = [
-            { icon: 'smartphone', who: 'Cliente', wants: 'quer escolher, pagar e saber quando o pedido chega.' },
-            { icon: 'layout-dashboard', who: 'Loja', wants: 'quer ver tudo o que acontece e controlar preços e produtos.' },
-            { icon: 'chef-hat', who: 'Cozinha', wants: 'quer receber só o que já pode ser preparado.' },
-            { icon: 'bike', who: 'Motoboy', wants: 'quer o endereço certo e a rota sem perder tempo.' },
+            { icon: 'smartphone', who: 'Cliente', wants: 'quer escolher, pagar e saber quando o pedido chega.', tone: 'bg-red-600 text-white' },
+            { icon: 'layout-dashboard', who: 'Loja', wants: 'quer ver tudo o que acontece e controlar preços e produtos.', tone: 'bg-stone-900 dark:bg-stone-700 text-goma-400' },
+            { icon: 'chef-hat', who: 'Cozinha', wants: 'quer receber só o que já pode ser preparado.', tone: 'bg-goma-400 text-stone-900' },
+            { icon: 'bike', who: 'Motoboy', wants: 'quer o endereço certo e a rota sem perder tempo.', tone: 'bg-orange-600 text-white' },
         ];
 
         const RISKS = [
@@ -1183,10 +1390,10 @@
         const STORY_BLOCKS = {
             'tapioca-numeros': () => `
                 <div class="story-block grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <div class="stat-tile story-reveal" style="--d:0ms"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white" data-count="55">55</div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">produtos no cardápio digital</div></div>
-                    <div class="stat-tile story-reveal" style="--d:80ms"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white" data-count="4">4</div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">frentes: cliente, loja, cozinha e entrega</div></div>
-                    <div class="stat-tile story-reveal" style="--d:160ms"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white" data-count="10">10</div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">versões publicadas em menos de um mês</div></div>
-                    <div class="stat-tile story-reveal" style="--d:240ms"><div class="h-9 flex items-center text-navy-700 dark:text-white"><i data-lucide="flask-conical" class="w-7 h-7"></i></div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">testes automatizados para pedidos, entrega e frete</div></div>
+                    <div class="stat-tile stat-tile--accent story-reveal" style="--d:0ms"><div class="font-display text-3xl font-bold text-red-600 dark:text-goma-400" data-count="55">55</div><div class="text-xs text-stone-600 dark:text-stone-400 mt-1 leading-snug">produtos no cardápio digital</div></div>
+                    <div class="stat-tile stat-tile--accent story-reveal" style="--d:80ms"><div class="font-display text-3xl font-bold text-red-600 dark:text-goma-400" data-count="4">4</div><div class="text-xs text-stone-600 dark:text-stone-400 mt-1 leading-snug">frentes: cliente, loja, cozinha e entrega</div></div>
+                    <div class="stat-tile stat-tile--accent story-reveal" style="--d:160ms"><div class="font-display text-3xl font-bold text-red-600 dark:text-goma-400" data-count="10">10</div><div class="text-xs text-stone-600 dark:text-stone-400 mt-1 leading-snug">versões publicadas em menos de um mês</div></div>
+                    <div class="stat-tile stat-tile--accent story-reveal" style="--d:240ms"><div class="h-9 flex items-center text-red-600 dark:text-goma-400"><i data-lucide="flask-conical" class="w-7 h-7"></i></div><div class="text-xs text-stone-600 dark:text-stone-400 mt-1 leading-snug">testes automatizados para pedidos, entrega e frete</div></div>
                 </div>`,
 
             'tapioca-personas': () => `
@@ -1194,9 +1401,9 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                         ${PERSONAS.map(p => `
                             <div class="persona-card stat-tile text-center">
-                                <span class="mx-auto mb-2 w-10 h-10 rounded-xl bg-navy-700 text-white flex items-center justify-center"><i data-lucide="${p.icon}" class="w-5 h-5"></i></span>
-                                <div class="font-display font-bold text-navy-800 dark:text-white text-sm">${p.who}</div>
-                                <div class="text-xs text-slate-600 dark:text-slate-400 mt-1 leading-snug">${p.wants}</div>
+                                <span class="mx-auto mb-2 w-10 h-10 rounded-xl ${p.tone} flex items-center justify-center shadow-sm"><i data-lucide="${p.icon}" class="w-5 h-5"></i></span>
+                                <div class="font-display font-bold text-stone-900 dark:text-white text-sm">${p.who}</div>
+                                <div class="text-xs text-stone-600 dark:text-stone-400 mt-1 leading-snug">${p.wants}</div>
                             </div>`).join('')}
                     </div>
                     <svg class="persona-lines hidden sm:block w-full h-14" viewBox="0 0 400 56" preserveAspectRatio="none" aria-hidden="true" focusable="false">
@@ -1205,10 +1412,10 @@
                         <path class="persona-line" vector-effect="non-scaling-stroke" d="M250 0 C250 30 200 26 200 56"/>
                         <path class="persona-line" vector-effect="non-scaling-stroke" d="M350 0 C350 34 200 22 200 56"/>
                     </svg>
-                    <div class="sm:hidden flex justify-center py-3 text-navy-400" aria-hidden="true"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
-                    <div class="persona-order mx-auto max-w-xs rounded-2xl bg-navy-700 dark:bg-navy-600 text-white px-4 py-3 flex items-center gap-3 shadow-lg">
+                    <div class="sm:hidden flex justify-center py-3 text-goma-500" aria-hidden="true"><i data-lucide="arrow-down" class="w-5 h-5"></i></div>
+                    <div class="persona-order mx-auto max-w-xs rounded-2xl bg-gradient-to-br from-orange-600 to-red-600 text-white px-4 py-3 flex items-center gap-3 shadow-lg shadow-orange-600/25">
                         <span class="w-10 h-10 shrink-0 rounded-xl bg-white/15 flex items-center justify-center"><i data-lucide="receipt" class="w-5 h-5"></i></span>
-                        <span class="leading-tight"><span class="block text-[11px] uppercase tracking-widest font-bold text-navy-100">Um só pedido</span><span class="block text-sm font-semibold">visto por cada um do seu jeito</span></span>
+                        <span class="leading-tight"><span class="block text-[11px] uppercase tracking-widest font-bold text-orange-100">Um só pedido</span><span class="block text-sm font-semibold">visto por cada um do seu jeito</span></span>
                     </div>
                 </div>`,
 
@@ -1239,20 +1446,20 @@
                             </div>
                         </div>
                     </div>
-                    <p class="mt-6 text-xs text-slate-500 dark:text-slate-400 text-center">Capturas de um ambiente de demonstração, com clientes, pedidos e valores fictícios. Toque numa tela para ampliar.</p>
+                    <p class="mt-6 text-xs text-stone-500 dark:text-stone-400 text-center">Capturas de um ambiente de demonstração, com clientes, pedidos e valores fictícios. Toque numa tela para ampliar.</p>
                 </div>`,
 
             'tapioca-riscos': () => `
                 <div class="story-block grid sm:grid-cols-2 gap-4">
                     ${RISKS.map((r, i) => `
                         <div class="risk-card story-reveal" style="--d:${(i % 2) * 90}ms">
-                            <div class="p-4 bg-amber-50 dark:bg-amber-950/30 border-b border-amber-100 dark:border-amber-900/40">
-                                <div class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-amber-700 dark:text-amber-300"><i data-lucide="triangle-alert" class="w-3.5 h-3.5"></i> E se…</div>
-                                <div class="mt-1 text-sm font-semibold text-slate-800 dark:text-slate-100 leading-snug">${r.risk}</div>
+                            <div class="risk-head">
+                                <div class="flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-widest text-stone-900/70"><i data-lucide="triangle-alert" class="w-3.5 h-3.5"></i> E se…</div>
+                                <div class="mt-1 text-sm font-bold text-stone-900 leading-snug">${r.risk}</div>
                             </div>
-                            <div class="risk-then p-4">
+                            <div class="risk-then">
                                 <div class="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-widest text-emerald-700 dark:text-emerald-300"><i data-lucide="shield-check" class="w-3.5 h-3.5"></i> O sistema</div>
-                                <div class="mt-1 text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${r.fix}</div>
+                                <div class="mt-1 text-sm text-stone-600 dark:text-stone-300 leading-relaxed">${r.fix}</div>
                             </div>
                         </div>`).join('')}
                 </div>`,
@@ -1264,9 +1471,9 @@
                         ${VERSIONS.map(v => `
                             <li class="timeline-item">
                                 <span class="timeline-dot" aria-hidden="true"></span>
-                                <span class="block text-xs font-bold text-navy-600 dark:text-navy-300">${v.when}</span>
-                                <span class="block font-display font-bold text-navy-800 dark:text-white">${v.what}</span>
-                                <span class="block text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${v.detail}</span>
+                                <span class="block text-xs font-bold text-red-600 dark:text-goma-400">${v.when}</span>
+                                <span class="block font-display font-bold text-stone-900 dark:text-white">${v.what}</span>
+                                <span class="block text-sm text-stone-600 dark:text-stone-300 leading-relaxed">${v.detail}</span>
                             </li>`).join('')}
                     </ol>
                 </div>`,
@@ -1726,6 +1933,7 @@ E é sobre essa base que a tecnologia funciona de verdade. Um script em Python o
                 svgKey: 'tapiocaOrders',
                 summary: 'Um estudo de caso sobre um sistema completo de pedidos para uma tapiocaria: da escolha no celular até a entrega, com painel, cozinha e atendimento por IA.',
                 layout: 'story',
+                theme: 'tapioca',
                 content: `
 Sexta-feira, 19h. Imagine o horário de pico de uma tapiocaria com delivery. O WhatsApp não para. Um cliente manda o endereço sem o número da casa. Outro garante que já pagou o PIX. A cozinha quer saber qual pedido vem primeiro, e o motoboy espera a rota para sair.
 
@@ -2077,12 +2285,12 @@ Todas as telas estão no [estudo de caso completo](caso-tapioca-delegusty.html).
             const others = POSTS.filter(p => p.id !== current.id);
             document.getElementById('more-articles').innerHTML = others.map(post => `
                 <a href="#${post.id}" class="card card-hover group rounded-2xl p-5 flex gap-4 items-start">
-                    <span class="w-10 h-10 shrink-0 rounded-xl bg-navy-50 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center text-navy-700 dark:text-navy-200" aria-hidden="true">
+                    <span class="more-icon w-10 h-10 shrink-0 rounded-xl bg-navy-50 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 flex items-center justify-center text-navy-700 dark:text-navy-200" aria-hidden="true">
                         <i data-lucide="${categoryIcon(post.category)}" class="w-5 h-5"></i>
                     </span>
                     <span class="min-w-0">
-                        <span class="block text-xs text-slate-500 dark:text-slate-400 mb-1">${escapeHtml(post.category)} • ${post.minutes} min</span>
-                        <span class="block font-display font-bold text-navy-800 dark:text-white leading-snug group-hover:text-navy-600 dark:group-hover:text-navy-200 transition-colors">${escapeHtml(post.title)}</span>
+                        <span class="more-meta block text-xs text-slate-500 dark:text-slate-400 mb-1">${escapeHtml(post.category)} • ${post.minutes} min</span>
+                        <span class="more-title block font-display font-bold text-navy-800 dark:text-white leading-snug group-hover:text-navy-600 dark:group-hover:text-navy-200 transition-colors">${escapeHtml(post.title)}</span>
                     </span>
                 </a>
             `).join('');
@@ -2170,6 +2378,7 @@ Todas as telas estão no [estudo de caso completo](caso-tapioca-delegusty.html).
             currentView = target;
 
             transitionTo(() => {
+                document.documentElement.classList.toggle('theme-tapioca', !!post && post.theme === 'tapioca');
                 if (post) {
                     renderArticle(post);
                     feedView.classList.add('hidden');
