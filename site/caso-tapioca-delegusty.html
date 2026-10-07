@@ -14,7 +14,7 @@
     <meta property="og:description" content="Sistema completo de pedidos para uma tapiocaria: do cardápio digital à entrega, com atendente virtual.">
     <meta property="og:url" content="https://sandymarques.github.io/talyson-projects/caso-tapioca-delegusty.html">
     <meta name="twitter:card" content="summary">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231e3a5f'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='36' font-weight='bold' text-anchor='middle' fill='white'%3ET%3C/text%3E%3C/svg%3E">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23dc2626'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='36' font-weight='bold' text-anchor='middle' fill='white'%3ET%3C/text%3E%3C/svg%3E">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,18 +53,20 @@
                         display: ['"Space Grotesk"', 'sans-serif'],
                     },
                     colors: {
-                        navy: {
-                            50: '#f0f4f9',
-                            100: '#dce6f1',
-                            200: '#b9cde3',
-                            300: '#8fadcf',
-                            400: '#5b84b5',
-                            500: '#386293',
-                            600: '#274e78',
-                            700: '#1e3a5f',
-                            800: '#162945',
-                            900: '#101e33',
-                        }
+                        // Paleta do sistema da Tapioca Delegusty (extraída das telas do app)
+                        goma: {
+                            50: '#fefaf0',
+                            100: '#fdf2c3',
+                            200: '#fbe58a',
+                            300: '#f8d64f',
+                            400: '#f4c81c',
+                            500: '#dcae0c',
+                            600: '#b48a07',
+                            700: '#8a6a09',
+                            800: '#6b520d',
+                            900: '#4a390b',
+                        },
+                        creme: '#fbf6ec',
                     }
                 }
             }
@@ -99,7 +101,7 @@
             left: 0;
             height: 3px;
             width: 100%;
-            background: linear-gradient(90deg, #1e3a5f, #386293, #5b84b5, #8fadcf);
+            background: linear-gradient(90deg, #f4c81c, #ea580c, #dc2626);
             transform: scaleX(0);
             transform-origin: 0 50%;
             z-index: 100;
@@ -108,7 +110,7 @@
             pointer-events: none;
         }
         .dark #scroll-progress {
-            background: linear-gradient(90deg, #386293, #5b84b5, #8fadcf, #dce6f1);
+            background: linear-gradient(90deg, #f8d64f, #f97316, #ef4444);
         }
 
         /* Page Transition Overlay / Wipe (R1 + R5) — z-index 140 (D2) */
@@ -116,7 +118,7 @@
             position: fixed;
             inset: 0;
             z-index: 140;
-            background: #1e3a5f;
+            background: #1c1917;
             transform: translateY(-100%);
             transition: transform var(--dur-standard) var(--ease-snappy);
             will-change: transform;
@@ -124,7 +126,7 @@
             overflow: hidden;
         }
         .dark #page-transition {
-            background: #101e33;
+            background: #0c0a09;
         }
         #page-transition.is-covered {
             transform: translateY(0);
@@ -137,7 +139,7 @@
             left: 0;
             height: 3px;
             width: 100%;
-            background: linear-gradient(90deg, #274e78, #5b84b5, #8fadcf, #dce6f1);
+            background: linear-gradient(90deg, #f4c81c, #ea580c, #dc2626);
             transform: scaleX(0);
             transform-origin: 0 50%;
             opacity: 0;
@@ -163,27 +165,27 @@
         /* Cards and Elevation with Motion Physics */
         .card {
             background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(16, 30, 51, 0.08);
+            border: 1px solid #efe4d2;
+            box-shadow: 0 1px 3px rgba(68, 44, 16, 0.07);
             transition: transform var(--dur-instant) var(--ease-snappy),
                         box-shadow var(--dur-quick) var(--ease-snappy),
                         border-color var(--dur-quick) var(--ease-snappy);
         }
         .dark .card {
-            background: #162945;
-            border-color: #2b3f5e;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+            background: #1c1917;
+            border-color: #2c2724;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
         }
         .card-hover {
             will-change: transform, box-shadow;
         }
         .card-hover:hover {
-            border-color: #8fadcf;
+            border-color: #fca5a5;
             transform: translateY(-4px);
-            box-shadow: 0 16px 30px -8px rgba(30, 58, 95, 0.12), 0 6px 12px -4px rgba(30, 58, 95, 0.08);
+            box-shadow: 0 16px 30px -8px rgba(220, 38, 38, 0.14), 0 6px 12px -4px rgba(68, 44, 16, 0.08);
         }
         .dark .card-hover:hover {
-            border-color: #5b84b5;
+            border-color: #8a6a09;
             box-shadow: 0 16px 32px -8px rgba(0, 0, 0, 0.5), 0 8px 16px -4px rgba(0, 0, 0, 0.4);
         }
 
@@ -315,7 +317,7 @@
         }
         .milestone-dot:hover {
             transform: scale(1.35);
-            box-shadow: 0 0 12px rgba(30, 58, 95, 0.35);
+            box-shadow: 0 0 12px rgba(220, 38, 38, 0.35);
         }
 
         /* Terminal Line Stream In */
@@ -357,26 +359,136 @@
                         background-color var(--dur-quick) var(--ease-snappy);
         }
         .input-motion:focus {
-            border-color: #274e78;
-            box-shadow: 0 0 0 3px rgba(39, 78, 120, 0.15);
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
         }
         .dark .input-motion:focus {
-            border-color: #8fadcf;
-            box-shadow: 0 0 0 3px rgba(143, 173, 207, 0.2);
+            border-color: #f4c81c;
+            box-shadow: 0 0 0 3px rgba(244, 200, 28, 0.2);
         }
+
+        /* ---------- Identidade visual da Tapioca Delegusty ----------
+           Cores tiradas das próprias telas do sistema: vermelho do cardápio, amarelo da
+           comanda, creme da goma, laranja do rastreio, verde do PIX e o preto quente do painel. */
+
+        /* Fundo pontilhado, como o do painel da loja */
+        .tapioca-dots {
+            background-image: radial-gradient(rgba(120, 84, 30, 0.10) 1px, transparent 1.2px);
+            background-size: 22px 22px;
+        }
+        .dark .tapioca-dots {
+            background-image: radial-gradient(rgba(255, 244, 214, 0.06) 1px, transparent 1.2px);
+        }
+
+        /* Comanda da cozinha: cabeçalho colorido com borda serrilhada e corpo creme */
+        .ticket {
+            display: flex;
+            flex-direction: column;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: #fdf8ee;
+            border: 1px solid #efe4d2;
+            box-shadow: 0 10px 24px -14px rgba(68, 44, 16, 0.35);
+        }
+        .dark .ticket {
+            border-color: #2c2724;
+            box-shadow: 0 12px 28px -14px rgba(0, 0, 0, 0.8);
+        }
+        .ticket-head {
+            --head: #1c1917;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.7rem 0.9rem 0.6rem;
+            background: var(--head);
+            color: #ffffff;
+        }
+        .ticket-head::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 100%;
+            height: 7px;
+            background: var(--head);
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 0h12L6 7z'/%3E%3C/svg%3E") repeat-x 0 0 / 12px 7px;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M0 0h12L6 7z'/%3E%3C/svg%3E") repeat-x 0 0 / 12px 7px;
+        }
+        .ticket-head--brasa { --head: #dc2626; }
+        .ticket-head--pix { --head: #059669; }
+        .ticket-head--goma { --head: #f4c81c; color: #1c1917; }
+        .ticket-head--laranja { --head: #ea580c; }
+        .ticket-head--chapa { --head: #1c1917; }
+        .dark .ticket-head--chapa { --head: #292524; }
+        .ticket-num {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+        .ticket-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.16);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .ticket-head--goma .ticket-tag { background: rgba(28, 25, 23, 0.1); }
+        .ticket-body {
+            flex: 1;
+            padding: 1.15rem 0.9rem 1rem;
+        }
+
+        /* Destaque como preço do cardápio: números em vermelho com a goma por trás */
+        .stat-tile {
+            position: relative;
+            overflow: hidden;
+        }
+        .stat-tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f4c81c, #ea580c, #dc2626);
+        }
+
+        /* CTA no mesmo degradê do cartão de rastreio (laranja da chapa até o vermelho) */
+        .cta-chapa {
+            background: linear-gradient(135deg, #ea580c 0%, #e2731c 45%, #dc2626 100%);
+        }
+        .cta-chapa::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 1.2px);
+            background-size: 18px 18px;
+            pointer-events: none;
+        }
+        .cta-chapa > * { position: relative; }
 
         section[id] { scroll-margin-top: 110px; }
         :focus-visible {
-            outline: 2px solid #274e78;
+            outline: 2px solid #dc2626;
             outline-offset: 3px;
             border-radius: 6px;
         }
-        .dark :focus-visible { outline-color: #8fadcf; }
+        .dark :focus-visible { outline-color: #f4c81c; }
         .skip-link {
             position: absolute;
             left: -9999px;
             top: 0;
-            background: #1e3a5f;
+            background: #1c1917;
             color: #ffffff;
             padding: 10px 16px;
             font-weight: 700;
@@ -386,8 +498,8 @@
         .skip-link:focus { left: 0; }
         #terminal-screen::-webkit-scrollbar { width: 8px; }
         #terminal-screen::-webkit-scrollbar-track { background: transparent; }
-        #terminal-screen::-webkit-scrollbar-thumb { background: #b9cde3; border-radius: 4px; }
-        .dark #terminal-screen::-webkit-scrollbar-thumb { background: #2b3f5e; }
+        #terminal-screen::-webkit-scrollbar-thumb { background: #e7dcc8; border-radius: 4px; }
+        .dark #terminal-screen::-webkit-scrollbar-thumb { background: #2c2724; }
 
         /* Full Accessibility Support for Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
@@ -435,32 +547,32 @@
     </noscript>
 <noscript><style>.motion-reveal,.motion-reveal-scale{opacity:1!important;transform:none!important}</style></noscript>
 </head>
-<body class="bg-slate-100 text-slate-800 dark:bg-slate-900 dark:text-slate-200 antialiased selection:bg-navy-200 selection:text-navy-900">
+<body class="bg-creme text-stone-800 dark:bg-stone-950 dark:text-stone-200 tapioca-dots antialiased selection:bg-goma-200 selection:text-stone-900">
     <div id="scroll-progress" aria-hidden="true"></div>
     <a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
 
     <header class="fixed top-0 left-0 w-full z-50 px-4 md:px-8 py-3.5">
-        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-navy-900/95 backdrop-blur-md border border-slate-200/90 dark:border-navy-700 px-4 sm:px-5 py-2.5 flex items-center justify-between shadow-sm gap-4">
+        <nav class="max-w-6xl mx-auto rounded-2xl bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border border-stone-200/90 dark:border-stone-800 px-4 sm:px-5 py-2.5 flex items-center justify-between shadow-sm gap-4">
             <a href="index.html" class="flex items-center gap-3 shrink-0 group" aria-label="Talyson Marques - Início">
-                <div class="w-9 h-9 rounded-xl bg-navy-700 group-hover:bg-navy-600 text-white flex items-center justify-center font-display font-bold text-base shadow-sm transition-all duration-200">T</div>
+                <div class="w-9 h-9 rounded-xl bg-red-600 group-hover:bg-red-700 text-white flex items-center justify-center font-display font-bold text-base shadow-sm transition-all duration-200">T</div>
                 <div class="flex flex-col leading-tight shrink-0">
-                    <span class="font-display font-bold tracking-wide text-navy-800 dark:text-white text-sm">TALYSON MARQUES</span>
-                    <span class="text-[9.5px] tracking-wider text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap uppercase">Administração • Tecnologia</span>
+                    <span class="font-display font-bold tracking-wide text-stone-900 dark:text-white text-sm">TALYSON MARQUES</span>
+                    <span class="text-[9.5px] tracking-wider text-stone-500 dark:text-stone-400 font-medium whitespace-nowrap uppercase">Administração • Tecnologia</span>
                 </div>
             </a>
-            <div class="hidden md:flex items-center gap-1 text-[13px] font-medium text-slate-600 dark:text-slate-300">
-                <a href="#solucao" class="btn-motion px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Solução</a>
-                <a href="#telas" class="btn-motion px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Telas</a>
-                <a href="#decisoes" class="btn-motion px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Decisões</a>
-                <a href="#stack" class="btn-motion px-3 py-1.5 rounded-lg hover:text-navy-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-navy-800/80 transition-colors">Stack</a>
-                <a href="index.html#projetos" class="btn-motion px-3 py-1.5 rounded-lg text-navy-700 dark:text-navy-200 font-semibold hover:bg-navy-50 dark:hover:bg-navy-800/80 transition-colors inline-flex items-center gap-1.5"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Projetos</a>
+            <div class="hidden md:flex items-center gap-1 text-[13px] font-medium text-stone-600 dark:text-stone-300">
+                <a href="#solucao" class="btn-motion px-3 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800/80 transition-colors">Solução</a>
+                <a href="#telas" class="btn-motion px-3 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800/80 transition-colors">Telas</a>
+                <a href="#decisoes" class="btn-motion px-3 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800/80 transition-colors">Decisões</a>
+                <a href="#stack" class="btn-motion px-3 py-1.5 rounded-lg hover:text-stone-900 dark:hover:text-white hover:bg-stone-100 dark:hover:bg-stone-800/80 transition-colors">Stack</a>
+                <a href="index.html#projetos" class="btn-motion px-3 py-1.5 rounded-lg text-red-700 dark:text-goma-300 font-semibold hover:bg-red-50 dark:hover:bg-stone-800/80 transition-colors inline-flex items-center gap-1.5"><i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Projetos</a>
             </div>
             <div class="flex items-center gap-2 shrink-0">
-                <button id="theme-toggle" type="button" aria-label="Alternar entre tema claro e escuro" class="btn-motion w-9 h-9 rounded-xl border border-slate-200 dark:border-navy-700 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-navy-800">
+                <button id="theme-toggle" type="button" aria-label="Alternar entre tema claro e escuro" class="btn-motion w-9 h-9 rounded-xl border border-stone-200 dark:border-stone-800 flex items-center justify-center text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800">
                     <i data-lucide="moon" class="w-4 h-4 icon-moon"></i>
                     <i data-lucide="sun" class="w-4 h-4 icon-sun hidden"></i>
                 </button>
-                <a href="index.html#contato" class="btn-motion hidden sm:inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold rounded-xl bg-navy-700 hover:bg-navy-600 text-white shadow-sm group">
+                <a href="index.html#contato" class="btn-motion hidden sm:inline-flex items-center gap-2 h-9 px-4 text-xs font-semibold rounded-xl bg-red-600 hover:bg-red-700 text-white shadow-sm group">
                     <span>Fale Comigo</span><i data-lucide="send" class="w-3.5 h-3.5 icon-shift"></i>
                 </a>
             </div>
@@ -470,47 +582,47 @@
     <main id="conteudo">
         <!-- HERO -->
         <section class="relative overflow-hidden pt-36 pb-16 px-4">
-            <div class="ambient-glow-1 absolute -top-24 -left-24 w-96 h-96 rounded-full bg-navy-300/30 dark:bg-navy-500/20 blur-3xl pointer-events-none" aria-hidden="true"></div>
-            <div class="ambient-glow-2 absolute top-20 -right-24 w-96 h-96 rounded-full bg-amber-300/25 dark:bg-amber-500/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
+            <div class="ambient-glow-1 absolute -top-24 -left-24 w-96 h-96 rounded-full bg-goma-300/40 dark:bg-red-600/15 blur-3xl pointer-events-none" aria-hidden="true"></div>
+            <div class="ambient-glow-2 absolute top-20 -right-24 w-96 h-96 rounded-full bg-orange-300/30 dark:bg-goma-400/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
             <div class="relative max-w-6xl mx-auto">
-                <nav aria-label="Trilha" class="motion-reveal text-xs text-slate-600 dark:text-slate-400 mb-6 flex items-center gap-2">
-                    <a href="index.html#projetos" class="hover:underline">Projetos</a><i data-lucide="chevron-right" class="w-3 h-3"></i><span class="font-semibold text-navy-700 dark:text-navy-200">Estudo de caso</span>
+                <nav aria-label="Trilha" class="motion-reveal text-xs text-stone-600 dark:text-stone-400 mb-6 flex items-center gap-2">
+                    <a href="index.html#projetos" class="hover:underline">Projetos</a><i data-lucide="chevron-right" class="w-3 h-3"></i><span class="font-semibold text-red-700 dark:text-goma-300">Estudo de caso</span>
                 </nav>
                 <div class="grid lg:grid-cols-5 gap-10 items-center">
                     <div class="lg:col-span-3">
-                        <div class="motion-reveal inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-5">
+                        <div class="motion-reveal inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600 text-white shadow-sm shadow-red-600/20 text-xs font-semibold mb-5">
                             <i data-lucide="briefcase" class="w-3.5 h-3.5"></i> ESTUDO DE CASO
                         </div>
-                        <h1 class="motion-reveal stagger-1 text-4xl md:text-5xl font-display font-bold text-navy-800 dark:text-white leading-tight">Tapioca Delegusty: do pedido à entrega em um só sistema</h1>
-                        <p class="motion-reveal stagger-2 mt-5 text-base md:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl">Um sistema completo de pedidos para uma tapiocaria: cardápio digital, pagamento por PIX, painel da loja, tela da cozinha, app do motoboy e uma atendente virtual no WhatsApp.</p>
+                        <h1 class="motion-reveal stagger-1 text-4xl md:text-5xl font-display font-bold text-stone-900 dark:text-white leading-tight">Tapioca Delegusty: do pedido à entrega em um só sistema</h1>
+                        <p class="motion-reveal stagger-2 mt-5 text-base md:text-lg text-stone-600 dark:text-stone-300 leading-relaxed max-w-2xl">Um sistema completo de pedidos para uma tapiocaria: cardápio digital, pagamento por PIX, painel da loja, tela da cozinha, app do motoboy e uma atendente virtual no WhatsApp.</p>
                         <div class="motion-reveal stagger-3 flex flex-wrap gap-2 mt-6" aria-label="Tecnologias">
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700">React</span>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700">TypeScript</span>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700">Supabase</span>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700">PostgreSQL</span>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700">IA generativa</span>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700">PWA</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-200">React</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-200">TypeScript</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-200">Supabase</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-200">PostgreSQL</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-200">IA generativa</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-200">PWA</span>
                         </div>
                         <div class="motion-reveal stagger-4 flex flex-col sm:flex-row gap-3 mt-8">
-                            <a href="blog.html#sistema-de-pedidos-tapioca-delegusty" class="btn-motion inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-navy-700 hover:bg-navy-600 text-white text-sm font-semibold shadow-sm group">Ler o artigo completo <i data-lucide="arrow-right" class="w-4 h-4 icon-shift"></i></a>
-                            <a href="index.html#contato" class="btn-motion inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-slate-300 dark:border-navy-600 text-sm font-semibold text-navy-800 dark:text-white hover:bg-white dark:hover:bg-navy-800">Conversar sobre o projeto</a>
+                            <a href="blog.html#sistema-de-pedidos-tapioca-delegusty" class="btn-motion inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-semibold shadow-sm group">Ler o artigo completo <i data-lucide="arrow-right" class="w-4 h-4 icon-shift"></i></a>
+                            <a href="index.html#contato" class="btn-motion inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-stone-300 dark:border-stone-700 text-sm font-semibold text-stone-900 dark:text-white hover:bg-white dark:hover:bg-stone-900">Conversar sobre o projeto</a>
                         </div>
                     </div>
                     <!-- Captura do cardápio (ambiente de demonstração, dados fictícios) -->
                     <div class="lg:col-span-2 motion-reveal-scale flex justify-center">
-                        <div class="relative w-64 rounded-[2.2rem] border-[7px] border-navy-800 dark:border-navy-600 bg-white shadow-2xl overflow-hidden">
+                        <div class="relative w-64 rounded-[2.2rem] border-[7px] border-stone-900 dark:border-stone-700 bg-white shadow-2xl overflow-hidden">
                             <img src="assets/tapioca-delegusty/cardapio.webp" width="780" height="1688" alt="Tela do cardápio digital no celular, com a lista de tapiocas salgadas e o botão de adicionar à sacola" class="block w-full h-auto" fetchpriority="high">
                         </div>
                     </div>
                 </div>
-                <p class="motion-reveal mt-6 text-[11px] text-slate-500 dark:text-slate-400 text-center lg:text-left">Captura de um ambiente de demonstração, com dados fictícios.</p>
+                <p class="motion-reveal mt-6 text-[11px] text-stone-500 dark:text-stone-400 text-center lg:text-left">Captura de um ambiente de demonstração, com dados fictícios.</p>
 
                 <!-- Números verificáveis -->
                 <div class="motion-reveal grid grid-cols-2 md:grid-cols-4 gap-4 mt-10">
-                    <div class="card rounded-2xl p-5"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white"><span class="stat-count" data-target="55">55</span></div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1">produtos no cardápio digital</div></div>
-                    <div class="card rounded-2xl p-5"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white"><span class="stat-count" data-target="4">4</span></div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1">frentes: cliente, loja, cozinha e entrega</div></div>
-                    <div class="card rounded-2xl p-5"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white"><span class="stat-count" data-target="10">10</span></div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1">versões publicadas (1.0 a 1.9) em menos de um mês</div></div>
-                    <div class="card rounded-2xl p-5"><div class="font-display text-3xl font-bold text-navy-700 dark:text-white">Testes</div><div class="text-xs text-slate-600 dark:text-slate-400 mt-1">automatizados para pedidos, entrega, frete e relatórios</div></div>
+                    <div class="card stat-tile rounded-2xl p-5"><div class="font-display text-3xl font-bold text-red-600 dark:text-goma-400"><span class="stat-count" data-target="55">55</span></div><div class="text-xs text-stone-600 dark:text-stone-400 mt-1">produtos no cardápio digital</div></div>
+                    <div class="card stat-tile rounded-2xl p-5"><div class="font-display text-3xl font-bold text-red-600 dark:text-goma-400"><span class="stat-count" data-target="4">4</span></div><div class="text-xs text-stone-600 dark:text-stone-400 mt-1">frentes: cliente, loja, cozinha e entrega</div></div>
+                    <div class="card stat-tile rounded-2xl p-5"><div class="font-display text-3xl font-bold text-red-600 dark:text-goma-400"><span class="stat-count" data-target="10">10</span></div><div class="text-xs text-stone-600 dark:text-stone-400 mt-1">versões publicadas (1.0 a 1.9) em menos de um mês</div></div>
+                    <div class="card stat-tile rounded-2xl p-5"><div class="font-display text-3xl font-bold text-red-600 dark:text-goma-400">Testes</div><div class="text-xs text-stone-600 dark:text-stone-400 mt-1">automatizados para pedidos, entrega, frete e relatórios</div></div>
                 </div>
             </div>
         </section>
@@ -518,9 +630,9 @@
         <!-- DESAFIO -->
         <section id="desafio" class="py-14 px-4">
             <div class="max-w-4xl mx-auto">
-                <h2 class="motion-reveal text-3xl font-display font-bold text-navy-800 dark:text-white mb-5">O desafio</h2>
-                <p class="motion-reveal text-slate-600 dark:text-slate-300 leading-relaxed">Uma tapiocaria com delivery lida com muitas partes ao mesmo tempo: o cliente precisa escolher e pagar sem dúvida, a cozinha precisa saber o que fazer primeiro, o motoboy precisa do endereço certo, e a dona precisa enxergar o dia inteiro em uma tela. Quando tudo isso passa por mensagens soltas, os erros aparecem: endereço incompleto, pedido esquecido, frete combinado no olho.</p>
-                <p class="motion-reveal mt-4 text-slate-600 dark:text-slate-300 leading-relaxed">O objetivo foi construir <strong class="text-navy-800 dark:text-white">um fluxo único</strong>, do clique do cliente até a entrega, em que cada pessoa vê apenas o que precisa e o sistema não deixa passar pedido incompleto.</p>
+                <h2 class="motion-reveal text-3xl font-display font-bold text-stone-900 dark:text-white mb-5">O desafio</h2>
+                <p class="motion-reveal text-stone-600 dark:text-stone-300 leading-relaxed">Uma tapiocaria com delivery lida com muitas partes ao mesmo tempo: o cliente precisa escolher e pagar sem dúvida, a cozinha precisa saber o que fazer primeiro, o motoboy precisa do endereço certo, e a dona precisa enxergar o dia inteiro em uma tela. Quando tudo isso passa por mensagens soltas, os erros aparecem: endereço incompleto, pedido esquecido, frete combinado no olho.</p>
+                <p class="motion-reveal mt-4 text-stone-600 dark:text-stone-300 leading-relaxed">O objetivo foi construir <strong class="text-stone-900 dark:text-white">um fluxo único</strong>, do clique do cliente até a entrega, em que cada pessoa vê apenas o que precisa e o sistema não deixa passar pedido incompleto.</p>
             </div>
         </section>
 
@@ -528,14 +640,14 @@
         <section id="solucao" class="py-14 px-4">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-10 motion-reveal">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4"><i data-lucide="layers" class="w-3.5 h-3.5"></i> A SOLUÇÃO</div>
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Quatro frentes, um mesmo pedido</h2>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600 text-white shadow-sm shadow-red-600/20 text-xs font-semibold mb-4"><i data-lucide="layers" class="w-3.5 h-3.5"></i> A SOLUÇÃO</div>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-stone-900 dark:text-white">Quatro frentes, um mesmo pedido</h2>
                 </div>
                 <div class="grid md:grid-cols-2 gap-6">
                     <article class="card card-hover motion-reveal stagger-1 rounded-2xl p-7 group">
-                        <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-4"><i data-lucide="smartphone" class="w-5 h-5 text-white icon-bounce"></i></div>
-                        <h3 class="text-xl font-bold font-display mb-2 text-navy-800 dark:text-white">Para o cliente</h3>
-                        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-11 h-11 rounded-xl bg-red-600 shadow-md shadow-red-600/25 flex items-center justify-center mb-4"><i data-lucide="smartphone" class="w-5 h-5 text-white icon-bounce"></i></div>
+                        <h3 class="text-xl font-bold font-display mb-2 text-stone-900 dark:text-white">Para o cliente</h3>
+                        <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-300">
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Cardápio digital com fotos, busca e link direto para cada produto</li>
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Sacola com observação por item, retirada ou entrega</li>
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Frete calculado pela distância real do trajeto, não em linha reta</li>
@@ -544,9 +656,9 @@
                         </ul>
                     </article>
                     <article class="card card-hover motion-reveal stagger-2 rounded-2xl p-7 group">
-                        <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-4"><i data-lucide="layout-dashboard" class="w-5 h-5 text-white icon-bounce"></i></div>
-                        <h3 class="text-xl font-bold font-display mb-2 text-navy-800 dark:text-white">Para a loja</h3>
-                        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-11 h-11 rounded-xl bg-stone-900 dark:bg-stone-800 ring-1 ring-stone-900/5 dark:ring-white/10 flex items-center justify-center mb-4"><i data-lucide="layout-dashboard" class="w-5 h-5 text-goma-400 icon-bounce"></i></div>
+                        <h3 class="text-xl font-bold font-display mb-2 text-stone-900 dark:text-white">Para a loja</h3>
+                        <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-300">
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Painel de pedidos em tempo real, com aviso sonoro</li>
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Comanda para impressora térmica</li>
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Ajuste de preços e pausa de produto em falta</li>
@@ -555,9 +667,9 @@
                         </ul>
                     </article>
                     <article class="card card-hover motion-reveal stagger-3 rounded-2xl p-7 group">
-                        <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-4"><i data-lucide="chef-hat" class="w-5 h-5 text-white icon-bounce"></i></div>
-                        <h3 class="text-xl font-bold font-display mb-2 text-navy-800 dark:text-white">Para a cozinha e a entrega</h3>
-                        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-11 h-11 rounded-xl bg-goma-400 shadow-md shadow-goma-500/25 flex items-center justify-center mb-4"><i data-lucide="chef-hat" class="w-5 h-5 text-stone-900 icon-bounce"></i></div>
+                        <h3 class="text-xl font-bold font-display mb-2 text-stone-900 dark:text-white">Para a cozinha e a entrega</h3>
+                        <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-300">
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Tela própria da cozinha, pensada para TV ou tablet</li>
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Pedido só vai para a chapa quando pode: pago, confirmado e no horário</li>
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>App do motoboy com acesso protegido</li>
@@ -565,9 +677,9 @@
                         </ul>
                     </article>
                     <article class="card card-hover motion-reveal stagger-4 rounded-2xl p-7 group">
-                        <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-4"><i data-lucide="bot" class="w-5 h-5 text-white icon-bounce"></i></div>
-                        <h3 class="text-xl font-bold font-display mb-2 text-navy-800 dark:text-white">Atendente virtual no WhatsApp</h3>
-                        <ul class="space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                        <div class="w-11 h-11 rounded-xl bg-emerald-600 shadow-md shadow-emerald-600/25 flex items-center justify-center mb-4"><i data-lucide="bot" class="w-5 h-5 text-white icon-bounce"></i></div>
+                        <h3 class="text-xl font-bold font-display mb-2 text-stone-900 dark:text-white">Atendente virtual no WhatsApp</h3>
+                        <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-300">
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Entende texto e mensagens de voz</li>
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Consulta o cardápio real e confere se o endereço está completo</li>
                             <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 mt-0.5 text-emerald-600 shrink-0"></i>Registra o pedido e gera o PIX</li>
@@ -583,15 +695,15 @@
         <section id="fluxo" class="py-14 px-4">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-10 motion-reveal">
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">A jornada de um pedido</h2>
-                    <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm max-w-xl mx-auto">Do primeiro toque do cliente até a porta de casa, cada etapa tem um responsável claro.</p>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-stone-900 dark:text-white">A jornada de um pedido</h2>
+                    <p class="text-stone-600 dark:text-stone-400 mt-3 text-sm max-w-xl mx-auto">Do primeiro toque do cliente até a porta de casa, cada etapa tem um responsável claro.</p>
                 </div>
-                <ol class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                    <li class="card motion-reveal stagger-1 rounded-2xl p-5 text-center"><div class="w-10 h-10 mx-auto rounded-full bg-navy-700 text-white font-bold flex items-center justify-center mb-3">1</div><div class="font-bold text-navy-800 dark:text-white text-sm">Cliente escolhe</div><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">No site ou pelo WhatsApp</p></li>
-                    <li class="card motion-reveal stagger-2 rounded-2xl p-5 text-center"><div class="w-10 h-10 mx-auto rounded-full bg-navy-700 text-white font-bold flex items-center justify-center mb-3">2</div><div class="font-bold text-navy-800 dark:text-white text-sm">Pagamento</div><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">PIX confirmado automaticamente</p></li>
-                    <li class="card motion-reveal stagger-3 rounded-2xl p-5 text-center"><div class="w-10 h-10 mx-auto rounded-full bg-navy-700 text-white font-bold flex items-center justify-center mb-3">3</div><div class="font-bold text-navy-800 dark:text-white text-sm">Cozinha prepara</div><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Aviso sonoro e comanda</p></li>
-                    <li class="card motion-reveal stagger-4 rounded-2xl p-5 text-center"><div class="w-10 h-10 mx-auto rounded-full bg-navy-700 text-white font-bold flex items-center justify-center mb-3">4</div><div class="font-bold text-navy-800 dark:text-white text-sm">Motoboy entrega</div><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Rota com um toque</p></li>
-                    <li class="card motion-reveal stagger-5 rounded-2xl p-5 text-center"><div class="w-10 h-10 mx-auto rounded-full bg-emerald-600 text-white font-bold flex items-center justify-center mb-3"><i data-lucide="check" class="w-5 h-5"></i></div><div class="font-bold text-navy-800 dark:text-white text-sm">Cliente acompanha</div><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Cada mudança aparece na hora</p></li>
+                <ol class="grid sm:grid-cols-2 lg:grid-cols-5 gap-x-4 gap-y-6">
+                    <li class="ticket motion-reveal stagger-1"><div class="ticket-head ticket-head--brasa"><span class="ticket-num">#1</span><span class="ticket-tag"><i data-lucide="smartphone" class="w-3.5 h-3.5"></i>Etapa 1</span></div><div class="ticket-body"><div class="font-bold text-stone-900 text-sm">Cliente escolhe</div><p class="text-xs text-stone-600 mt-1">No site ou pelo WhatsApp</p></div></li>
+                    <li class="ticket motion-reveal stagger-2"><div class="ticket-head ticket-head--pix"><span class="ticket-num">#2</span><span class="ticket-tag"><i data-lucide="qr-code" class="w-3.5 h-3.5"></i>Etapa 2</span></div><div class="ticket-body"><div class="font-bold text-stone-900 text-sm">Pagamento</div><p class="text-xs text-stone-600 mt-1">PIX confirmado automaticamente</p></div></li>
+                    <li class="ticket motion-reveal stagger-3"><div class="ticket-head ticket-head--goma"><span class="ticket-num">#3</span><span class="ticket-tag"><i data-lucide="flame" class="w-3.5 h-3.5"></i>Etapa 3</span></div><div class="ticket-body"><div class="font-bold text-stone-900 text-sm">Cozinha prepara</div><p class="text-xs text-stone-600 mt-1">Aviso sonoro e comanda</p></div></li>
+                    <li class="ticket motion-reveal stagger-4"><div class="ticket-head ticket-head--laranja"><span class="ticket-num">#4</span><span class="ticket-tag"><i data-lucide="bike" class="w-3.5 h-3.5"></i>Etapa 4</span></div><div class="ticket-body"><div class="font-bold text-stone-900 text-sm">Motoboy entrega</div><p class="text-xs text-stone-600 mt-1">Rota com um toque</p></div></li>
+                    <li class="ticket motion-reveal stagger-5"><div class="ticket-head ticket-head--chapa"><span class="ticket-num"><i data-lucide="check" class="w-4 h-4"></i></span><span class="ticket-tag"><i data-lucide="map-pin-check" class="w-3.5 h-3.5"></i>Entregue</span></div><div class="ticket-body"><div class="font-bold text-stone-900 text-sm">Cliente acompanha</div><p class="text-xs text-stone-600 mt-1">Cada mudança aparece na hora</p></div></li>
                 </ol>
             </div>
         </section>
@@ -600,68 +712,68 @@
         <section id="telas" class="py-14 px-4">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-10 motion-reveal">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4"><i data-lucide="monitor" class="w-3.5 h-3.5"></i> TELAS</div>
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Como cada pessoa enxerga o sistema</h2>
-                    <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm max-w-xl mx-auto">Capturas de um ambiente de demonstração, com clientes, pedidos e valores fictícios. Toque numa imagem para ampliar.</p>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600 text-white shadow-sm shadow-red-600/20 text-xs font-semibold mb-4"><i data-lucide="monitor" class="w-3.5 h-3.5"></i> TELAS</div>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-stone-900 dark:text-white">Como cada pessoa enxerga o sistema</h2>
+                    <p class="text-stone-600 dark:text-stone-400 mt-3 text-sm max-w-xl mx-auto">Capturas de um ambiente de demonstração, com clientes, pedidos e valores fictícios. Toque numa imagem para ampliar.</p>
                 </div>
-                <h3 class="motion-reveal text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">Para quem pede</h3>
+                <h3 class="motion-reveal text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-stone-400 mb-4">Para quem pede</h3>
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-5 mb-12">
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/cardapio.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: Cardápio">
-                            <img src="assets/tapioca-delegusty/cardapio.webp" width="780" height="1688" alt="Cardápio digital no celular com a lista de tapiocas salgadas" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/cardapio.webp" width="780" height="1688" alt="Cardápio digital no celular com a lista de tapiocas salgadas" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">Cardápio</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">Cardápio</strong></figcaption>
                     </figure>
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/sacola.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: Sacola">
-                            <img src="assets/tapioca-delegusty/sacola.webp" width="780" height="1688" alt="Sacola com os itens, as opções de entrega ou retirada e o botão de pagar com PIX" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/sacola.webp" width="780" height="1688" alt="Sacola com os itens, as opções de entrega ou retirada e o botão de pagar com PIX" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">Sacola</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">Sacola</strong></figcaption>
                     </figure>
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/pix.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: Pagamento por PIX">
-                            <img src="assets/tapioca-delegusty/pix.webp" width="780" height="1688" alt="Tela de pagamento por PIX com QR Code, tempo de validade e botão para copiar o código" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/pix.webp" width="780" height="1688" alt="Tela de pagamento por PIX com QR Code, tempo de validade e botão para copiar o código" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">Pagamento por PIX</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">Pagamento por PIX</strong></figcaption>
                     </figure>
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/rastreio.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: Rastreio do pedido">
-                            <img src="assets/tapioca-delegusty/rastreio.webp" width="860" height="1800" alt="Rastreio do pedido com o status e as etapas de preparo" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/rastreio.webp" width="860" height="1800" alt="Rastreio do pedido com o status e as etapas de preparo" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">Rastreio do pedido</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">Rastreio do pedido</strong></figcaption>
                     </figure>
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/motoboy.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: App do motoboy">
-                            <img src="assets/tapioca-delegusty/motoboy.webp" width="780" height="1600" alt="App do motoboy com as entregas, os dados do cliente e os botões de contato e rota" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/motoboy.webp" width="780" height="1600" alt="App do motoboy com as entregas, os dados do cliente e os botões de contato e rota" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">App do motoboy</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">App do motoboy</strong></figcaption>
                     </figure>
                 </div>
-                <h3 class="motion-reveal text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-4">Para a equipe</h3>
+                <h3 class="motion-reveal text-xs font-bold uppercase tracking-widest text-stone-500 dark:text-stone-400 mb-4">Para a equipe</h3>
                 <div class="grid md:grid-cols-2 gap-6">
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/painel.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: Painel da loja">
-                            <img src="assets/tapioca-delegusty/painel.webp" width="1280" height="800" alt="Painel da loja com os pedidos organizados em colunas: novos, em preparo, prontos e em rota" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/painel.webp" width="1280" height="800" alt="Painel da loja com os pedidos organizados em colunas: novos, em preparo, prontos e em rota" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">Painel da loja</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">Painel da loja</strong></figcaption>
                     </figure>
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/cozinha.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: Tela da cozinha">
-                            <img src="assets/tapioca-delegusty/cozinha.webp" width="1280" height="800" alt="Tela da cozinha com cartões dos pedidos novos e em preparo, com observações de cada item" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/cozinha.webp" width="1280" height="800" alt="Tela da cozinha com cartões dos pedidos novos e em preparo, com observações de cada item" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">Tela da cozinha</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">Tela da cozinha</strong></figcaption>
                     </figure>
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/conversas.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: Conversas do WhatsApp">
-                            <img src="assets/tapioca-delegusty/conversas.webp" width="1280" height="800" alt="Aba de conversas do WhatsApp, com a conversa de uma cliente com a atendente virtual" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/conversas.webp" width="1280" height="800" alt="Aba de conversas do WhatsApp, com a conversa de uma cliente com a atendente virtual" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">Conversas do WhatsApp</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">Conversas do WhatsApp</strong></figcaption>
                     </figure>
                     <figure class="motion-reveal ">
                         <a href="assets/tapioca-delegusty/relatorios.webp" target="_blank" rel="noopener noreferrer" class="block group" aria-label="Abrir a imagem em tamanho maior: Relatórios">
-                            <img src="assets/tapioca-delegusty/relatorios.webp" width="1280" height="900" alt="Relatório de faturamento com indicadores, melhor dia, horário de pico e gráfico diário" loading="lazy" class="w-full h-auto rounded-2xl border border-slate-200 dark:border-navy-700 shadow-md group-hover:shadow-xl transition-shadow">
+                            <img src="assets/tapioca-delegusty/relatorios.webp" width="1280" height="900" alt="Relatório de faturamento com indicadores, melhor dia, horário de pico e gráfico diário" loading="lazy" class="w-full h-auto rounded-2xl border border-stone-200 dark:border-stone-800 shadow-md group-hover:shadow-xl transition-shadow">
                         </a>
-                        <figcaption class="mt-3 text-xs text-slate-600 dark:text-slate-400 text-center"><strong class="text-navy-800 dark:text-white">Relatórios</strong></figcaption>
+                        <figcaption class="mt-3 text-xs text-stone-600 dark:text-stone-400 text-center"><strong class="text-stone-900 dark:text-white">Relatórios</strong></figcaption>
                     </figure>
                 </div>
             </div>
@@ -671,16 +783,16 @@
         <section id="decisoes" class="py-14 px-4">
             <div class="max-w-6xl mx-auto">
                 <div class="text-center mb-10 motion-reveal">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-700 text-white text-xs font-semibold mb-4"><i data-lucide="compass" class="w-3.5 h-3.5"></i> DECISÕES DE PROJETO</div>
-                    <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">O que importou na construção</h2>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-600 text-white shadow-sm shadow-red-600/20 text-xs font-semibold mb-4"><i data-lucide="compass" class="w-3.5 h-3.5"></i> DECISÕES DE PROJETO</div>
+                    <h2 class="text-3xl md:text-4xl font-display font-bold text-stone-900 dark:text-white">O que importou na construção</h2>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <article class="card card-hover motion-reveal stagger-1 rounded-2xl p-6 group"><i data-lucide="wifi-off" class="w-6 h-6 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-navy-800 dark:text-white mb-1.5">O cardápio nunca some</h3><p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Se o servidor ficar fora do ar, o site continua mostrando o cardápio a partir de uma cópia local.</p></article>
-                    <article class="card card-hover motion-reveal stagger-2 rounded-2xl p-6 group"><i data-lucide="shield-check" class="w-6 h-6 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-navy-800 dark:text-white mb-1.5">Quem decide é o servidor</h3><p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Preços e totais são conferidos no servidor, e cada tipo de usuário só acessa o que precisa. O navegador nunca é a fonte da verdade.</p></article>
-                    <article class="card card-hover motion-reveal stagger-3 rounded-2xl p-6 group"><i data-lucide="map-pinned" class="w-6 h-6 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-navy-800 dark:text-white mb-1.5">Endereço confiável</h3><p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">A busca de CEP usa vários serviços em sequência, para que uma falha de um deles não impeça o pedido. Entrega sem rua e número é recusada.</p></article>
-                    <article class="card card-hover motion-reveal stagger-4 rounded-2xl p-6 group"><i data-lucide="bell-ring" class="w-6 h-6 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-navy-800 dark:text-white mb-1.5">Tempo real de verdade</h3><p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Pedidos aparecem no painel e na cozinha assim que chegam, com aviso sonoro gerado no próprio navegador, sem arquivos de áudio.</p></article>
-                    <article class="card card-hover motion-reveal stagger-5 rounded-2xl p-6 group"><i data-lucide="user-check" class="w-6 h-6 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-navy-800 dark:text-white mb-1.5">IA com supervisão humana</h3><p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">A atendente virtual trabalha com o cardápio real e a equipe pode assumir ou devolver a conversa. A IA ajuda, mas a loja tem a palavra final.</p></article>
-                    <article class="card card-hover motion-reveal stagger-6 rounded-2xl p-6 group"><i data-lucide="flask-conical" class="w-6 h-6 text-navy-600 dark:text-navy-200 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-navy-800 dark:text-white mb-1.5">Testado antes de publicar</h3><p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Há um simulador de pedidos de teste e baterias de testes automatizados para pedidos, entrega, frete e relatórios.</p></article>
+                    <article class="card card-hover motion-reveal stagger-1 rounded-2xl p-6 group"><i data-lucide="wifi-off" class="w-6 h-6 text-red-600 dark:text-goma-400 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-stone-900 dark:text-white mb-1.5">O cardápio nunca some</h3><p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">Se o servidor ficar fora do ar, o site continua mostrando o cardápio a partir de uma cópia local.</p></article>
+                    <article class="card card-hover motion-reveal stagger-2 rounded-2xl p-6 group"><i data-lucide="shield-check" class="w-6 h-6 text-red-600 dark:text-goma-400 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-stone-900 dark:text-white mb-1.5">Quem decide é o servidor</h3><p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">Preços e totais são conferidos no servidor, e cada tipo de usuário só acessa o que precisa. O navegador nunca é a fonte da verdade.</p></article>
+                    <article class="card card-hover motion-reveal stagger-3 rounded-2xl p-6 group"><i data-lucide="map-pinned" class="w-6 h-6 text-red-600 dark:text-goma-400 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-stone-900 dark:text-white mb-1.5">Endereço confiável</h3><p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">A busca de CEP usa vários serviços em sequência, para que uma falha de um deles não impeça o pedido. Entrega sem rua e número é recusada.</p></article>
+                    <article class="card card-hover motion-reveal stagger-4 rounded-2xl p-6 group"><i data-lucide="bell-ring" class="w-6 h-6 text-red-600 dark:text-goma-400 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-stone-900 dark:text-white mb-1.5">Tempo real de verdade</h3><p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">Pedidos aparecem no painel e na cozinha assim que chegam, com aviso sonoro gerado no próprio navegador, sem arquivos de áudio.</p></article>
+                    <article class="card card-hover motion-reveal stagger-5 rounded-2xl p-6 group"><i data-lucide="user-check" class="w-6 h-6 text-red-600 dark:text-goma-400 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-stone-900 dark:text-white mb-1.5">IA com supervisão humana</h3><p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">A atendente virtual trabalha com o cardápio real e a equipe pode assumir ou devolver a conversa. A IA ajuda, mas a loja tem a palavra final.</p></article>
+                    <article class="card card-hover motion-reveal stagger-6 rounded-2xl p-6 group"><i data-lucide="flask-conical" class="w-6 h-6 text-red-600 dark:text-goma-400 mb-3 icon-bounce"></i><h3 class="font-bold font-display text-stone-900 dark:text-white mb-1.5">Testado antes de publicar</h3><p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed">Há um simulador de pedidos de teste e baterias de testes automatizados para pedidos, entrega, frete e relatórios.</p></article>
                 </div>
             </div>
         </section>
@@ -688,56 +800,56 @@
         <!-- STACK -->
         <section id="stack" class="py-14 px-4">
             <div class="max-w-4xl mx-auto">
-                <h2 class="motion-reveal text-3xl font-display font-bold text-navy-800 dark:text-white mb-6">Stack e linha do tempo</h2>
+                <h2 class="motion-reveal text-3xl font-display font-bold text-stone-900 dark:text-white mb-6">Stack e linha do tempo</h2>
                 <div class="grid md:grid-cols-2 gap-6">
                     <div class="card motion-reveal stagger-1 rounded-2xl p-6">
-                        <h3 class="font-bold font-display text-navy-800 dark:text-white mb-3">Tecnologias</h3>
-                        <dl class="text-sm space-y-2 text-slate-600 dark:text-slate-300">
-                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-navy-700 dark:text-navy-200">Interface</dt><dd>React, TypeScript, Vite, aplicativo instalável (PWA)</dd></div>
-                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-navy-700 dark:text-navy-200">Dados</dt><dd>Supabase com PostgreSQL e atualização em tempo real</dd></div>
-                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-navy-700 dark:text-navy-200">Servidor</dt><dd>Funções serverless em TypeScript</dd></div>
-                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-navy-700 dark:text-navy-200">Integrações</dt><dd>PIX e cartão, WhatsApp, mapas e rotas, IA generativa com transcrição de voz</dd></div>
-                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-navy-700 dark:text-navy-200">Publicação</dt><dd>Vercel</dd></div>
+                        <h3 class="font-bold font-display text-stone-900 dark:text-white mb-3">Tecnologias</h3>
+                        <dl class="text-sm space-y-2 text-stone-600 dark:text-stone-300">
+                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-red-700 dark:text-goma-300">Interface</dt><dd>React, TypeScript, Vite, aplicativo instalável (PWA)</dd></div>
+                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-red-700 dark:text-goma-300">Dados</dt><dd>Supabase com PostgreSQL e atualização em tempo real</dd></div>
+                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-red-700 dark:text-goma-300">Servidor</dt><dd>Funções serverless em TypeScript</dd></div>
+                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-red-700 dark:text-goma-300">Integrações</dt><dd>PIX e cartão, WhatsApp, mapas e rotas, IA generativa com transcrição de voz</dd></div>
+                            <div class="flex gap-3"><dt class="w-24 shrink-0 font-semibold text-red-700 dark:text-goma-300">Publicação</dt><dd>Vercel</dd></div>
                         </dl>
                     </div>
                     <div class="card motion-reveal stagger-2 rounded-2xl p-6">
-                        <h3 class="font-bold font-display text-navy-800 dark:text-white mb-3">Evolução</h3>
-                        <ol class="relative border-l-2 border-navy-200 dark:border-navy-700 ml-2 space-y-4 text-sm">
-                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-navy-700"></span><div class="font-bold text-navy-800 dark:text-white">09/09/2026 · versões 1.0 e 1.1</div><div class="text-slate-600 dark:text-slate-300">Cardápio, sacola, banco de dados seguro e painel em tempo real</div></li>
-                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-navy-600"></span><div class="font-bold text-navy-800 dark:text-white">10 e 11/09 · versões 1.2 e 1.3</div><div class="text-slate-600 dark:text-slate-300">Pagamento online, frete, app do motoboy, rastreio e WhatsApp</div></li>
-                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-navy-500"></span><div class="font-bold text-navy-800 dark:text-white">22 a 26/09 · versões 1.4 a 1.6</div><div class="text-slate-600 dark:text-slate-300">Atendimento misto com a equipe, endereço confiável e gestão de entregas</div></li>
-                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-navy-400"></span><div class="font-bold text-navy-800 dark:text-white">01/10 · versões 1.7 e 1.8</div><div class="text-slate-600 dark:text-slate-300">Novo visual da cozinha e do painel, sacola reorganizada</div></li>
-                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-emerald-600"></span><div class="font-bold text-navy-800 dark:text-white">02/10 · versão 1.9</div><div class="text-slate-600 dark:text-slate-300">Atendente virtual com horário, equipe na conversa e confirmação de pedidos</div></li>
+                        <h3 class="font-bold font-display text-stone-900 dark:text-white mb-3">Evolução</h3>
+                        <ol class="relative border-l-2 border-goma-200 dark:border-stone-700 ml-2 space-y-4 text-sm">
+                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-red-600 ring-4 ring-white dark:ring-stone-900"></span><div class="font-bold text-stone-900 dark:text-white">09/09/2026 · versões 1.0 e 1.1</div><div class="text-stone-600 dark:text-stone-300">Cardápio, sacola, banco de dados seguro e painel em tempo real</div></li>
+                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-orange-600 ring-4 ring-white dark:ring-stone-900"></span><div class="font-bold text-stone-900 dark:text-white">10 e 11/09 · versões 1.2 e 1.3</div><div class="text-stone-600 dark:text-stone-300">Pagamento online, frete, app do motoboy, rastreio e WhatsApp</div></li>
+                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-orange-500 ring-4 ring-white dark:ring-stone-900"></span><div class="font-bold text-stone-900 dark:text-white">22 a 26/09 · versões 1.4 a 1.6</div><div class="text-stone-600 dark:text-stone-300">Atendimento misto com a equipe, endereço confiável e gestão de entregas</div></li>
+                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-goma-400 ring-4 ring-white dark:ring-stone-900"></span><div class="font-bold text-stone-900 dark:text-white">01/10 · versões 1.7 e 1.8</div><div class="text-stone-600 dark:text-stone-300">Novo visual da cozinha e do painel, sacola reorganizada</div></li>
+                            <li class="pl-5 relative"><span class="absolute -left-[7px] top-1.5 w-3 h-3 rounded-full bg-emerald-600 ring-4 ring-white dark:ring-stone-900"></span><div class="font-bold text-stone-900 dark:text-white">02/10 · versão 1.9</div><div class="text-stone-600 dark:text-stone-300">Atendente virtual com horário, equipe na conversa e confirmação de pedidos</div></li>
                         </ol>
                     </div>
                 </div>
                 <div class="card motion-reveal rounded-2xl p-6 mt-6 flex gap-4 items-start">
-                    <i data-lucide="lock" class="w-5 h-5 mt-0.5 text-navy-600 dark:text-navy-200 shrink-0"></i>
-                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed"><strong class="text-navy-800 dark:text-white">Sobre o código:</strong> o repositório é privado porque o sistema trata dados de clientes e integra pagamentos. Por isso esta página mostra a visão geral e as decisões de projeto, sem detalhes internos. Posso apresentar o sistema ao vivo em uma conversa.</p>
+                    <i data-lucide="lock" class="w-5 h-5 mt-0.5 text-red-600 dark:text-goma-400 shrink-0"></i>
+                    <p class="text-sm text-stone-600 dark:text-stone-300 leading-relaxed"><strong class="text-stone-900 dark:text-white">Sobre o código:</strong> o repositório é privado porque o sistema trata dados de clientes e integra pagamentos. Por isso esta página mostra a visão geral e as decisões de projeto, sem detalhes internos. Posso apresentar o sistema ao vivo em uma conversa.</p>
                 </div>
             </div>
         </section>
 
         <!-- CTA -->
         <section class="py-16 px-4">
-            <div class="motion-reveal max-w-4xl mx-auto rounded-3xl bg-navy-700 dark:bg-navy-800 text-white p-8 md:p-12 text-center shadow-xl">
+            <div class="motion-reveal max-w-4xl mx-auto cta-chapa relative overflow-hidden rounded-3xl text-white p-8 md:p-12 text-center shadow-xl shadow-orange-600/20">
                 <h2 class="text-2xl md:text-3xl font-display font-bold">Quer ver como isso pode ajudar o seu negócio?</h2>
-                <p class="mt-3 text-navy-100 text-sm max-w-xl mx-auto">Posso explicar o projeto em detalhes e conversar sobre como organizar e automatizar a rotina da sua equipe.</p>
+                <p class="mt-3 text-orange-50 text-sm max-w-xl mx-auto">Posso explicar o projeto em detalhes e conversar sobre como organizar e automatizar a rotina da sua equipe.</p>
                 <div class="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
-                    <a href="blog.html#sistema-de-pedidos-tapioca-delegusty" class="btn-motion inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-navy-800 text-sm font-semibold hover:bg-navy-50 group">Ler o artigo <i data-lucide="arrow-right" class="w-4 h-4 icon-shift"></i></a>
+                    <a href="blog.html#sistema-de-pedidos-tapioca-delegusty" class="btn-motion inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-white text-red-700 text-sm font-semibold hover:bg-creme group">Ler o artigo <i data-lucide="arrow-right" class="w-4 h-4 icon-shift"></i></a>
                     <a href="index.html#contato" class="btn-motion inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-white/40 text-sm font-semibold hover:bg-white/10">Entrar em contato</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="text-center py-10 text-slate-600 dark:text-slate-400 text-xs">
+    <footer class="text-center py-10 text-stone-600 dark:text-stone-400 text-xs">
         <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p>© 2026 TALYSON MARQUES. TODOS OS DIREITOS RESERVADOS.</p>
             <div class="flex items-center gap-4">
-                <a href="index.html#projetos" class="hover:text-navy-700 dark:hover:text-white underline font-medium">Projetos</a><span aria-hidden="true">•</span>
-                <a href="blog.html" class="hover:text-navy-700 dark:hover:text-white underline font-medium">Mini Blog</a><span aria-hidden="true">•</span>
-                <a href="#conteudo" class="hover:text-navy-700 dark:hover:text-white underline font-medium inline-flex items-center gap-1">Voltar ao topo <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i></a>
+                <a href="index.html#projetos" class="hover:text-red-700 dark:hover:text-white underline font-medium">Projetos</a><span aria-hidden="true">•</span>
+                <a href="blog.html" class="hover:text-red-700 dark:hover:text-white underline font-medium">Mini Blog</a><span aria-hidden="true">•</span>
+                <a href="#conteudo" class="hover:text-red-700 dark:hover:text-white underline font-medium inline-flex items-center gap-1">Voltar ao topo <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i></a>
             </div>
         </div>
     </footer>
