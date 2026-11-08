@@ -70,12 +70,15 @@ test('resposta válida usa a chave só no servidor e limita o contexto', async (
     await handler(makeReq({ body: { messages: [{ role: 'user', content: long }] } }), res);
     assert.equal(res.statusCode, 200);
     assert.equal(res.json().reply, 'Olá!');
+    assert.deepEqual(res.json().cards, []);
+    const sentBody = JSON.parse(captured.opts.body);
+    assert.equal(sentBody.response_format.type, 'json_object');
     assert.equal(captured.url, 'https://api.deepseek.com/chat/completions');
     assert.equal(captured.opts.headers.Authorization, 'Bearer test-key');
     const sent = JSON.parse(captured.opts.body);
     assert.equal(sent.messages[0].role, 'system');
     assert.equal(sent.messages[1].content.length, 500);
-    assert.ok(sent.max_tokens <= 400);
+    assert.ok(sent.max_tokens <= 600);
     assert.ok(!res.body.includes('test-key'));
   } finally {
     global.fetch = original;
@@ -104,6 +107,38 @@ test('rate limit por IP retorna 429', async () => {
       await handler(makeReq({ body: { messages: [{ role: 'user', content: 'oi' }] }, ip: '9.9.9.9' }), last);
     }
     assert.equal(last.statusCode, 429);
+  } finally {
+    global.fetch = original;
+  }
+});
+
+test('JSON do modelo: filtra cartões fora da lista e limita sugestões', () => {
+  const out = handler._parseModelOutput(JSON.stringify({
+    text: ' Sim! ',
+    cards: ['tapioca', 'hack', 'tapioca', 'rag', 'blog', 'contato'],
+    suggestions: ['a', 'b'.repeat(200), 3, 'c', 'd'],
+  }));
+  assert.equal(out.reply, 'Sim!');
+  assert.deepEqual(out.cards, ['tapioca', 'rag', 'blog']);
+  assert.equal(out.suggestions.length, 3);
+  assert.equal(out.suggestions[1].length, 80);
+});
+
+test('saída sem JSON vira texto puro, sem cartões', () => {
+  const out = handler._parseModelOutput('Resposta simples.');
+  assert.deepEqual(out, { reply: 'Resposta simples.', cards: [], suggestions: [] });
+  const wrapped = handler._parseModelOutput('```json\n{"text":"Oi","cards":["curriculo"]}\n```');
+  assert.equal(wrapped.reply, 'Oi');
+  assert.deepEqual(wrapped.cards, ['curriculo']);
+});
+
+test('resposta JSON completa chega ao cliente', async () => {
+  const original = global.fetch;
+  global.fetch = async () => ({ ok: true, json: async () => ({ choices: [{ message: { content: JSON.stringify({ text: 'Veja o caso.', cards: ['tapioca'], suggestions: ['Quais telas tem?'] }) } }] }) });
+  try {
+    const res = makeRes();
+    await handler(makeReq({ body: { messages: [{ role: 'user', content: 'tapioca?' }] } }), res);
+    assert.deepEqual(res.json(), { reply: 'Veja o caso.', cards: ['tapioca'], suggestions: ['Quais telas tem?'] });
   } finally {
     global.fetch = original;
   }

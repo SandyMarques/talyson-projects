@@ -7,7 +7,11 @@ const DEFAULT_ORIGINS = ['https://sandymarques.github.io'];
 
 const MAX_MESSAGES = 6;
 const MAX_CONTENT_CHARS = 500;
-const MAX_TOKENS = 350;
+const MAX_TOKENS = 500;
+const CARD_IDS = ['experiencia', 'tapioca', 'rag', 'planilhas', 'projetos-dev', 'blog', 'curriculo', 'contato'];
+const MAX_CARDS = 3;
+const MAX_SUGGESTIONS = 3;
+const MAX_SUGGESTION_CHARS = 80;
 const RATE_LIMIT = 8; // requisições por janela, por IP (melhor esforço, em memória)
 const RATE_WINDOW_MS = 60 * 1000;
 const UPSTREAM_TIMEOUT_MS = 20 * 1000;
@@ -47,6 +51,29 @@ function sanitizeMessages(input) {
   }
   if (!cleaned.length || cleaned[cleaned.length - 1].role !== 'user') return null;
   return cleaned;
+}
+
+// Interpreta a saída do modelo (JSON pedido no prompt). Se não vier JSON válido,
+// usa o conteúdo como texto puro. Cartões só da lista fixa; sugestões só texto curto.
+function parseModelOutput(raw) {
+  let parsed = null;
+  try { parsed = JSON.parse(raw); } catch (_) {
+    const match = /\{[\s\S]*\}/.exec(raw);
+    if (match) { try { parsed = JSON.parse(match[0]); } catch (__) { parsed = null; } }
+  }
+  if (!parsed || typeof parsed !== 'object' || typeof parsed.text !== 'string' || !parsed.text.trim()) {
+    return { reply: raw.trim(), cards: [], suggestions: [] };
+  }
+  const cards = Array.isArray(parsed.cards)
+    ? [...new Set(parsed.cards.filter((id) => CARD_IDS.includes(id)))].slice(0, MAX_CARDS)
+    : [];
+  const suggestions = Array.isArray(parsed.suggestions)
+    ? parsed.suggestions
+      .filter((q) => typeof q === 'string' && q.trim())
+      .map((q) => q.trim().slice(0, MAX_SUGGESTION_CHARS))
+      .slice(0, MAX_SUGGESTIONS)
+    : [];
+  return { reply: parsed.text.trim(), cards, suggestions };
 }
 
 function send(res, status, body) {
@@ -107,6 +134,7 @@ module.exports = async function handler(req, res) {
         messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
         max_tokens: MAX_TOKENS,
         temperature: 0.3,
+        response_format: { type: 'json_object' },
         stream: false,
       }),
     });
@@ -117,7 +145,7 @@ module.exports = async function handler(req, res) {
     if (typeof reply !== 'string' || !reply.trim()) {
       return send(res, 502, { error: 'O assistente não respondeu agora.' });
     }
-    return send(res, 200, { reply: reply.trim() });
+    return send(res, 200, parseModelOutput(reply));
   } catch (_) {
     return send(res, 502, { error: 'O assistente não respondeu agora.' });
   } finally {
@@ -126,3 +154,5 @@ module.exports = async function handler(req, res) {
 };
 
 module.exports._resetRateLimit = () => hits.clear();
+module.exports._parseModelOutput = parseModelOutput;
+module.exports.CARD_IDS = CARD_IDS;
