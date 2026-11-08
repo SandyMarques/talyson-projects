@@ -1,0 +1,12 @@
+{
+  "name": "talyson-chat-proxy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Proxy serverless (Vercel) que chama a API do DeepSeek para o atendimento virtual do portfólio, sem expor a chave no navegador.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  }
+}
