@@ -554,41 +554,54 @@
         }
         .social-btn:hover::after, .social-btn:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
 
-        .hero-showcase { display: block; max-width: 460px; margin: 0 auto; perspective: 1200px; }
-        .hero-showcase__stage { position: relative; height: 430px; transform-style: preserve-3d; transition: transform .25s ease-out; }
-        .hero-phone {
-            position: absolute; top: 50%; left: 50%; width: 178px; aspect-ratio: 9 / 18.5;
-            border-radius: 30px; padding: 7px; background: #101e33;
-            box-shadow: 0 30px 60px -20px rgba(16,30,51,.45), 0 0 0 1px rgba(255,255,255,.06) inset;
-            overflow: hidden;
+        .hero-showcase { display: block; max-width: 480px; margin: 0 auto; width: 100%; }
+        .hero-panel {
+            position: relative; overflow: hidden; border-radius: 28px; padding: 18px 18px 0; perspective: 1000px;
+            background:
+                radial-gradient(rgba(30,58,95,.08) 1px, transparent 1px) 0 0 / 18px 18px,
+                linear-gradient(160deg, #ffffff 0%, #eaf0f7 100%);
+            border: 1px solid #dce6f1; box-shadow: 0 24px 50px -28px rgba(16,30,51,.35);
+            transition: box-shadow var(--dur-standard) var(--ease-snappy), transform var(--dur-standard) var(--ease-snappy);
         }
-        .hero-phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 23px; background: #f8fafc; }
-        .hero-phone--center { transform: translate(-50%, -50%); z-index: 3; animation: phoneFloat 6s ease-in-out infinite; }
-        .hero-phone--left { transform: translate(-118%, -46%) rotate(-9deg) scale(.88); z-index: 1; opacity: .95; animation: phoneFloatL 7s ease-in-out infinite; }
-        .hero-phone--right { transform: translate(18%, -44%) rotate(9deg) scale(.88); z-index: 2; opacity: .95; animation: phoneFloatR 7.5s ease-in-out infinite; }
-        @keyframes phoneFloat { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -53%); } }
-        @keyframes phoneFloatL { 0%, 100% { transform: translate(-118%, -46%) rotate(-9deg) scale(.88); } 50% { transform: translate(-118%, -43%) rotate(-8deg) scale(.88); } }
-        @keyframes phoneFloatR { 0%, 100% { transform: translate(18%, -44%) rotate(9deg) scale(.88); } 50% { transform: translate(18%, -47%) rotate(10deg) scale(.88); } }
+        .dark .hero-panel {
+            background:
+                radial-gradient(rgba(143,173,207,.09) 1px, transparent 1px) 0 0 / 18px 18px,
+                linear-gradient(160deg, #162945 0%, #0f1c31 100%);
+            border-color: #2b3f5e; box-shadow: 0 24px 50px -24px rgba(0,0,0,.65);
+        }
+        .hero-showcase:hover .hero-panel { transform: translateY(-3px); }
+        .hero-panel__chips { position: relative; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
         .hero-chip {
-            position: absolute; z-index: 4; display: inline-flex; align-items: center; gap: 6px;
-            padding: 8px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; color: #1e3a5f;
-            background: rgba(255,255,255,.92); border: 1px solid #dce6f1; backdrop-filter: blur(8px);
-            box-shadow: 0 12px 24px -12px rgba(16,30,51,.35); white-space: nowrap;
+            display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 9999px;
+            font-size: 11.5px; font-weight: 700; color: #1e3a5f; background: #fff; border: 1px solid #dce6f1;
+            box-shadow: 0 4px 10px -6px rgba(16,30,51,.3); white-space: nowrap;
         }
-        .dark .hero-chip { color: #dce6f1; background: rgba(22,41,69,.92); border-color: #2b3f5e; }
-        .hero-chip--top { top: 30px; right: -6px; animation: chipFloat 5s ease-in-out infinite; }
-        .hero-chip--bottom { bottom: 34px; left: -6px; animation: chipFloat 5.5s .8s ease-in-out infinite; }
+        .dark .hero-chip { color: #dce6f1; background: #1b3252; border-color: #2b3f5e; }
         .hero-chip svg { color: #10b981; }
-        @keyframes chipFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-        @media (max-width: 639px) {
-            .hero-showcase__stage { height: 330px; }
-            .hero-phone { width: 136px; border-radius: 24px; padding: 5px; }
-            .hero-phone img { border-radius: 19px; }
-            .hero-chip { font-size: 11px; padding: 6px 10px; }
-            .hero-chip--top { top: 12px; right: 0; }
-            .hero-chip--bottom { bottom: 16px; left: 0; }
+        .hero-panel__phones { position: relative; height: 330px; margin-top: 8px; transform-style: preserve-3d; transition: transform .25s ease-out; }
+        .hero-phone {
+            position: absolute; bottom: -64px; left: 50%; width: 190px; aspect-ratio: 9 / 18.5;
+            border-radius: 30px; padding: 7px; background: #0f1c31; overflow: hidden;
+            box-shadow: 0 24px 40px -18px rgba(16,30,51,.55), 0 0 0 1px rgba(255,255,255,.07) inset;
         }
-        .hero-showcase__caption { margin-top: 8px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+        .dark .hero-phone { background: #070e1a; box-shadow: 0 24px 40px -18px rgba(0,0,0,.8), 0 0 0 1px rgba(143,173,207,.18) inset; }
+        .hero-phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 23px; background: #f8fafc; }
+        .dark .hero-phone img { filter: brightness(.9) contrast(1.03); }
+        .hero-phone--center { z-index: 3; transform: translateX(-50%); animation: phoneFloat 6s ease-in-out infinite; }
+        .hero-phone--left { z-index: 1; width: 168px; transform: translateX(-132%) rotate(-7deg); bottom: -88px; }
+        .hero-phone--right { z-index: 2; width: 168px; transform: translateX(32%) rotate(7deg); bottom: -88px; }
+        @keyframes phoneFloat { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-6px); } }
+        @media (max-width: 639px) {
+            .hero-panel { padding: 14px 12px 0; border-radius: 22px; }
+            .hero-chip { font-size: 10.5px; padding: 5px 9px; }
+            .hero-panel__phones { height: 270px; }
+            .hero-phone { width: 150px; border-radius: 24px; padding: 5px; bottom: -56px; }
+            .hero-phone img { border-radius: 19px; }
+            .hero-phone--left, .hero-phone--right { width: 132px; bottom: -74px; }
+            .hero-phone--left { transform: translateX(-126%) rotate(-7deg); }
+            .hero-phone--right { transform: translateX(26%) rotate(7deg); }
+        }
+        .hero-showcase__caption { margin-top: 12px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 13px; }
         .hero-showcase:hover .icon-shift { transform: translateX(3px); }
 
         .project-media {
@@ -705,8 +718,7 @@
                 transition: none !important;
             }
             .pulse-dot,
-            .hero-phone,
-            .hero-chip,
+            .hero-phone--center,
             .wave,
             .chat-typing span,
             .chat-caret,
@@ -731,9 +743,7 @@
                 transform: none !important;
             }
             .hero-highlight { background-size: 100% 100% !important; }
-            .hero-phone--center { transform: translate(-50%, -50%) !important; }
-            .hero-phone--left { transform: translate(-118%, -46%) rotate(-9deg) scale(.88) !important; }
-            .hero-phone--right { transform: translate(18%, -44%) rotate(9deg) scale(.88) !important; }
+            .hero-phone--center { transform: translateX(-50%) !important; }
         }
     </style>
 
@@ -842,7 +852,7 @@
         </div>
 
         <div class="max-w-6xl mx-auto relative z-10">
-            <div class="grid lg:grid-cols-[1.12fr_.88fr] gap-12 lg:gap-8 items-center">
+            <div class="grid lg:grid-cols-[1.2fr_.8fr] gap-12 lg:gap-8 items-center">
             <div class="text-center lg:text-left">
             <div class="motion-reveal stagger-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-6 shadow-sm">
                 <span class="w-2 h-2 rounded-full bg-emerald-600 pulse-dot"></span>
@@ -856,8 +866,8 @@
                 Analista Administrativo com foco em automação e processos
             </p>
 
-            <h1 class="motion-reveal stagger-2 text-4xl sm:text-5xl lg:text-[2.9rem] xl:text-[3.2rem] font-display font-extrabold tracking-tight mb-6 text-navy-800 dark:text-white leading-[1.08]">
-                Automação de processos com <span class="hero-highlight">Python e IA</span>, a partir de <span data-years-since="2020-12">5</span> anos de operação
+            <h1 class="motion-reveal stagger-2 text-4xl sm:text-5xl lg:text-[2.35rem] xl:text-[2.75rem] font-display font-extrabold tracking-tight mb-6 text-navy-800 dark:text-white leading-[1.08]">
+                Transformo rotinas manuais <br class="hidden lg:block">em processos automáticos <br class="hidden lg:block">com <span class="hero-highlight">Python e IA</span>
             </h1>
 
             <p class="motion-reveal stagger-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8">
@@ -890,12 +900,16 @@
 
             <!-- Vitrine: telas reais do estudo de caso (dados fictícios) -->
             <a href="caso-tapioca-delegusty.html" class="hero-showcase motion-reveal-scale stagger-3" aria-label="Ver o estudo de caso Tapioca Delegusty">
-                <div class="hero-showcase__stage" data-tilt>
-                    <div class="hero-phone hero-phone--left"><img src="assets/tapioca-delegusty/pix.webp" alt="Tela de pagamento por PIX com QR Code (dados fictícios)" decoding="async"></div>
-                    <div class="hero-phone hero-phone--right"><img src="assets/tapioca-delegusty/rastreio.webp" alt="Rastreio do pedido com as etapas de preparo (dados fictícios)" decoding="async"></div>
-                    <div class="hero-phone hero-phone--center"><img src="assets/tapioca-delegusty/cardapio.webp" alt="Cardápio digital no celular (dados fictícios)" decoding="async"></div>
-                    <div class="hero-chip hero-chip--top"><i data-lucide="zap" class="w-3.5 h-3.5"></i> PIX com confirmação automática</div>
-                    <div class="hero-chip hero-chip--bottom"><i data-lucide="bot" class="w-3.5 h-3.5"></i> Atendente virtual no WhatsApp</div>
+                <div class="hero-panel">
+                    <div class="hero-panel__chips">
+                        <span class="hero-chip"><i data-lucide="zap" class="w-3.5 h-3.5"></i> PIX com confirmação automática</span>
+                        <span class="hero-chip"><i data-lucide="bot" class="w-3.5 h-3.5"></i> Atendente virtual no WhatsApp</span>
+                    </div>
+                    <div class="hero-panel__phones" data-tilt>
+                        <div class="hero-phone hero-phone--left"><img src="assets/tapioca-delegusty/pix.webp" alt="Tela de pagamento por PIX com QR Code (dados fictícios)" decoding="async"></div>
+                        <div class="hero-phone hero-phone--right"><img src="assets/tapioca-delegusty/painel.webp" alt="Painel da loja com os pedidos em andamento (dados fictícios)" decoding="async"></div>
+                        <div class="hero-phone hero-phone--center"><img src="assets/tapioca-delegusty/cardapio.webp" alt="Cardápio digital no celular (dados fictícios)" decoding="async"></div>
+                    </div>
                 </div>
                 <div class="hero-showcase__caption">
                     <span class="font-semibold text-navy-800 dark:text-white">Estudo de caso · Tapioca Delegusty</span>
