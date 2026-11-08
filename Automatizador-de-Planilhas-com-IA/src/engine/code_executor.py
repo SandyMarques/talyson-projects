@@ -445,6 +445,11 @@ payload = json.loads(sys.stdin.read())
 
 # --- 1. ambiente e diretorio ---------------------------------------------------------------
 os.environ.clear()   # nenhuma variavel da aplicacao (API keys) existe dentro do sandbox
+# O filho roda com RLIMIT_NPROC=0 e, no Linux, threads contam como processos para usuarios
+# comuns (root e isento). Sem fixar 1 thread, o OpenBLAS do numpy falha ao criar suas threads
+# na importacao e o sandbox nao executa nada. Precisa vir depois do clear() e antes do numpy.
+for _var in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ[_var] = "1"
 os.chdir(payload["workdir"])
 
 for extra_path in payload["extra_paths"]:
