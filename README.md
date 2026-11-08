@@ -2,6 +2,10 @@
 
 Repositório central de portfólio profissional e projetos de Inteligência Artificial Generativa, Engenharia de Prompt, RAG (Retrieval-Augmented Generation), Automação de Dados e Infraestrutura de Redes.
 
+[![Testes](https://github.com/SandyMarques/talyson-projects/actions/workflows/tests.yml/badge.svg)](https://github.com/SandyMarques/talyson-projects/actions/workflows/tests.yml)
+[![Deploy](https://github.com/SandyMarques/talyson-projects/actions/workflows/static.yml/badge.svg)](https://github.com/SandyMarques/talyson-projects/actions/workflows/static.yml)
+[![Licença: MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-green)](LICENSE)
+
 🔗 **Live Portfolio (GitHub Pages):** [https://sandymarques.github.io/talyson-projects/](https://sandymarques.github.io/talyson-projects/)
 
 ---
@@ -15,6 +19,9 @@ Repositório central de portfólio profissional e projetos de Inteligência Arti
 | `Automatizador-de-Planilhas-com-IA/` | Projeto 2 — automação de planilhas com Streamlit e DeepSeek. |
 | `motion-design/` | Skill de princípios de motion design usada como referência de animações. |
 | `.github/workflows/static.yml` | Workflow de deploy do portfólio no GitHub Pages. |
+| `.github/workflows/tests.yml` | CI: roda o `pytest` dos dois projetos e checa o `site/` a cada push. |
+| `scripts/check_site.py` | Checagem do portfólio: HTML bem formado, `node --check` no JS embutido, links internos e versão/SRI dos CDNs. |
+| `perfil-github/` | README do perfil do GitHub (para o repositório `SandyMarques/SandyMarques`) e [guia de ajustes manuais](perfil-github/GUIA.md). |
 
 > Os dois projetos possuem repositórios dedicados no GitHub e também são versionados nesta pasta.
 
@@ -121,9 +128,27 @@ Todos os projetos utilizam arquitetura desacoplada com variáveis de ambiente (`
 
 ---
 
+## 🧪 Verificação
+
+```bash
+python scripts/check_site.py site
+(cd Assistente-IA-com-RAG && python -m pytest -q)
+(cd Automatizador-de-Planilhas-com-IA && python -m pytest -q)
+```
+
+As mesmas checagens rodam no GitHub Actions a cada push.
+
+---
+
 ## 📬 Contato
 
 - **Portfólio:** [sandymarques.github.io/talyson-projects](https://sandymarques.github.io/talyson-projects/)
 - **GitHub:** [@SandyMarques](https://github.com/SandyMarques)
 - **LinkedIn:** [linkedin.com/in/talysonmarques](https://www.linkedin.com/in/talysonmarques/)
 - **Email:** talyson14marques@hotmail.com
+
+---
+
+## 📄 Licença
+
+Código distribuído sob a licença [MIT](LICENSE).

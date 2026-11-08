@@ -10,10 +10,12 @@ Este arquivo define diretrizes e protocolos permanentes que o agente de IA DEVE 
 
 | Caminho | Descrição | Verificação |
 | :--- | :--- | :--- |
-| `site/` | Portfólio estático (HTML único por página, Tailwind + Lucide via CDN), publicado no GitHub Pages. | Parse de HTML, `node --check` no JS embutido, existência de links/arquivos |
+| `site/` | Portfólio estático (HTML único por página, Tailwind + Lucide via CDN), publicado no GitHub Pages. | `python scripts/check_site.py` (parse de HTML, `node --check` no JS embutido, links/arquivos internos, versão e SRI dos CDNs) |
 | `Assistente-IA-com-RAG/` | Backend FastAPI + LangChain + ChromaDB. | `pytest` |
 | `Automatizador-de-Planilhas-com-IA/` | App Streamlit + Pandas + DeepSeek. | `pytest` |
 | `motion-design/` | Skill de referência de motion design (sem build/testes). | Inspeção |
+| `perfil-github/` | README do perfil do GitHub (copiado para o repositório `SandyMarques/SandyMarques`) e guia de ajustes manuais. | Veracidade do conteúdo, links |
+| `.github/workflows/tests.yml` | CI: `pytest` nos dois projetos Python e checagem do `site/` a cada push. | GitHub Actions |
 
 ---
 

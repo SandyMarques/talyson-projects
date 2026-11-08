@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   rag-assistant:
     build:
@@ -8,13 +6,13 @@ services:
     container_name: rag_assistant_app
     ports:
       - "8000:8000"
+    # Todas as configurações (provedor de LLM, chaves, API_KEY, CORS...) vêm do .env,
+    # criado a partir do .env.example. Só os caminhos internos do container são fixados aqui.
+    env_file:
+      - .env
     environment:
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
-      - OPENAI_MODEL=${OPENAI_MODEL:-gpt-4o-mini}
-      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-text-embedding-3-small}
       - CHROMA_PERSIST_DIR=/app/data/chroma
       - UPLOAD_DIR=/app/data/uploads
-      - DEBUG=false
     volumes:
       - ./data/chroma:/app/data/chroma
       - ./data/uploads:/app/data/uploads
