@@ -6,10 +6,10 @@
 </p>
 
 <p align="center">
-  <a href="https://sandymarques.github.io/talyson-projects/"><img src="https://img.shields.io/badge/Portf%C3%B3lio-0A66C2?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Portfólio"></a>
-  <a href="https://www.linkedin.com/in/talysonmarques/"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
-  <a href="mailto:talyson14marques@hotmail.com"><img src="https://img.shields.io/badge/E--mail-D14836?style=for-the-badge&logo=maildotru&logoColor=white" alt="E-mail"></a>
-  <a href="https://sandymarques.github.io/curriculo/"><img src="https://img.shields.io/badge/Curr%C3%ADculo-333333?style=for-the-badge&logo=readdotcv&logoColor=white" alt="Currículo"></a>
+  🌐 <a href="https://sandymarques.github.io/talyson-projects/"><b>Portfólio</b></a> ·
+  💼 <a href="https://www.linkedin.com/in/talysonmarques/"><b>LinkedIn</b></a> ·
+  ✉️ <a href="mailto:talyson14marques@hotmail.com"><b>E-mail</b></a> ·
+  📄 <a href="https://sandymarques.github.io/curriculo/"><b>Currículo</b></a>
 </p>
 
 ---
