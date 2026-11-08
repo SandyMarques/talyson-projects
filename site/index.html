@@ -458,6 +458,68 @@
         .chat-input:focus-within { background: #fff; border-color: #274e78; box-shadow: 0 0 0 3px rgba(39,78,120,.15); }
         .dark .chat-input:focus-within { background: #101e33; border-color: #8fadcf; box-shadow: 0 0 0 3px rgba(143,173,207,.2); }
         .chat-input input:focus-visible { outline: none; }
+        .chat-caret { display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -2px; background: currentColor; animation: chatCaret .8s steps(1) infinite; }
+        @keyframes chatCaret { 50% { opacity: 0; } }
+        @keyframes chatPop { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: none; } }
+        .chat-pop { animation: chatPop .32s var(--ease-snappy) both; }
+        .chat-cards { display: grid; gap: 10px; margin-top: 10px; }
+        @media (min-width: 640px) { .chat-cards--multi { grid-template-columns: repeat(2, minmax(0, 1fr)); } .chat-cards--multi > .chat-card--gallery { grid-column: 1 / -1; } }
+        .chat-card {
+            background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; overflow: hidden;
+            box-shadow: 0 1px 2px rgba(16,30,51,.05); transition: transform var(--dur-quick) var(--ease-snappy), box-shadow var(--dur-quick) var(--ease-snappy), border-color var(--dur-quick) var(--ease-snappy);
+        }
+        .chat-card:hover { transform: translateY(-2px); border-color: #b9cde3; box-shadow: 0 10px 24px -14px rgba(16,30,51,.35); }
+        .dark .chat-card { background: #162945; border-color: #1e3a5f; }
+        .dark .chat-card:hover { border-color: #386293; }
+        .chat-card__media { display: block; aspect-ratio: 2 / 1; background: #f0f4f9; overflow: hidden; border-bottom: 1px solid #e2e8f0; }
+        .dark .chat-card__media { background: #101e33; border-color: #1e3a5f; }
+        .chat-card__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s var(--ease-snappy); }
+        .chat-card:hover .chat-card__media img { transform: scale(1.03); }
+        .chat-card__body { padding: 14px; }
+        .chat-card__icon { width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; background: linear-gradient(135deg, #1e3a5f, #386293); }
+        .chat-card__eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #5b84b5; }
+        .dark .chat-card__eyebrow { color: #8fadcf; }
+        .chat-card__title { font: 700 14px/1.3 "Space Grotesk", sans-serif; color: #101e33; }
+        .dark .chat-card__title { color: #fff; }
+        .chat-card__desc { margin-top: 8px; font-size: 12.5px; line-height: 1.5; color: #475569; }
+        .dark .chat-card__desc { color: #cbd5e1; }
+        .chat-tag { font-size: 10.5px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; color: #274e78; background: #f0f4f9; border: 1px solid #dce6f1; }
+        .dark .chat-tag { color: #dce6f1; background: #101e33; border-color: #1e3a5f; }
+        .chat-action {
+            display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: 10px;
+            font-size: 12px; font-weight: 600; color: #1e3a5f; background: #f0f4f9; border: 1px solid #dce6f1;
+            transition: background-color var(--dur-quick) var(--ease-snappy), transform var(--dur-quick) var(--ease-snappy);
+        }
+        .chat-action:hover { background: #dce6f1; transform: translateY(-1px); }
+        .dark .chat-action { color: #dce6f1; background: #101e33; border-color: #1e3a5f; }
+        .dark .chat-action:hover { background: #1e3a5f; }
+        .chat-action--primary { color: #fff; background: #1e3a5f; border-color: #1e3a5f; }
+        .chat-action--primary:hover { background: #274e78; }
+        .dark .chat-action--primary { color: #fff; background: #386293; border-color: #386293; }
+        .dark .chat-action--primary:hover { background: #5b84b5; }
+        .chat-gallery { display: flex; gap: 8px; overflow-x: auto; margin-top: 12px; padding-bottom: 4px; scroll-snap-type: x mandatory; scrollbar-width: thin; }
+        .chat-gallery__item { position: relative; flex: 0 0 auto; width: 96px; aspect-ratio: 9 / 16; border-radius: 12px; overflow: hidden; scroll-snap-align: start; border: 1px solid #e2e8f0; background: #f0f4f9; cursor: zoom-in; }
+        .dark .chat-gallery__item { border-color: #1e3a5f; background: #101e33; }
+        .chat-gallery__item img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .35s var(--ease-snappy); }
+        .chat-gallery__item:hover img { transform: scale(1.06); }
+        .chat-gallery__label { position: absolute; inset: auto 0 0 0; padding: 14px 6px 5px; font-size: 10px; font-weight: 700; color: #fff; text-align: left; background: linear-gradient(transparent, rgba(16,30,51,.85)); }
+        .chat-followups { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .chat-followup {
+            display: inline-flex; align-items: center; gap: 6px; padding: 6px 11px; border-radius: 9999px; text-align: left;
+            font-size: 12px; font-weight: 600; color: #274e78; background: #fff; border: 1px dashed #8fadcf;
+        }
+        .chat-followup:hover { background: #f0f4f9; border-style: solid; }
+        .dark .chat-followup { color: #dce6f1; background: transparent; border-color: #386293; }
+        .dark .chat-followup:hover { background: #162945; }
+        .chat-lightbox { position: fixed; inset: 0; z-index: 200; display: none; align-items: center; justify-content: center; gap: 12px; padding: 24px; background: rgba(8,15,28,.88); backdrop-filter: blur(6px); }
+        .chat-lightbox.is-open { display: flex; animation: chatPop .25s var(--ease-snappy) both; }
+        .chat-lightbox__figure { margin: 0; max-width: min(92vw, 520px); display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .chat-lightbox__figure img { max-height: 80vh; max-width: 100%; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+        .chat-lightbox__figure figcaption { color: #dce6f1; font-size: 13px; font-weight: 600; }
+        .chat-lightbox__btn { width: 44px; height: 44px; flex-shrink: 0; border-radius: 9999px; display: flex; align-items: center; justify-content: center; color: #fff; background: rgba(255,255,255,.12); }
+        .chat-lightbox__btn:hover { background: rgba(255,255,255,.22); }
+        .chat-lightbox__close { position: absolute; top: 16px; right: 16px; }
+        @media (max-width: 639px) { .chat-lightbox__prev, .chat-lightbox__next { position: absolute; bottom: 20px; } .chat-lightbox__prev { left: calc(50% - 56px); } .chat-lightbox__next { right: calc(50% - 56px); } }
         #terminal-screen::-webkit-scrollbar { width: 8px; }
         #terminal-screen::-webkit-scrollbar-track { background: transparent; }
         #terminal-screen::-webkit-scrollbar-thumb { background: #b9cde3; border-radius: 4px; }
@@ -480,6 +542,8 @@
             }
             .pulse-dot,
             .chat-typing span,
+            .chat-caret,
+            .chat-pop,
             .ambient-glow-1,
             .ambient-glow-2 {
                 animation: none !important;
@@ -1213,7 +1277,7 @@
                     <div class="min-w-0 flex-grow">
                         <div class="text-sm font-bold text-white leading-tight">Assistente do Talyson</div>
                         <div class="text-xs text-navy-100 flex items-center gap-1.5 mt-0.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span> Online · IA com base no currículo
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span> <span id="chat-status">Online · IA com base no currículo</span>
                         </div>
                     </div>
                     <button type="button" onclick="runCommand('limpar')" aria-label="Limpar conversa" title="Limpar conversa" class="btn-motion w-9 h-9 rounded-full text-white/80 hover:text-white hover:bg-white/10 flex items-center justify-center">
@@ -1222,13 +1286,13 @@
                 </div>
 
                 <!-- Mensagens -->
-                <div id="terminal-screen" class="chat-body px-4 sm:px-6 py-6 overflow-y-auto h-[420px] space-y-4 text-sm" aria-live="polite"></div>
+                <div id="terminal-screen" class="chat-body px-4 sm:px-6 py-6 overflow-y-auto h-[480px] sm:h-[560px] space-y-4 text-sm" aria-live="polite"></div>
 
                 <!-- Sugestões -->
                 <div class="px-4 sm:px-6 pt-3 pb-1 border-t border-slate-100 dark:border-navy-800">
                     <div class="chat-chips flex gap-2 overflow-x-auto pb-2" role="group" aria-label="Sugestões">
-                        <button type="button" onclick="runCommand('Ele já trabalhou com automação em Python?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Já trabalhou com automação?</button>
-                        <button type="button" onclick="runCommand('Qual é a formação do Talyson?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Qual a formação dele?</button>
+                        <button type="button" onclick="runCommand('Ele já fez um projeto para uma tapiocaria?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Projeto da tapiocaria</button>
+                        <button type="button" onclick="runCommand('Ele já trabalhou com automação em Python?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Automação com Python?</button>
                         <button type="button" onclick="runCommand('sobre')" class="chat-chip btn-motion"><i data-lucide="user" class="w-3.5 h-3.5"></i>Sobre</button>
                         <button type="button" onclick="runCommand('projetos')" class="chat-chip btn-motion"><i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i>Projetos</button>
                         <button type="button" onclick="runCommand('habilidades')" class="chat-chip btn-motion"><i data-lucide="wrench" class="w-3.5 h-3.5"></i>Habilidades</button>
@@ -1516,15 +1580,93 @@
         if (themeToggleMobileBtn) themeToggleMobileBtn.addEventListener('click', toggleTheme);
         refreshThemeIcons();
 
-        // --- ATENDIMENTO VIRTUAL (chat: respostas rápidas locais + IA via proxy) ---
+        // --- ATENDIMENTO VIRTUAL (chat: respostas locais + IA via proxy, com cartões ricos) ---
         const terminalScreen = document.getElementById('terminal-screen');
         const terminalInput = document.getElementById('terminal-input');
         const terminalSend = document.getElementById('terminal-send');
+        const chatStatus = document.getElementById('chat-status');
+        const chatReduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         const LINK = 'font-semibold text-navy-700 dark:text-navy-300 underline underline-offset-2 hover:text-navy-900 dark:hover:text-white';
+        const BRAND_PATHS = {
+            github: 'M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12',
+            linkedin: 'M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z',
+        };
+
+        // Catálogo fixo de cartões: a IA só escolhe IDs; todo conteúdo, link e imagem vem daqui.
+        const TAPIOCA_IMAGES = [
+            ['cardapio', 'Cardápio', 'Cardápio digital no celular com a lista de tapiocas salgadas'],
+            ['sacola', 'Sacola', 'Sacola com os itens, as opções de entrega ou retirada e o botão de pagar com PIX'],
+            ['pix', 'PIX', 'Tela de pagamento por PIX com QR Code, tempo de validade e botão para copiar o código'],
+            ['rastreio', 'Rastreio', 'Rastreio do pedido com o status e as etapas de preparo'],
+            ['painel', 'Painel da loja', 'Painel da loja com os pedidos organizados em colunas: novos, em preparo, prontos e em rota'],
+            ['cozinha', 'Cozinha', 'Tela da cozinha com cartões dos pedidos novos e em preparo, com observações de cada item'],
+            ['motoboy', 'Entregas', 'App do motoboy com as entregas, os dados do cliente e os botões de contato e rota'],
+            ['conversas', 'WhatsApp', 'Aba de conversas do WhatsApp, com a conversa de uma cliente com a atendente virtual'],
+            ['relatorios', 'Relatórios', 'Relatório de faturamento com indicadores, melhor dia, horário de pico e gráfico diário'],
+        ].map(([file, label, alt]) => ({ src: 'assets/tapioca-delegusty/' + file + '.webp', label, alt: alt + ' (dados fictícios)' }));
+
+        const CHAT_CARDS = {
+            tapioca: {
+                type: 'gallery', icon: 'store', eyebrow: 'Estudo de caso', title: 'Tapioca Delegusty',
+                desc: 'Sistema de pedidos completo: cardápio, PIX, cozinha, entrega e atendente virtual no WhatsApp. Toque nas telas para ampliar (dados fictícios).',
+                images: TAPIOCA_IMAGES,
+                actions: [{ label: 'Ver estudo de caso', href: 'caso-tapioca-delegusty.html', icon: 'arrow-right', primary: true }],
+            },
+            rag: {
+                type: 'repo', eyebrow: 'Projeto publicado', title: 'Assistente de consulta a documentos',
+                desc: 'Responde com base em documentos enviados (PDF, TXT, Markdown, CSV e JSON) e mostra de qual arquivo e página veio cada informação.',
+                tags: ['Python', 'FastAPI', 'LangChain', 'ChromaDB', 'Docker'],
+                image: 'assets/chat/Assistente-IA-com-RAG.webp',
+                actions: [
+                    { label: 'GitHub', href: 'https://github.com/SandyMarques/Assistente-IA-com-RAG', brand: 'github', primary: true, external: true },
+                    { label: 'Ler artigo', href: 'blog.html#rag-e-busca-semantica-documentos', icon: 'book-open' },
+                ],
+            },
+            planilhas: {
+                type: 'repo', eyebrow: 'Projeto publicado', title: 'Automatizador de planilhas',
+                desc: 'Limpa, calcula e transforma planilhas (Excel e CSV) a partir de instruções em português, com desfazer e exportação.',
+                tags: ['Python', 'Pandas', 'Streamlit', 'DeepSeek API'],
+                image: 'assets/chat/Automatizador-de-Planilhas-com-IA.webp',
+                actions: [
+                    { label: 'GitHub', href: 'https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA', brand: 'github', primary: true, external: true },
+                    { label: 'Ler artigo', href: 'blog.html#automacao-de-planilhas-com-python', icon: 'book-open' },
+                ],
+            },
+            experiencia: {
+                type: 'link', icon: 'briefcase', eyebrow: 'Trajetória', title: 'Accenture Brasil · Projeto Vivere',
+                desc: 'Analista Administrativo desde nov/2020, com foco em automação e processos.',
+                actions: [{ label: 'Ver trajetória', href: '#experiencia', icon: 'arrow-down' }],
+            },
+            'projetos-dev': {
+                type: 'link', icon: 'hammer', eyebrow: 'Em desenvolvimento', title: '5 projetos planejados',
+                desc: 'Validador de documentos, painel operacional, HelpDesk & SLA, monitoramento de redes e gestor de prazos.',
+                actions: [{ label: 'Ver planejamento', href: 'projeto-detalhe.html', icon: 'arrow-right' }],
+            },
+            blog: {
+                type: 'link', icon: 'book-open', eyebrow: 'Blog', title: '4 artigos técnicos',
+                desc: 'Estudo de caso do sistema de pedidos, planilhas com Python, RAG e organização administrativa.',
+                actions: [{ label: 'Ler o blog', href: 'blog.html', icon: 'arrow-right' }],
+            },
+            curriculo: {
+                type: 'link', icon: 'file-text', eyebrow: 'Currículo', title: 'Currículo em PDF',
+                desc: 'Formação, certificações, cursos e experiência completa.',
+                actions: [{ label: 'Baixar PDF', href: 'curriculo-talyson-marques.pdf', download: 'Curriculo-Talyson-Marques.pdf', icon: 'download', primary: true }],
+            },
+            contato: {
+                type: 'contact', icon: 'mail', eyebrow: 'Contato', title: 'Fale com o Talyson',
+                email: 'talyson14marques@hotmail.com',
+                actions: [
+                    { label: 'E-mail', href: 'mailto:talyson14marques@hotmail.com', icon: 'mail', primary: true },
+                    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/talysonmarques/', brand: 'linkedin', external: true },
+                    { label: 'GitHub', href: 'https://github.com/SandyMarques', brand: 'github', external: true },
+                ],
+            },
+        };
 
         const COMMANDS = {
-            'ajuda': `<p class="font-semibold mb-1.5">Posso ajudar com:</p>
+            'ajuda': {
+                html: `<p class="font-semibold mb-1.5">Posso ajudar com:</p>
 <ul class="chat-list">
 <li><strong>sobre</strong>: resumo do perfil profissional</li>
 <li><strong>projetos</strong>: publicados e em desenvolvimento</li>
@@ -1534,56 +1676,48 @@
 <li><strong>status</strong>: disponibilidade e formato de atuação</li>
 </ul>
 <p class="mt-1.5">Ou escreva uma pergunta livre, que a IA responde.</p>`,
-
-            'sobre': `<p class="font-semibold mb-1.5">Talyson Marques</p>
+            },
+            'sobre': {
+                html: `<p class="font-semibold mb-1.5">Talyson Marques</p>
 <p>Analista Administrativo na <strong>Accenture Brasil (Projeto Vivere)</strong> desde nov/2020, com foco em automação e processos: análise de documentos, padronização de dados e metas de SLA.</p>
 <p class="mt-1.5">Graduação tecnológica em <strong>Redes de Computadores (SENAC-SP)</strong>, 2019–2022.</p>
 <p class="mt-1.5">Atuação híbrida: planilhas avançadas e organização administrativa junto com <strong>automações em Python</strong> e <strong>Inteligência Artificial</strong>.</p>
 <p class="mt-1.5 text-slate-500 dark:text-slate-400">Praia Grande - SP · remoto, híbrido ou presencial.</p>`,
-
-            'projetos': `<p class="font-semibold mb-1.5">Projetos publicados</p>
-<ul class="chat-list">
-<li><strong>Assistente de consulta a documentos</strong>: responde com base em documentos enviados, indicando a fonte. <a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="${LINK}">GitHub</a></li>
-<li><strong>Automatizador de planilhas por comandos em português</strong>: limpeza e transformação de Excel/CSV, com desfazer e exportação. <a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="${LINK}">GitHub</a></li>
-</ul>
-<p class="font-semibold mt-3 mb-1.5">Estudo de caso</p>
-<p><strong>Tapioca Delegusty</strong>: sistema de pedidos completo (cardápio, PIX, cozinha, entrega e atendente virtual). <a href="caso-tapioca-delegusty.html" class="${LINK}">Ver o estudo de caso</a></p>
-<p class="font-semibold mt-3 mb-1.5">Em desenvolvimento</p>
-<ul class="chat-list">
-<li>Validador e auditor de documentos</li>
-<li>Painel operacional e métricas</li>
-<li>HelpDesk AI & Gestor de SLA</li>
-<li>Bot de monitoramento de redes</li>
-<li>Gestor de prazos & contratos</li>
-</ul>
-<p class="mt-1.5"><a href="projeto-detalhe.html" class="${LINK}">Ver o planejamento</a></p>`,
-
-            'blog': `<p class="font-semibold mb-1.5">Mini blog</p>
-<p>4 artigos: o estudo de caso do sistema de pedidos, padronização de planilhas com Python, assistente de documentos com RAG e 5 práticas de organização administrativa.</p>
-<p class="mt-1.5"><a href="blog.html" class="${LINK}">Acessar o blog</a></p>`,
-
-            'habilidades': `<p class="font-semibold mb-1.5">O que posso apoiar</p>
+                cards: ['experiencia', 'curriculo'],
+                suggestions: ['Quais projetos ele publicou?', 'Ele já trabalhou com automação em Python?'],
+            },
+            'projetos': {
+                html: `<p>Estes são os projetos com código publicado e o estudo de caso do sistema de pedidos. Há também <strong>5 projetos em desenvolvimento</strong>.</p>`,
+                cards: ['rag', 'planilhas', 'tapioca', 'projetos-dev'],
+                suggestions: ['Como funciona o assistente de documentos?', 'O que o sistema da tapiocaria faz?'],
+            },
+            'blog': {
+                html: `<p>O blog tem artigos sobre os projetos e sobre organização administrativa.</p>`,
+                cards: ['blog'],
+            },
+            'habilidades': {
+                html: `<p class="font-semibold mb-1.5">O que posso apoiar</p>
 <ul class="chat-list">
 <li>Organização de documentos, arquivos e prazos</li>
 <li>Planilhas Excel/CSV: conferência, limpeza e relatórios</li>
 <li>Automação de rotinas com Python e IA aplicada</li>
 <li>Atendimento e comunicação clara com a equipe</li>
 </ul>`,
-
-            'contato': `<p class="font-semibold mb-1.5">Contato</p>
-<ul class="chat-list">
-<li>E-mail: <a href="mailto:talyson14marques@hotmail.com" class="${LINK}">talyson14marques@hotmail.com</a></li>
-<li>LinkedIn: <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener noreferrer" class="${LINK}">linkedin.com/in/talysonmarques</a></li>
-<li>GitHub: <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="${LINK}">github.com/SandyMarques</a></li>
-</ul>
-<p class="mt-1.5">Ou use o <a href="#contato" class="${LINK}">formulário de contato</a>.</p>`,
-
-            'status': `<p class="font-semibold mb-1.5">Disponibilidade</p>
+                suggestions: ['Quais tecnologias ele domina?', 'Ele tem experiência com redes e Linux?'],
+            },
+            'contato': {
+                html: `<p>Você pode falar direto com o Talyson por qualquer um destes canais:</p>`,
+                cards: ['contato'],
+            },
+            'status': {
+                html: `<p class="font-semibold mb-1.5">Disponibilidade</p>
 <ul class="chat-list">
 <li>Aberto a oportunidades em Administração e Tecnologia</li>
 <li>Remoto, híbrido ou presencial (Praia Grande - SP)</li>
 <li>2 projetos publicados com código no GitHub e 5 em desenvolvimento</li>
 </ul>`,
+                cards: ['contato'],
+            },
         };
         COMMANDS['help'] = COMMANDS['ajuda'];
 
@@ -1599,33 +1733,320 @@
             'disponibilidade': 'status', 'clear': 'limpar', 'limpa': 'limpar', 'reset': 'limpar',
         };
 
-        const BOT_AVATAR = '<div class="chat-avatar" aria-hidden="true">TM</div>';
-
-        function scrollChat() {
-            terminalScreen.scrollTo({ top: terminalScreen.scrollHeight, behavior: 'smooth' });
+        // ---------- utilitários de DOM ----------
+        function el(tag, className, text) {
+            const node = document.createElement(tag);
+            if (className) node.className = className;
+            if (text !== undefined) node.textContent = text;
+            return node;
         }
 
+        function iconNode(name, size) {
+            const i = el('i');
+            i.setAttribute('data-lucide', name);
+            i.className = size || 'w-3.5 h-3.5';
+            return i;
+        }
+
+        function brandNode(name) {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('fill', 'currentColor');
+            svg.setAttribute('aria-hidden', 'true');
+            svg.setAttribute('class', 'w-3.5 h-3.5');
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', BRAND_PATHS[name]);
+            svg.appendChild(path);
+            return svg;
+        }
+
+        function refreshIcons() {
+            if (window.lucide && typeof window.lucide.createIcons === 'function') window.lucide.createIcons();
+        }
+
+        function scrollChat() {
+            terminalScreen.scrollTo({ top: terminalScreen.scrollHeight, behavior: chatReduceMotion ? 'auto' : 'smooth' });
+        }
+
+        const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+        // ---------- texto rico seguro (sem innerHTML para conteúdo da IA) ----------
+        const SAFE_LINK_RE = /(https?:\/\/[^\s<>"')]+|[\w.+-]+@[\w-]+\.[\w.]+|\b[\w-]+\.html(?:#[\w-]+)?)/g;
+        const SAFE_HOSTS = ['github.com', 'www.linkedin.com', 'linkedin.com', 'sandymarques.github.io'];
+        const LOCAL_PAGES = ['index.html', 'blog.html', 'caso-tapioca-delegusty.html', 'projeto-detalhe.html'];
+
+        function safeHref(token) {
+            if (/^[\w.+-]+@[\w-]+\.[\w.]+$/.test(token)) return 'mailto:' + token;
+            if (/^https?:\/\//.test(token)) {
+                try {
+                    const url = new URL(token.replace(/[.,;:]+$/, ''));
+                    return url.protocol === 'https:' && SAFE_HOSTS.includes(url.hostname) ? url.href : null;
+                } catch (_) { return null; }
+            }
+            const page = token.split('#')[0];
+            return LOCAL_PAGES.includes(page) ? token : null;
+        }
+
+        function appendInline(parent, text) {
+            // **negrito** + links da lista permitida; todo o resto vira texto puro
+            text.split(/(\*\*[^*]+\*\*)/g).forEach((part) => {
+                if (!part) return;
+                if (/^\*\*[^*]+\*\*$/.test(part)) {
+                    parent.appendChild(el('strong', '', part.slice(2, -2)));
+                    return;
+                }
+                let last = 0;
+                part.replace(SAFE_LINK_RE, (match, _g, offset) => {
+                    const href = safeHref(match);
+                    if (!href) return match;
+                    if (offset > last) parent.appendChild(document.createTextNode(part.slice(last, offset)));
+                    const a = el('a', LINK, match.replace(/^https?:\/\/(www\.)?/, ''));
+                    a.href = href;
+                    if (/^https?:/.test(href)) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+                    parent.appendChild(a);
+                    last = offset + match.length;
+                    return match;
+                });
+                if (last < part.length) parent.appendChild(document.createTextNode(part.slice(last)));
+            });
+        }
+
+        function renderRichText(container, text) {
+            container.textContent = '';
+            text.split(/\n{2,}/).forEach((para, idx) => {
+                const p = el('p', idx ? 'mt-2' : '');
+                para.split('\n').forEach((line, j) => {
+                    if (j) p.appendChild(el('br'));
+                    appendInline(p, line);
+                });
+                container.appendChild(p);
+            });
+        }
+
+        async function typeText(container, text) {
+            if (chatReduceMotion) { renderRichText(container, text); return; }
+            const plain = text.replace(/\*\*/g, '');
+            const caret = el('span', 'chat-caret');
+            const node = document.createTextNode('');
+            container.textContent = '';
+            container.appendChild(node);
+            container.appendChild(caret);
+            const step = Math.max(2, Math.round(plain.length / 90));
+            for (let i = 0; i < plain.length; i += step) {
+                node.textContent = plain.slice(0, i + step);
+                if (i % (step * 8) === 0) scrollChat();
+                await sleep(14);
+            }
+            renderRichText(container, text);
+        }
+
+        // ---------- lightbox da galeria ----------
+        let lightbox = null;
+        let lightboxImages = [];
+        let lightboxIndex = 0;
+        let lightboxReturnFocus = null;
+
+        function buildLightbox() {
+            lightbox = el('div', 'chat-lightbox');
+            lightbox.setAttribute('role', 'dialog');
+            lightbox.setAttribute('aria-modal', 'true');
+            lightbox.setAttribute('aria-label', 'Galeria de imagens');
+            lightbox.innerHTML = `
+                <button type="button" class="chat-lightbox__btn chat-lightbox__close" aria-label="Fechar"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button type="button" class="chat-lightbox__btn chat-lightbox__prev" aria-label="Imagem anterior"><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                <figure class="chat-lightbox__figure"><img alt=""><figcaption></figcaption></figure>
+                <button type="button" class="chat-lightbox__btn chat-lightbox__next" aria-label="Próxima imagem"><i data-lucide="chevron-right" class="w-6 h-6"></i></button>`;
+            document.body.appendChild(lightbox);
+            lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+            lightbox.querySelector('.chat-lightbox__close').addEventListener('click', closeLightbox);
+            lightbox.querySelector('.chat-lightbox__prev').addEventListener('click', () => showLightbox(lightboxIndex - 1));
+            lightbox.querySelector('.chat-lightbox__next').addEventListener('click', () => showLightbox(lightboxIndex + 1));
+            document.addEventListener('keydown', (e) => {
+                if (!lightbox.classList.contains('is-open')) return;
+                if (e.key === 'Escape') closeLightbox();
+                if (e.key === 'ArrowLeft') showLightbox(lightboxIndex - 1);
+                if (e.key === 'ArrowRight') showLightbox(lightboxIndex + 1);
+            });
+            refreshIcons();
+        }
+
+        function showLightbox(index) {
+            lightboxIndex = (index + lightboxImages.length) % lightboxImages.length;
+            const item = lightboxImages[lightboxIndex];
+            const img = lightbox.querySelector('img');
+            img.src = item.src;
+            img.alt = item.alt;
+            lightbox.querySelector('figcaption').textContent = `${item.label} · ${lightboxIndex + 1}/${lightboxImages.length}`;
+        }
+
+        function openLightbox(images, index) {
+            if (!lightbox) buildLightbox();
+            lightboxImages = images;
+            lightboxReturnFocus = document.activeElement;
+            showLightbox(index);
+            lightbox.classList.add('is-open');
+            document.body.style.overflow = 'hidden';
+            lightbox.querySelector('.chat-lightbox__close').focus();
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('is-open');
+            document.body.style.overflow = '';
+            if (lightboxReturnFocus) lightboxReturnFocus.focus({ preventScroll: true });
+        }
+
+        // ---------- cartões ----------
+        function actionNode(action) {
+            const a = el('a', 'chat-action' + (action.primary ? ' chat-action--primary' : ''));
+            a.href = action.href;
+            if (action.external) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+            if (action.download) a.setAttribute('download', action.download);
+            a.appendChild(action.brand ? brandNode(action.brand) : iconNode(action.icon));
+            a.appendChild(document.createTextNode(action.label));
+            return a;
+        }
+
+        function cardHeader(card) {
+            const head = el('div', 'flex items-center gap-3');
+            if (card.icon) {
+                const badge = el('div', 'chat-card__icon');
+                badge.appendChild(iconNode(card.icon, 'w-4 h-4'));
+                head.appendChild(badge);
+            }
+            const titles = el('div', 'min-w-0');
+            titles.appendChild(el('div', 'chat-card__eyebrow', card.eyebrow));
+            titles.appendChild(el('div', 'chat-card__title', card.title));
+            head.appendChild(titles);
+            return head;
+        }
+
+        function buildCard(id) {
+            const card = CHAT_CARDS[id];
+            if (!card) return null;
+            const root = el('div', 'chat-card chat-card--' + card.type);
+
+            if (card.type === 'repo' && card.image) {
+                const media = el('a', 'chat-card__media');
+                media.href = card.actions[0].href;
+                media.target = '_blank';
+                media.rel = 'noopener noreferrer';
+                media.setAttribute('aria-label', 'Abrir ' + card.title + ' no GitHub');
+                const img = el('img');
+                img.src = card.image;
+                img.alt = 'Prévia do repositório ' + card.title + ' no GitHub';
+                img.loading = 'lazy';
+                img.addEventListener('error', () => media.remove());
+                media.appendChild(img);
+                root.appendChild(media);
+            }
+
+            const body = el('div', 'chat-card__body');
+            body.appendChild(cardHeader(card));
+            if (card.desc) body.appendChild(el('p', 'chat-card__desc', card.desc));
+
+            if (card.type === 'gallery') {
+                const strip = el('div', 'chat-gallery');
+                card.images.forEach((image, idx) => {
+                    const btn = el('button', 'chat-gallery__item');
+                    btn.type = 'button';
+                    btn.setAttribute('aria-label', 'Ampliar: ' + image.label);
+                    const img = el('img');
+                    img.src = image.src;
+                    img.alt = image.alt;
+                    img.loading = 'lazy';
+                    img.decoding = 'async';
+                    btn.appendChild(img);
+                    btn.appendChild(el('span', 'chat-gallery__label', image.label));
+                    btn.addEventListener('click', () => openLightbox(card.images, idx));
+                    strip.appendChild(btn);
+                });
+                body.appendChild(strip);
+            }
+
+            if (card.tags) {
+                const tags = el('div', 'flex flex-wrap gap-1.5 mt-3');
+                card.tags.forEach((t) => tags.appendChild(el('span', 'chat-tag', t)));
+                body.appendChild(tags);
+            }
+
+            const actions = el('div', 'flex flex-wrap gap-2 mt-3.5');
+            card.actions.forEach((action) => actions.appendChild(actionNode(action)));
+            if (card.type === 'contact' && card.email) {
+                const copy = el('button', 'chat-action');
+                copy.type = 'button';
+                copy.appendChild(iconNode('copy'));
+                const label = document.createTextNode('Copiar e-mail');
+                copy.appendChild(label);
+                copy.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(card.email);
+                        label.textContent = 'Copiado!';
+                    } catch (_) {
+                        label.textContent = card.email;
+                    }
+                    setTimeout(() => { label.textContent = 'Copiar e-mail'; }, 2000);
+                });
+                actions.appendChild(copy);
+            }
+            body.appendChild(actions);
+            root.appendChild(body);
+            return root;
+        }
+
+        async function appendCards(col, ids) {
+            const valid = (ids || []).filter((id) => Object.prototype.hasOwnProperty.call(CHAT_CARDS, id));
+            if (!valid.length) return;
+            const wrap = el('div', valid.length > 1 ? 'chat-cards chat-cards--multi' : 'chat-cards');
+            col.appendChild(wrap);
+            for (const id of valid) {
+                const node = buildCard(id);
+                if (!node) continue;
+                node.classList.add('chat-pop');
+                wrap.appendChild(node);
+                refreshIcons();
+                scrollChat();
+                if (!chatReduceMotion) await sleep(120);
+            }
+        }
+
+        function appendSuggestions(col, suggestions) {
+            const list = (suggestions || []).filter((q) => typeof q === 'string' && q.trim()).slice(0, 3);
+            if (!list.length) return;
+            const wrap = el('div', 'chat-followups chat-pop');
+            list.forEach((q) => {
+                const btn = el('button', 'chat-followup btn-motion');
+                btn.type = 'button';
+                btn.appendChild(iconNode('corner-down-right', 'w-3 h-3 shrink-0'));
+                btn.appendChild(document.createTextNode(q));
+                btn.addEventListener('click', () => {
+                    if (chatBusy) return;
+                    wrap.remove();
+                    runCommand(q);
+                });
+                wrap.appendChild(btn);
+            });
+            col.appendChild(wrap);
+            refreshIcons();
+            scrollChat();
+        }
+
+        // ---------- mensagens ----------
         function addUserMessage(text) {
-            const row = document.createElement('div');
-            row.className = 'flex justify-end terminal-msg-enter';
-            const bubble = document.createElement('div');
-            bubble.className = 'chat-bubble chat-bubble--user';
-            bubble.textContent = text;
-            row.appendChild(bubble);
+            terminalScreen.querySelectorAll('.chat-followups').forEach((n) => n.remove());
+            const row = el('div', 'flex justify-end terminal-msg-enter');
+            row.appendChild(el('div', 'chat-bubble chat-bubble--user', text));
             terminalScreen.appendChild(row);
             scrollChat();
         }
 
-        // content: string HTML confiável (respostas locais) ou null para preencher via textContent
         function addBotMessage(html) {
-            const row = document.createElement('div');
-            row.className = 'flex items-start gap-2.5 terminal-msg-enter';
-            row.innerHTML = BOT_AVATAR;
-            const col = document.createElement('div');
-            col.className = 'min-w-0 max-w-[85%]';
-            const bubble = document.createElement('div');
-            bubble.className = 'chat-bubble chat-bubble--bot';
-            if (html !== null) bubble.innerHTML = html;
+            const row = el('div', 'flex items-start gap-2.5 terminal-msg-enter');
+            const avatar = el('div', 'chat-avatar', 'TM');
+            avatar.setAttribute('aria-hidden', 'true');
+            row.appendChild(avatar);
+            const col = el('div', 'min-w-0 flex-1 max-w-[88%]');
+            const bubble = el('div', 'chat-bubble chat-bubble--bot');
+            if (html) bubble.innerHTML = html; // apenas HTML fixo deste arquivo
             col.appendChild(bubble);
             row.appendChild(col);
             terminalScreen.appendChild(row);
@@ -1636,10 +2057,10 @@
         function showWelcome(text) {
             terminalScreen.innerHTML = '';
             addBotMessage(text || `<p>Olá! 👋 Sou o assistente virtual do portfólio do <strong>Talyson</strong>.</p>
-<p class="mt-1.5">Escolha um atalho abaixo ou escreva sua pergunta sobre experiência, formação, projetos ou disponibilidade.</p>`);
+<p class="mt-1.5">Pergunte o que quiser sobre experiência, formação, projetos ou disponibilidade. Eu mostro links, telas dos projetos e atalhos para continuar a conversa.</p>`);
         }
 
-        function runCommand(rawInput) {
+        async function runCommand(rawInput) {
             const original = String(rawInput || '').trim();
             if (!original || chatBusy) return;
             const cmd = original.toLowerCase();
@@ -1652,8 +2073,16 @@
             }
 
             if (Object.prototype.hasOwnProperty.call(COMMANDS, resolved)) {
+                const entry = COMMANDS[resolved];
                 addUserMessage(COMMAND_LABELS[resolved] || original);
-                addBotMessage(COMMANDS[resolved]);
+                setBusy(true);
+                const msg = addBotMessage(entry.html);
+                try {
+                    await appendCards(msg.col, entry.cards);
+                    appendSuggestions(msg.col, entry.suggestions);
+                } finally {
+                    setBusy(false);
+                }
                 return;
             }
 
@@ -1667,14 +2096,15 @@
         const chatHistory = [];
         let chatBusy = false;
 
-        function setBusy(busy) {
+        function setBusy(busy, typing) {
             chatBusy = busy;
             terminalInput.disabled = busy;
             if (terminalSend) terminalSend.disabled = busy;
+            if (chatStatus) chatStatus.textContent = busy && typing ? 'digitando…' : 'Online · IA com base no currículo';
         }
 
         async function askAssistant(question) {
-            setBusy(true);
+            setBusy(true, true);
             const msg = addBotMessage('<span class="chat-typing" aria-label="Digitando"><span></span><span></span><span></span></span>');
 
             const controller = new AbortController();
@@ -1694,12 +2124,12 @@
                 chatHistory.push({ role: 'user', content: question }, { role: 'assistant', content: data.reply });
                 while (chatHistory.length > CHAT_HISTORY_LIMIT) chatHistory.shift();
 
-                msg.bubble.textContent = data.reply;
-                msg.bubble.classList.add('whitespace-pre-line');
-                const tag = document.createElement('div');
-                tag.className = 'chat-ai-tag';
-                tag.textContent = '✦ Gerado por IA';
+                clearTimeout(timer);
+                await typeText(msg.bubble, data.reply);
+                await appendCards(msg.col, Array.isArray(data.cards) ? data.cards : []);
+                const tag = el('div', 'chat-ai-tag', '✦ Gerado por IA');
                 msg.col.appendChild(tag);
+                appendSuggestions(msg.col, Array.isArray(data.suggestions) ? data.suggestions : []);
             } catch (err) {
                 msg.bubble.innerHTML = 'Não consegui consultar a IA agora. Tente um dos atalhos abaixo ou fale pelo <a href="#contato" class="' + LINK + '">contato</a>.';
             } finally {
