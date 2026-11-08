@@ -1,122 +1,138 @@
-# 📊 Automatizador de Planilhas com IA (DeepSeek + Streamlit)
+# 📊 Automatizador de Planilhas com IA
 
-Aplicação web completa e robusta em Python para automação e manipulação inteligente de planilhas (`.xlsx` e `.csv`) a partir de comandos em linguagem natural (Português), utilizando a **API DeepSeek**, **Pandas** e **Streamlit**.
+> Manipule planilhas Excel e CSV **escrevendo em português o que você quer fazer**. A IA gera o código Pandas, executa em um sandbox isolado, corrige sozinha os próprios erros e devolve a planilha pronta para baixar.
 
----
-
-## 🚀 Funcionalidades
-
-- 📁 **Suporte Multi-Abas Inteligente (Workbook Completo)**:
-  - Leitura simultânea de todas as abas de arquivos Excel (`.xlsx`, `.xls`).
-  - IA com visão contextual de todas as tabelas e capacidade de relacionar/cruzar abas (merges, PROCV, consolidações) automaticamente via prompt em linguagem natural.
-  - Leitura inteligente de arquivos `.csv` com detecção automática de delimitador (`,`, `;`, `\t`) e encoding (`utf-8`, `latin-1`, `cp1252`).
-  - Exportação em `.xlsx` formatado (preservando abas) e `.csv` (`utf-8-sig`).
-- 🤖 **Motor de IA DeepSeek**:
-  - Geração de código Pandas defensivo e eficiente a partir de instruções em português.
-  - Suporte aos modelos `deepseek-chat` (DeepSeek-V3) e `deepseek-reasoner` (DeepSeek-R1).
-  - Explicação amigável em português de todas as operações realizadas na planilha.
-- 🛡️ **Sandbox de Execução Segura**:
-  - Isolamento de execução com escopo restrito (`pd`, `np`, `datetime`, `re`, `math`).
-  - Bloqueio estático e dinâmico de operações não seguras (`os`, `sys`, `subprocess`, `eval`, `open`).
-  - Imutabilidade da base original (todas as operações são realizadas em cópias profundas).
-- ⚡ **Auto-Healing de Erros**:
-  - Se o código gerado falhar em tempo de execução (ex: tipo de dado incompatível ou acentuação em colunas), a IA analisa o traceback e autocorrige o script automaticamente (até 2 tentativas).
-- ⏪ **Histórico e Pipeline de Ações**:
-  - Empilhamento de transformações sucessivas.
-  - Botão **Desfazer (Undo)** para voltar à etapa anterior.
-  - Botão **Resetar** para restaurar a planilha original.
-- 📊 **Visualização e Gráficos**:
-  - Resumo de métricas (linhas, colunas, células vazias, memória).
-  - Resumo de impacto (variação de linhas, colunas adicionadas/removidas, tempo de execução).
-  - Gráficos automáticos (Barras, Linhas, Área) para dados agregados.
-  - Base de demonstração integrada para testes rápidos com 1 clique.
+[![Testes](https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA/actions/workflows/tests.yml/badge.svg)](https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA/actions/workflows/tests.yml)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Pandas](https://img.shields.io/badge/Pandas-150458?logo=pandas&logoColor=white)](https://pandas.pydata.org/)
+[![DeepSeek](https://img.shields.io/badge/LLM-DeepSeek-0066FF)](https://www.deepseek.com/)
+[![Licença: MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-green)](LICENSE)
 
 ---
 
-## 🏗️ Arquitetura do Projeto
+## 🎯 O problema
 
-```
-Automatizador de Planilhas com IA/
-├── app.py                        # Ponto de entrada da aplicação Streamlit
-├── requirements.txt              # Dependências do projeto
-├── .env.example                  # Template de variáveis de ambiente
-├── README.md                     # Documentação do projeto
-├── src/
-│   ├── core/
-│   │   ├── config.py             # Configurações gerais e parâmetros da DeepSeek
-│   │   └── file_handler.py       # Leitura, parsing e exportação de CSV e XLSX
-│   ├── llm/
-│   │   ├── client.py             # Cliente DeepSeek (OpenAI-compatible)
-│   │   ├── prompts.py            # Prompts de engenharia de contexto e auto-healing
-│   │   └── schema.py             # Extrator de esquema e metadados de DataFrames
-│   ├── engine/
-│   │   ├── code_executor.py      # Sandbox de execução segura
-│   │   └── error_recovery.py     # Pipeline de execução com autocorreção
-│   └── ui/
-│       ├── components.py         # Componentes visuais do Streamlit
-│       └── styles.py             # CSS customizado e design system
-└── tests/
-    ├── test_file_handler.py      # Testes de arquivos e encodings
-    ├── test_schema.py            # Testes do extrator de esquema
-    ├── test_code_executor.py     # Testes de execução segura e bloqueio
-    └── test_error_recovery.py    # Testes do ciclo de auto-healing
-```
+Filtrar, cruzar abas (PROCV), agrupar e calcular colunas em planilhas é trabalho repetitivo, e depende de saber fórmulas ou programar. Com esta ferramenta, basta escrever, por exemplo:
+
+> *"Agrupe por Categoria, some a Quantidade, calcule a média do Preço e ordene pelo total decrescente."*
+
+A aplicação mostra o resultado, explica em português o que foi feito e permite desfazer.
 
 ---
 
-## ⚙️ Instalação e Configuração
+## ✨ Funcionalidades
 
-### 1. Clonar ou Acessar a Pasta do Projeto
+- **Planilhas com várias abas** — lê todas as abas de um `.xlsx` e permite cruzar dados entre elas (merges, PROCV, consolidações).
+- **CSV inteligente** — detecta delimitador (`,` `;` tab) e encoding (`utf-8`, `latin-1`, `cp1252`).
+- **Código gerado por IA** — DeepSeek (`deepseek-chat` ou `deepseek-reasoner`), por API compatível com OpenAI.
+- **Autocorreção** — se o código gerado falhar, a IA recebe o erro e tenta corrigir (até 2 tentativas).
+- **Histórico** — aplique transformações em sequência, use **Desfazer** ou **Resetar** para a planilha original.
+- **Visualização** — métricas da planilha, resumo do impacto de cada operação e gráficos (barras, linhas, área).
+- **Exportação** — `.xlsx` (mantendo as abas) e `.csv` (`utf-8-sig`, abre corretamente no Excel).
+- **Base de demonstração** — um exemplo com várias abas (Vendas, Clientes, Produtos, Metas) carregado com um clique.
+
+---
+
+## 🛡️ Sandbox de execução
+
+Executar código gerado por um modelo de linguagem é arriscado, então ele **nunca roda no processo da aplicação**. As camadas de proteção, na ordem em que atuam:
+
+1. **Análise estática (AST)** — bloqueia imports fora da lista (`pandas`, `numpy`, `datetime`, `math`, `statistics`, `re`, `json`), atributos `__dunder__`, `eval`/`exec`/`open`/`getattr`/`compile` e funções de leitura/escrita do pandas. Diferente de uma lista de palavras proibidas, não é enganada por concatenação de strings.
+2. **Subprocesso isolado** — diretório temporário vazio e nenhuma variável de ambiente da aplicação (a chave de API não existe lá dentro).
+3. **Builtins restritos** — sem `open`, `eval`, `exec`, `__import__`, `input` ou introspecção.
+4. **Audit hook** — barreira em tempo de execução contra rede, criação de processos, `ctypes` e escrita em disco.
+5. **Limites de recurso** — timeout sempre ativo; em Linux/macOS, também limite de CPU, de arquivos e de processos.
+6. **Entrada imutável** — os dados vão para o subprocesso serializados; o código só consegue devolver dados novos.
+
+Cada camada tem testes próprios em `tests/test_security_sandbox.py` e `tests/test_code_executor.py`.
+
+---
+
+## 🚀 Como rodar
+
+Requer Python 3.10 ou superior e uma chave da [DeepSeek](https://platform.deepseek.com/).
+
 ```bash
-cd "C:\Users\User\Documents\Projetos\Automatizador-de-Planilhas-com-IA"
-```
-
-### 2. Criar e Ativar Ambiente Virtual (Recomendado)
-```bash
+git clone https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA.git
+cd Automatizador-de-Planilhas-com-IA
 python -m venv venv
-# No Windows:
-.\venv\Scripts\activate
 ```
 
-### 3. Instalar Dependências
+Ative o ambiente virtual:
+- Linux/macOS: `source venv/bin/activate`
+- Windows (PowerShell): `.\venv\Scripts\Activate.ps1`
+
 ```bash
 pip install -r requirements.txt
+cp .env.example .env
 ```
 
-### 4. Configurar a Chave de API
-Copie o arquivo `.env.example` para `.env` e adicione sua chave de API da DeepSeek:
-```env
-DEEPSEEK_API_KEY=sua_chave_deepseek_aqui
-DEEPSEEK_BASE_URL=https://api.deepseek.com
-DEEPSEEK_MODEL=deepseek-chat
-```
-*(Nota: Você também pode inserir a chave diretamente na barra lateral da aplicação web ao executá-la).*
+Preencha `DEEPSEEK_API_KEY` no `.env` (ou informe a chave na barra lateral da aplicação) e rode:
 
----
-
-## ▶️ Como Executar a Aplicação
-
-Execute o comando no terminal:
 ```bash
 streamlit run app.py
 ```
-A aplicação será aberta automaticamente no seu navegador padrão (geralmente em `http://localhost:8501`).
+
+A aplicação abre em `http://localhost:8501`.
 
 ---
 
-## 🧪 Como Rodar os Testes Automatizados
+## 💡 Exemplos de comandos
 
-Para rodar toda a suíte de testes com `pytest`:
+- *"Crie uma coluna Valor_Total multiplicando Quantidade por Preco_Unitario."*
+- *"Filtre os registros com Status igual a 'Concluído' e Região 'Sudeste'."*
+- *"Traga o nome do cliente da aba Clientes para a aba Vendas usando o ID_Cliente."*
+- *"Crie uma coluna de comissão de 5% para as vendas acima de R$ 1.000."*
+- *"Remova as linhas com valores vazios e formate as datas como dd/mm/aaaa."*
+
+---
+
+## 🏗️ Arquitetura
+
+```mermaid
+flowchart LR
+    U["Usuário<br/>(Streamlit)"] -->|planilha + pedido em português| FH["FileHandler<br/>leitura .xlsx/.csv"]
+    FH --> SC["Schema<br/>metadados das abas"]
+    SC --> LLM["DeepSeek<br/>gera código Pandas"]
+    LLM --> EX["Sandbox<br/>AST + subprocesso isolado"]
+    EX -->|erro| REC["Autocorreção<br/>até 2 tentativas"]
+    REC --> LLM
+    EX -->|sucesso| R["Resultado + explicação<br/>+ exportação"]
+```
+
+```
+Automatizador-de-Planilhas-com-IA/
+├── app.py                    # Aplicação Streamlit
+├── src/
+│   ├── core/
+│   │   ├── config.py         # Configurações e parâmetros da DeepSeek
+│   │   └── file_handler.py   # Leitura e exportação de CSV/XLSX
+│   ├── llm/
+│   │   ├── client.py         # Cliente DeepSeek (compatível com OpenAI)
+│   │   ├── prompts.py        # Prompts de geração e de autocorreção
+│   │   └── schema.py         # Extração de metadados dos DataFrames
+│   ├── engine/
+│   │   ├── code_executor.py  # Sandbox de execução
+│   │   └── error_recovery.py # Ciclo de autocorreção
+│   └── ui/                   # Componentes visuais e estilos
+└── tests/                    # Suíte pytest (offline)
+```
+
+---
+
+## 🧪 Testes
+
+A suíte roda **offline** (o LLM é simulado) e cobre leitura de arquivos, extração de schema, sandbox, autocorreção, estado da aplicação e componentes de interface. Ela também roda a cada push via GitHub Actions.
+
 ```bash
 python -m pytest -v
 ```
 
 ---
 
-## 💡 Exemplos de Comandos em Português
+## 👤 Autor
 
-- *"Crie uma coluna chamada 'Valor_Total' multiplicando a Quantidade pelo Preco_Unitario."*
-- *"Filtre apenas os registros com Status igual a 'Concluído' e Região 'Sudeste'."*
-- *"Agrupe por Categoria, calcule a soma da Quantidade e a média do Preço, e ordene pelo total decrescente."*
-- *"Crie uma coluna de comissão de 5% sobre as vendas acima de R$ 1.000."*
-- *"Remova todas as linhas com valores nulos e converta as datas para o padrão dd/mm/aaaa."*
+**Talyson Marques** — [Portfólio](https://sandymarques.github.io/talyson-projects/) · [LinkedIn](https://www.linkedin.com/in/talysonmarques/) · [GitHub](https://github.com/SandyMarques)
+
+Distribuído sob a licença [MIT](LICENSE).

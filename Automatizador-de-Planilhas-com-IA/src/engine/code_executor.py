@@ -31,6 +31,7 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 import tempfile
@@ -444,6 +445,11 @@ payload = json.loads(sys.stdin.read())
 
 # --- 1. ambiente e diretorio ---------------------------------------------------------------
 os.environ.clear()   # nenhuma variavel da aplicacao (API keys) existe dentro do sandbox
+# O filho roda com RLIMIT_NPROC=0 e, no Linux, threads contam como processos para usuarios
+# comuns (root e isento). Sem fixar 1 thread, o OpenBLAS do numpy falha ao criar suas threads
+# na importacao e o sandbox nao executa nada. Precisa vir depois do clear() e antes do numpy.
+for _var in ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ[_var] = "1"
 os.chdir(payload["workdir"])
 
 for extra_path in payload["extra_paths"]:
@@ -909,6 +915,15 @@ class _SandboxRunner:
                 "success": False,
                 "error": "O resultado gerado excedeu o tamanho máximo permitido pelo sandbox.",
             }
+
+        # Em POSIX, o RLIMIT_CPU encerra o filho com SIGXCPU (ou SIGKILL no limite rígido)
+        # antes do timeout de parede: é o mesmo caso de "tempo excedido", não uma falha muda.
+        cpu_signals = {getattr(signal, "SIGXCPU", None), getattr(signal, "SIGKILL", None)} - {None}
+        if completed.returncode < 0 and -completed.returncode in cpu_signals:
+            raise SandboxTimeoutError(
+                f"O código excedeu o limite de {self.limits.cpu_seconds}s de CPU "
+                "e foi interrompido pelo sandbox."
+            )
 
         if not stdout.strip():
             return {
