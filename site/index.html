@@ -392,6 +392,72 @@
             border-radius: 0 0 12px 0;
         }
         .skip-link:focus { left: 0; }
+        /* Atendimento virtual (chat) */
+        .chat-shell { box-shadow: 0 1px 2px rgba(16,30,51,.04), 0 18px 40px -18px rgba(16,30,51,.25); }
+        .dark .chat-shell { box-shadow: 0 18px 40px -18px rgba(0,0,0,.6); }
+        .chat-header { background: linear-gradient(135deg, #1e3a5f 0%, #274e78 100%); }
+        .chat-body {
+            background-color: #f8fafc;
+            background-image: radial-gradient(rgba(30,58,95,.07) 1px, transparent 1px);
+            background-size: 18px 18px;
+        }
+        .dark .chat-body {
+            background-color: #0d1829;
+            background-image: radial-gradient(rgba(143,173,207,.07) 1px, transparent 1px);
+        }
+        .chat-avatar {
+            margin-top: 2px; width: 30px; height: 30px; flex-shrink: 0; border-radius: 9999px;
+            display: flex; align-items: center; justify-content: center;
+            font: 700 10px/1 "Space Grotesk", sans-serif; color: #fff;
+            background: linear-gradient(135deg, #1e3a5f, #386293);
+        }
+        .chat-bubble { padding: 10px 14px; border-radius: 18px; line-height: 1.55; overflow-wrap: anywhere; }
+        .chat-bubble--bot {
+            background: #fff; color: #1e293b; border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 6px; box-shadow: 0 1px 2px rgba(16,30,51,.05);
+        }
+        .dark .chat-bubble--bot { background: #162945; color: #e2e8f0; border-color: #1e3a5f; }
+        .chat-bubble--user {
+            max-width: 80%; color: #fff; border-bottom-right-radius: 6px;
+            background: linear-gradient(135deg, #274e78, #1e3a5f);
+            box-shadow: 0 4px 12px -4px rgba(30,58,95,.45);
+        }
+        .dark .chat-bubble--user { background: linear-gradient(135deg, #386293, #274e78); }
+        .chat-list { list-style: none; padding: 0; margin: 0; }
+        .chat-list li { position: relative; padding-left: 14px; margin-top: 4px; }
+        .chat-list li::before {
+            content: ""; position: absolute; left: 2px; top: .62em; width: 5px; height: 5px;
+            border-radius: 9999px; background: #5b84b5;
+        }
+        .chat-ai-tag { margin-top: 4px; padding-left: 4px; font-size: 11px; color: #64748b; }
+        .dark .chat-ai-tag { color: #8fadcf; }
+        .chat-typing { display: inline-flex; gap: 4px; padding: 4px 2px; }
+        .chat-typing span {
+            width: 7px; height: 7px; border-radius: 9999px; background: #8fadcf;
+            animation: chatTyping 1.2s infinite ease-in-out;
+        }
+        .chat-typing span:nth-child(2) { animation-delay: .15s; }
+        .chat-typing span:nth-child(3) { animation-delay: .3s; }
+        @keyframes chatTyping {
+            0%, 60%, 100% { transform: translateY(0); opacity: .45; }
+            30% { transform: translateY(-4px); opacity: 1; }
+        }
+        .chat-chips { scrollbar-width: none; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 32px), transparent); padding-right: 24px; }
+        .chat-chips::-webkit-scrollbar { display: none; }
+        .chat-chip {
+            display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;
+            padding: 7px 13px; border-radius: 9999px; font-size: 12px; font-weight: 600;
+            color: #1e3a5f; background: #f0f4f9; border: 1px solid #dce6f1;
+        }
+        .chat-chip:hover { background: #dce6f1; border-color: #b9cde3; }
+        .dark .chat-chip { color: #dce6f1; background: #162945; border-color: #1e3a5f; }
+        .dark .chat-chip:hover { background: #1e3a5f; border-color: #386293; }
+        .chat-chip--ai { background: #fff; border-style: dashed; border-color: #8fadcf; }
+        .dark .chat-chip--ai { background: transparent; border-color: #386293; }
+        .chat-input { transition: border-color var(--dur-quick) var(--ease-snappy), box-shadow var(--dur-quick) var(--ease-snappy), background-color var(--dur-quick) var(--ease-snappy); }
+        .chat-input:focus-within { background: #fff; border-color: #274e78; box-shadow: 0 0 0 3px rgba(39,78,120,.15); }
+        .dark .chat-input:focus-within { background: #101e33; border-color: #8fadcf; box-shadow: 0 0 0 3px rgba(143,173,207,.2); }
+        .chat-input input:focus-visible { outline: none; }
         #terminal-screen::-webkit-scrollbar { width: 8px; }
         #terminal-screen::-webkit-scrollbar-track { background: transparent; }
         #terminal-screen::-webkit-scrollbar-thumb { background: #b9cde3; border-radius: 4px; }
@@ -413,6 +479,7 @@
                 transition: none !important;
             }
             .pulse-dot,
+            .chat-typing span,
             .ambient-glow-1,
             .ambient-glow-2 {
                 animation: none !important;
@@ -1125,53 +1192,61 @@
         </div>
     </section>
 
-    <!-- SECTION: ATENDIMENTO VIRTUAL (terminal corporativo) -->
+    <!-- SECTION: ATENDIMENTO VIRTUAL (chat com IA) -->
     <section id="terminal" class="py-16 px-4">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-3xl mx-auto">
             <div class="text-center mb-10 motion-reveal">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-4">
-                    <i data-lucide="message-square" class="w-3.5 h-3.5 icon-bounce"></i> ATENDIMENTO VIRTUAL
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 icon-bounce"></i> ATENDIMENTO VIRTUAL
                 </div>
-                <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Consulta rápida</h2>
-                <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm">Use os botões, digite um comando simples ou faça uma pergunta em texto livre sobre o meu perfil profissional (respondida por IA).</p>
+                <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Tire suas dúvidas</h2>
+                <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm max-w-xl mx-auto">Pergunte sobre experiência, formação, projetos ou disponibilidade. Um assistente de IA responde com base no meu currículo.</p>
             </div>
 
-            <div class="card motion-reveal stagger-1 rounded-2xl overflow-hidden flex flex-col min-h-[440px] shadow-sm">
-                <div class="bg-navy-700 px-5 py-3.5 flex items-center justify-between">
-                    <div class="text-sm font-semibold text-white flex items-center gap-2">
-                        <i data-lucide="inbox" class="w-4 h-4 icon-bounce"></i> Atendimento — Talyson Marques
+            <div class="chat-shell motion-reveal stagger-1 rounded-3xl overflow-hidden flex flex-col bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700">
+                <!-- Cabeçalho -->
+                <div class="chat-header px-5 py-4 flex items-center gap-3">
+                    <div class="relative shrink-0">
+                        <div class="w-11 h-11 rounded-full bg-white/15 ring-1 ring-white/30 flex items-center justify-center font-display font-bold text-white text-sm">TM</div>
+                        <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-navy-700"></span>
                     </div>
-                    <div class="text-xs text-navy-100 flex items-center gap-1.5">
-                        <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-dot"></span> responde na hora
+                    <div class="min-w-0 flex-grow">
+                        <div class="text-sm font-bold text-white leading-tight">Assistente do Talyson</div>
+                        <div class="text-xs text-navy-100 flex items-center gap-1.5 mt-0.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span> Online · IA com base no currículo
+                        </div>
                     </div>
-                </div>
-
-                <div class="bg-slate-50 dark:bg-navy-800/60 border-b border-slate-200 dark:border-navy-700 p-3.5 flex flex-wrap gap-2 items-center text-xs text-slate-600 dark:text-slate-400">
-                    <span class="mr-1 font-semibold">Acesso rápido:</span>
-                    <button type="button" onclick="runCommand('sobre')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">sobre</button>
-                    <button type="button" onclick="runCommand('projetos')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">projetos</button>
-                    <button type="button" onclick="runCommand('blog')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">blog</button>
-                    <button type="button" onclick="runCommand('habilidades')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">habilidades</button>
-                    <button type="button" onclick="runCommand('contato')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">contato</button>
-                    <button type="button" onclick="runCommand('status')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">status</button>
-                    <button type="button" onclick="runCommand('ajuda')" class="btn-motion px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-navy-500 hover:text-navy-700 dark:hover:text-white font-medium">ajuda</button>
-                    <button type="button" onclick="runCommand('limpar')" class="btn-motion sm:ml-auto px-3 py-1.5 rounded-lg bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700 hover:border-red-400 hover:text-red-600 font-medium">limpar</button>
-                </div>
-
-                <div id="terminal-screen" class="p-6 text-sm overflow-y-auto max-h-[320px] flex-grow space-y-4 text-slate-700 dark:text-slate-200 bg-white dark:bg-navy-900" aria-live="polite">
-                    <div class="space-y-1 terminal-msg-enter">
-                        <p class="font-semibold text-navy-800 dark:text-white">Olá! Sou o atendimento virtual do portfólio do Talyson.</p>
-                        <p class="text-slate-600 dark:text-slate-400">Digite <span class="font-bold text-navy-700 dark:text-white">ajuda</span> para ver as opções ou faça uma pergunta.</p>
-                        <p class="text-xs text-slate-500 dark:text-slate-400">Perguntas em texto livre são respondidas por uma IA (DeepSeek) com base no currículo; ela pode errar. Em caso de dúvida, fale direto com o Talyson.</p>
-                    </div>
-                </div>
-
-                <form id="terminal-form" onsubmit="handleFormSubmit(event)" class="bg-slate-50 dark:bg-navy-800/60 border-t border-slate-200 dark:border-navy-700 p-4 flex items-center gap-3">
-                    <span class="text-navy-700 dark:text-slate-200 font-bold text-sm select-none">&gt;</span>
-                    <input id="terminal-input" type="text" autocomplete="off" placeholder="Pergunte algo ou digite: sobre, projetos, contato..." maxlength="500" aria-label="Campo de consulta do atendimento virtual" class="input-motion bg-transparent border-none outline-none flex-grow text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500 px-2 py-1 rounded-lg">
-                    <button type="submit" aria-label="Enviar consulta" class="btn-motion w-9 h-9 rounded-lg bg-navy-700 text-white flex items-center justify-center hover:bg-navy-600">
-                        <i data-lucide="corner-down-left" class="w-4 h-4 icon-bounce"></i>
+                    <button type="button" onclick="runCommand('limpar')" aria-label="Limpar conversa" title="Limpar conversa" class="btn-motion w-9 h-9 rounded-full text-white/80 hover:text-white hover:bg-white/10 flex items-center justify-center">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4 icon-bounce"></i>
                     </button>
+                </div>
+
+                <!-- Mensagens -->
+                <div id="terminal-screen" class="chat-body px-4 sm:px-6 py-6 overflow-y-auto h-[420px] space-y-4 text-sm" aria-live="polite"></div>
+
+                <!-- Sugestões -->
+                <div class="px-4 sm:px-6 pt-3 pb-1 border-t border-slate-100 dark:border-navy-800">
+                    <div class="chat-chips flex gap-2 overflow-x-auto pb-2" role="group" aria-label="Sugestões">
+                        <button type="button" onclick="runCommand('Ele já trabalhou com automação em Python?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Já trabalhou com automação?</button>
+                        <button type="button" onclick="runCommand('Qual é a formação do Talyson?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Qual a formação dele?</button>
+                        <button type="button" onclick="runCommand('sobre')" class="chat-chip btn-motion"><i data-lucide="user" class="w-3.5 h-3.5"></i>Sobre</button>
+                        <button type="button" onclick="runCommand('projetos')" class="chat-chip btn-motion"><i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i>Projetos</button>
+                        <button type="button" onclick="runCommand('habilidades')" class="chat-chip btn-motion"><i data-lucide="wrench" class="w-3.5 h-3.5"></i>Habilidades</button>
+                        <button type="button" onclick="runCommand('status')" class="chat-chip btn-motion"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>Disponibilidade</button>
+                        <button type="button" onclick="runCommand('contato')" class="chat-chip btn-motion"><i data-lucide="mail" class="w-3.5 h-3.5"></i>Contato</button>
+                        <button type="button" onclick="runCommand('blog')" class="chat-chip btn-motion"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>Blog</button>
+                    </div>
+                </div>
+
+                <!-- Entrada -->
+                <form id="terminal-form" onsubmit="handleFormSubmit(event)" class="px-4 sm:px-6 pb-4 pt-1">
+                    <div class="chat-input flex items-center gap-2 rounded-full bg-slate-100 dark:bg-navy-800 border border-transparent pl-5 pr-1.5 py-1.5">
+                        <input id="terminal-input" type="text" autocomplete="off" placeholder="Escreva sua pergunta..." maxlength="500" aria-label="Pergunta para o atendimento virtual" class="bg-transparent border-none outline-none flex-grow min-w-0 text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500 py-2">
+                        <button id="terminal-send" type="submit" aria-label="Enviar pergunta" class="btn-motion shrink-0 w-10 h-10 rounded-full bg-navy-700 text-white flex items-center justify-center hover:bg-navy-600 disabled:opacity-50">
+                            <i data-lucide="send" class="w-4 h-4 icon-bounce"></i>
+                        </button>
+                    </div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 text-center mt-2.5">Respostas geradas por IA (DeepSeek) podem conter imprecisões. Para assuntos importantes, use o <a href="#contato" class="underline hover:text-navy-700 dark:hover:text-white">contato direto</a>.</p>
                 </form>
             </div>
         </div>
@@ -1441,135 +1516,149 @@
         if (themeToggleMobileBtn) themeToggleMobileBtn.addEventListener('click', toggleTheme);
         refreshThemeIcons();
 
-        // --- ATENDIMENTO VIRTUAL (terminal corporativo com stream-in motion) ---
+        // --- ATENDIMENTO VIRTUAL (chat: respostas rápidas locais + IA via proxy) ---
         const terminalScreen = document.getElementById('terminal-screen');
         const terminalInput = document.getElementById('terminal-input');
+        const terminalSend = document.getElementById('terminal-send');
+
+        const LINK = 'font-semibold text-navy-700 dark:text-navy-300 underline underline-offset-2 hover:text-navy-900 dark:hover:text-white';
 
         const COMMANDS = {
-            'ajuda': `Posso ajudar com:<br>
-&nbsp;&nbsp;<strong>1 ou sobre</strong> — resumo do perfil profissional.<br>
-&nbsp;&nbsp;<strong>2 ou projetos</strong> — os projetos publicados e em desenvolvimento.<br>
-&nbsp;&nbsp;<strong>3 ou blog</strong> — mini blog e notas técnicas.<br>
-&nbsp;&nbsp;<strong>4 ou habilidades</strong> — o que posso apoiar no dia a dia.<br>
-&nbsp;&nbsp;<strong>5 ou contato</strong> — e-mail, LinkedIn e GitHub.<br>
-&nbsp;&nbsp;<strong>6 ou status</strong> — disponibilidade e formato de atuação.<br>
-&nbsp;&nbsp;<strong>limpar</strong> — limpa esta conversa.`,
+            'ajuda': `<p class="font-semibold mb-1.5">Posso ajudar com:</p>
+<ul class="chat-list">
+<li><strong>sobre</strong>: resumo do perfil profissional</li>
+<li><strong>projetos</strong>: publicados e em desenvolvimento</li>
+<li><strong>blog</strong>: artigos e notas técnicas</li>
+<li><strong>habilidades</strong>: o que posso apoiar no dia a dia</li>
+<li><strong>contato</strong>: e-mail, LinkedIn e GitHub</li>
+<li><strong>status</strong>: disponibilidade e formato de atuação</li>
+</ul>
+<p class="mt-1.5">Ou escreva uma pergunta livre, que a IA responde.</p>`,
 
-            'help': `Posso ajudar com:<br>
-&nbsp;&nbsp;<strong>1 ou sobre</strong> — resumo do perfil profissional.<br>
-&nbsp;&nbsp;<strong>2 ou projetos</strong> — os projetos publicados e em desenvolvimento.<br>
-&nbsp;&nbsp;<strong>3 ou blog</strong> — mini blog e notas técnicas.<br>
-&nbsp;&nbsp;<strong>4 ou habilidades</strong> — o que posso apoiar no dia a dia.<br>
-&nbsp;&nbsp;<strong>5 ou contato</strong> — e-mail, LinkedIn e GitHub.<br>
-&nbsp;&nbsp;<strong>6 ou status</strong> — disponibilidade e formato de atuação.<br>
-&nbsp;&nbsp;<strong>limpar</strong> — limpa esta conversa.`,
+            'sobre': `<p class="font-semibold mb-1.5">Talyson Marques</p>
+<p>Analista Administrativo na <strong>Accenture Brasil (Projeto Vivere)</strong> desde nov/2020, com foco em automação e processos: análise de documentos, padronização de dados e metas de SLA.</p>
+<p class="mt-1.5">Graduação tecnológica em <strong>Redes de Computadores (SENAC-SP)</strong>, 2019–2022.</p>
+<p class="mt-1.5">Atuação híbrida: planilhas avançadas e organização administrativa junto com <strong>automações em Python</strong> e <strong>Inteligência Artificial</strong>.</p>
+<p class="mt-1.5 text-slate-500 dark:text-slate-400">Praia Grande - SP · remoto, híbrido ou presencial.</p>`,
 
-            'sobre': `<strong>TALYSON MARQUES</strong><br>
-------------------------------------<br>
-Analista Administrativo na <strong>Accenture Brasil (Projeto Vivere)</strong> desde nov/2020, com foco em automação e processos: análise de documentos, padronização de dados e metas de SLA.<br>
-Graduação tecnológica em <strong>Redes de Computadores (SENAC-SP)</strong>, 2019–2022.<br>
-Atuação híbrida: planilhas avançadas e organização administrativa junto com <strong>automações em Python</strong> e <strong>Inteligência Artificial</strong>.<br>
-Disponibilidade: Praia Grande - SP (Remoto, Híbrido ou Presencial).`,
+            'projetos': `<p class="font-semibold mb-1.5">Projetos publicados</p>
+<ul class="chat-list">
+<li><strong>Assistente de consulta a documentos</strong>: responde com base em documentos enviados, indicando a fonte. <a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="${LINK}">GitHub</a></li>
+<li><strong>Automatizador de planilhas por comandos em português</strong>: limpeza e transformação de Excel/CSV, com desfazer e exportação. <a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="${LINK}">GitHub</a></li>
+</ul>
+<p class="font-semibold mt-3 mb-1.5">Estudo de caso</p>
+<p><strong>Tapioca Delegusty</strong>: sistema de pedidos completo (cardápio, PIX, cozinha, entrega e atendente virtual). <a href="caso-tapioca-delegusty.html" class="${LINK}">Ver o estudo de caso</a></p>
+<p class="font-semibold mt-3 mb-1.5">Em desenvolvimento</p>
+<ul class="chat-list">
+<li>Validador e auditor de documentos</li>
+<li>Painel operacional e métricas</li>
+<li>HelpDesk AI & Gestor de SLA</li>
+<li>Bot de monitoramento de redes</li>
+<li>Gestor de prazos & contratos</li>
+</ul>
+<p class="mt-1.5"><a href="projeto-detalhe.html" class="${LINK}">Ver o planejamento</a></p>`,
 
-            'projetos': `<strong>PROJETOS PUBLICADOS:</strong><br>
------------------------------<br>
-1. <strong>Assistente de consulta a documentos</strong><br>
-&nbsp;&nbsp;&nbsp;Responde com base em documentos enviados, indicando a fonte.<br>
-&nbsp;&nbsp;&nbsp;<a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="underline text-navy-700 dark:text-navy-300 font-semibold">Ver repositório no GitHub &rarr;</a><br>
-2. <strong>Automatizador de planilhas por comandos em português</strong><br>
-&nbsp;&nbsp;&nbsp;Limpeza e transformação de Excel/CSV, com desfazer e exportação.<br>
-&nbsp;&nbsp;&nbsp;<a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="underline text-navy-700 dark:text-navy-300 font-semibold">Ver repositório no GitHub &rarr;</a><br><br>
-<strong>ESTUDO DE CASO:</strong><br>-----------------------------<br>&bull; <strong>Tapioca Delegusty</strong> — sistema de pedidos completo (cardápio, PIX, cozinha, entrega e atendente virtual).<br><a href="caso-tapioca-delegusty.html" class="underline text-navy-700 dark:text-navy-300 font-semibold">Ver o estudo de caso</a><br><br><strong>EM DESENVOLVIMENTO:</strong><br>
------------------------------<br>
-3. <strong>Validador e auditor de documentos</strong> (IA + Conformidade)<br>
-4. <strong>Painel operacional e métricas</strong> (Docker + Telemetria)<br>
-5. <strong>HelpDesk AI & Gestor de SLA</strong> (Triagem + Prazos)<br>
-6. <strong>Bot de monitoramento de redes</strong> (Linux + Conectividade)<br>
-7. <strong>Gestor de prazos & contratos</strong> (Governança + Alertas)<br>
-<a href="projeto-detalhe.html" class="inline-flex items-center gap-1 font-bold text-navy-700 dark:text-navy-300 underline mt-1">Ver o planejamento dos projetos em desenvolvimento &rarr;</a>`,
+            'blog': `<p class="font-semibold mb-1.5">Mini blog</p>
+<p>4 artigos: o estudo de caso do sistema de pedidos, padronização de planilhas com Python, assistente de documentos com RAG e 5 práticas de organização administrativa.</p>
+<p class="mt-1.5"><a href="blog.html" class="${LINK}">Acessar o blog</a></p>`,
 
-            'blog': `<strong>MINI BLOG & ARTIGOS TÉCNICOS:</strong><br>
-------------------------------------------<br>
-4 artigos: o estudo de caso do sistema de pedidos, padronização de planilhas com Python, assistente de documentos com RAG e 5 práticas de organização administrativa.<br>
-<a href="blog.html" class="inline-flex items-center gap-1 font-bold text-navy-700 dark:text-navy-300 underline mt-1">Acessar o Blog de Artigos &rarr;</a>`,
+            'habilidades': `<p class="font-semibold mb-1.5">O que posso apoiar</p>
+<ul class="chat-list">
+<li>Organização de documentos, arquivos e prazos</li>
+<li>Planilhas Excel/CSV: conferência, limpeza e relatórios</li>
+<li>Automação de rotinas com Python e IA aplicada</li>
+<li>Atendimento e comunicação clara com a equipe</li>
+</ul>`,
 
-            'habilidades': `<strong>O QUE POSSO APOIAR:</strong><br>
------------------------------<br>
-- Organização de documentos, arquivos e prazos.<br>
-- Planilhas Excel/CSV: conferência, limpeza e relatórios.<br>
-- Automação de rotinas com Python e IA aplicada.<br>
-- Atendimento e comunicação clara com a equipe.`,
+            'contato': `<p class="font-semibold mb-1.5">Contato</p>
+<ul class="chat-list">
+<li>E-mail: <a href="mailto:talyson14marques@hotmail.com" class="${LINK}">talyson14marques@hotmail.com</a></li>
+<li>LinkedIn: <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener noreferrer" class="${LINK}">linkedin.com/in/talysonmarques</a></li>
+<li>GitHub: <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="${LINK}">github.com/SandyMarques</a></li>
+</ul>
+<p class="mt-1.5">Ou use o <a href="#contato" class="${LINK}">formulário de contato</a>.</p>`,
 
-            'contato': `<strong>CONTATO:</strong><br>
-------------------------------------------<br>
-- E-mail: <a href="mailto:talyson14marques@hotmail.com" class="underline text-navy-700 dark:text-navy-300 font-medium">talyson14marques@hotmail.com</a><br>
-- LinkedIn: <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener noreferrer" class="underline text-navy-700 dark:text-navy-300 font-medium">linkedin.com/in/talysonmarques</a><br>
-- GitHub: <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="underline text-navy-700 dark:text-navy-300 font-medium">github.com/SandyMarques</a><br><br>
-Use o formulário na seção de contato ou envie uma mensagem direta.`,
+            'status': `<p class="font-semibold mb-1.5">Disponibilidade</p>
+<ul class="chat-list">
+<li>Aberto a oportunidades em Administração e Tecnologia</li>
+<li>Remoto, híbrido ou presencial (Praia Grande - SP)</li>
+<li>2 projetos publicados com código no GitHub e 5 em desenvolvimento</li>
+</ul>`,
+        };
+        COMMANDS['help'] = COMMANDS['ajuda'];
 
-            'status': `<strong>DISPONIBILIDADE & ATUAÇÃO:</strong><br>
------------------------<br>
-- Situação: aberto a oportunidades em Administração e Tecnologia.<br>
-- Formatos: remoto, híbrido ou presencial (Praia Grande - SP).<br>
-- Contato: e-mail direto ou formulário de contato abaixo.<br>
-- Projetos: 2 publicados com código no GitHub e 5 em desenvolvimento.`,
+        const COMMAND_LABELS = {
+            'sobre': 'Sobre', 'projetos': 'Projetos', 'blog': 'Blog', 'habilidades': 'Habilidades',
+            'contato': 'Contato', 'status': 'Disponibilidade', 'ajuda': 'Ajuda', 'help': 'Ajuda',
         };
 
         const ALIASES = {
-            '1': 'sobre',
-            '2': 'projetos',
-            '3': 'blog',
-            '4': 'habilidades',
-            '5': 'contato',
-            '6': 'status',
-            '7': 'ajuda',
-            'sobre mim': 'sobre',
-            'projeto': 'projetos',
-            'artigo': 'blog',
-            'artigos': 'blog',
-            'post': 'blog',
-            'posts': 'blog',
-            'habilidade': 'habilidades',
-            'skills': 'habilidades',
-            'email': 'contato',
-            'e-mail': 'contato',
-            'clear': 'limpar',
-            'limpa': 'limpar',
-            'reset': 'limpar',
+            '1': 'sobre', '2': 'projetos', '3': 'blog', '4': 'habilidades', '5': 'contato', '6': 'status', '7': 'ajuda',
+            'sobre mim': 'sobre', 'projeto': 'projetos', 'artigo': 'blog', 'artigos': 'blog', 'post': 'blog', 'posts': 'blog',
+            'habilidade': 'habilidades', 'skills': 'habilidades', 'email': 'contato', 'e-mail': 'contato',
+            'disponibilidade': 'status', 'clear': 'limpar', 'limpa': 'limpar', 'reset': 'limpar',
         };
 
-        function runCommand(cmdString) {
-            cmdString = cmdString.trim().toLowerCase();
+        const BOT_AVATAR = '<div class="chat-avatar" aria-hidden="true">TM</div>';
 
-            const promptLine = document.createElement('div');
-            promptLine.className = 'text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-200 dark:border-navy-700 text-xs terminal-msg-enter';
-            const safeCmd = cmdString.replace(/</g, '&lt;');
-            promptLine.innerHTML = `<span class="font-bold text-navy-700 dark:text-white">&gt; </span>${safeCmd || '&nbsp;'}`;
-            terminalScreen.appendChild(promptLine);
+        function scrollChat() {
+            terminalScreen.scrollTo({ top: terminalScreen.scrollHeight, behavior: 'smooth' });
+        }
 
-            if (cmdString === 'limpar' || cmdString === 'clear' || cmdString === '') {
-                if (cmdString === '') { terminalScreen.scrollTop = terminalScreen.scrollHeight; return; }
-                terminalScreen.innerHTML = '<p class="text-slate-600 dark:text-slate-400 text-sm terminal-msg-enter">Conversa limpa. Digite <strong>ajuda</strong> para ver as opções.</p>';
+        function addUserMessage(text) {
+            const row = document.createElement('div');
+            row.className = 'flex justify-end terminal-msg-enter';
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-bubble chat-bubble--user';
+            bubble.textContent = text;
+            row.appendChild(bubble);
+            terminalScreen.appendChild(row);
+            scrollChat();
+        }
+
+        // content: string HTML confiável (respostas locais) ou null para preencher via textContent
+        function addBotMessage(html) {
+            const row = document.createElement('div');
+            row.className = 'flex items-start gap-2.5 terminal-msg-enter';
+            row.innerHTML = BOT_AVATAR;
+            const col = document.createElement('div');
+            col.className = 'min-w-0 max-w-[85%]';
+            const bubble = document.createElement('div');
+            bubble.className = 'chat-bubble chat-bubble--bot';
+            if (html !== null) bubble.innerHTML = html;
+            col.appendChild(bubble);
+            row.appendChild(col);
+            terminalScreen.appendChild(row);
+            scrollChat();
+            return { row, col, bubble };
+        }
+
+        function showWelcome(text) {
+            terminalScreen.innerHTML = '';
+            addBotMessage(text || `<p>Olá! 👋 Sou o assistente virtual do portfólio do <strong>Talyson</strong>.</p>
+<p class="mt-1.5">Escolha um atalho abaixo ou escreva sua pergunta sobre experiência, formação, projetos ou disponibilidade.</p>`);
+        }
+
+        function runCommand(rawInput) {
+            const original = String(rawInput || '').trim();
+            if (!original || chatBusy) return;
+            const cmd = original.toLowerCase();
+            const resolved = Object.prototype.hasOwnProperty.call(ALIASES, cmd) ? ALIASES[cmd] : cmd;
+
+            if (resolved === 'limpar') {
+                chatHistory.length = 0;
+                showWelcome('<p>Conversa reiniciada. Como posso ajudar?</p>');
                 return;
             }
-
-            const resolved = Object.prototype.hasOwnProperty.call(ALIASES, cmdString) ? ALIASES[cmdString] : cmdString;
-
-            const resultLine = document.createElement('div');
-            resultLine.className = 'text-slate-700 dark:text-slate-200 pl-3 leading-relaxed text-sm terminal-msg-enter';
 
             if (Object.prototype.hasOwnProperty.call(COMMANDS, resolved)) {
-                resultLine.innerHTML = COMMANDS[resolved];
-            } else if (resolved.startsWith('ping')) {
-                resultLine.innerHTML = `Serviço de atendimento disponível. Tempo de resposta imediato.<br>Use <strong>ajuda</strong> para ver as opções.`;
-            } else {
-                terminalScreen.appendChild(resultLine);
-                askAssistant(cmdString, resultLine);
+                addUserMessage(COMMAND_LABELS[resolved] || original);
+                addBotMessage(COMMANDS[resolved]);
                 return;
             }
 
-            terminalScreen.appendChild(resultLine);
-            terminalScreen.scrollTo({ top: terminalScreen.scrollHeight, behavior: 'smooth' });
+            addUserMessage(original);
+            askAssistant(original);
         }
 
         // --- IA (DeepSeek via proxy serverless na Vercel; a chave nunca fica no navegador) ---
@@ -1578,14 +1667,15 @@ Use o formulário na seção de contato ou envie uma mensagem direta.`,
         const chatHistory = [];
         let chatBusy = false;
 
-        async function askAssistant(question, resultLine) {
-            if (chatBusy) {
-                resultLine.textContent = 'Aguarde a resposta anterior antes de enviar outra pergunta.';
-                return;
-            }
-            chatBusy = true;
-            terminalInput.disabled = true;
-            resultLine.textContent = 'Consultando o assistente de IA...';
+        function setBusy(busy) {
+            chatBusy = busy;
+            terminalInput.disabled = busy;
+            if (terminalSend) terminalSend.disabled = busy;
+        }
+
+        async function askAssistant(question) {
+            setBusy(true);
+            const msg = addBotMessage('<span class="chat-typing" aria-label="Digitando"><span></span><span></span><span></span></span>');
 
             const controller = new AbortController();
             const timer = setTimeout(() => controller.abort(), 25000);
@@ -1603,19 +1693,20 @@ Use o formulário na seção de contato ou envie uma mensagem direta.`,
                 }
                 chatHistory.push({ role: 'user', content: question }, { role: 'assistant', content: data.reply });
                 while (chatHistory.length > CHAT_HISTORY_LIMIT) chatHistory.shift();
-                resultLine.textContent = data.reply;
+
+                msg.bubble.textContent = data.reply;
+                msg.bubble.classList.add('whitespace-pre-line');
                 const tag = document.createElement('div');
-                tag.className = 'mt-1 text-[11px] text-slate-500 dark:text-slate-400';
-                tag.textContent = 'Resposta gerada por IA, pode conter imprecisões.';
-                resultLine.appendChild(tag);
+                tag.className = 'chat-ai-tag';
+                tag.textContent = '✦ Gerado por IA';
+                msg.col.appendChild(tag);
             } catch (err) {
-                resultLine.innerHTML = 'Não consegui consultar o assistente de IA agora. Digite <strong>ajuda</strong> para ver as opções ou use o <strong>contato</strong>.';
+                msg.bubble.innerHTML = 'Não consegui consultar a IA agora. Tente um dos atalhos abaixo ou fale pelo <a href="#contato" class="' + LINK + '">contato</a>.';
             } finally {
                 clearTimeout(timer);
-                chatBusy = false;
-                terminalInput.disabled = false;
-                terminalInput.focus();
-                terminalScreen.scrollTo({ top: terminalScreen.scrollHeight, behavior: 'smooth' });
+                setBusy(false);
+                terminalInput.focus({ preventScroll: true });
+                scrollChat();
             }
         }
 
@@ -1623,10 +1714,12 @@ Use o formulário na seção de contato ou envie uma mensagem direta.`,
             e.preventDefault();
             const val = terminalInput.value;
             if (val.trim() && !chatBusy) {
-                runCommand(val);
                 terminalInput.value = '';
+                runCommand(val);
             }
         }
+
+        showWelcome();
 
         // --- CONTATO: pré-seleciona o assunto a partir dos botões da página ---
         function setContactTopic(value) {
