@@ -76,6 +76,44 @@ function parseModelOutput(raw) {
   return { reply: parsed.text.trim(), cards, suggestions };
 }
 
+// O modo JSON do DeepSeek falha (conteúdo vazio) quando o histórico traz respostas
+// antigas em texto puro. Reenvia as falas do assistente no mesmo formato pedido.
+function toUpstreamMessages(messages) {
+  return messages.map((m) => (m.role === 'assistant'
+    ? { role: 'assistant', content: JSON.stringify({ text: m.content, cards: [], suggestions: [] }) }
+    : m));
+}
+
+async function callDeepSeek(apiKey, messages) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
+  try {
+    const upstream = await fetch(DEEPSEEK_URL, {
+      method: 'POST',
+      signal: controller.signal,
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model: process.env.DEEPSEEK_MODEL || 'deepseek-chat',
+        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...toUpstreamMessages(messages)],
+        max_tokens: MAX_TOKENS,
+        temperature: 0.3,
+        response_format: { type: 'json_object' },
+        stream: false,
+      }),
+    });
+    if (!upstream.ok) return { error: `http_${upstream.status}` };
+    const data = await upstream.json();
+    const reply = data && data.choices && data.choices[0] && data.choices[0].message
+      && data.choices[0].message.content;
+    if (typeof reply !== 'string' || !reply.trim()) return { error: 'empty_content' };
+    return { reply };
+  } catch (err) {
+    return { error: err && err.name === 'AbortError' ? 'timeout' : 'network' };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 function send(res, status, body) {
   res.statusCode = status;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -119,40 +157,19 @@ module.exports = async function handler(req, res) {
   const messages = sanitizeMessages(body && body.messages);
   if (!messages) return send(res, 400, { error: 'Requisição inválida.' });
 
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), UPSTREAM_TIMEOUT_MS);
-  try {
-    const upstream = await fetch(DEEPSEEK_URL, {
-      method: 'POST',
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: process.env.DEEPSEEK_MODEL || 'deepseek-chat',
-        messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...messages],
-        max_tokens: MAX_TOKENS,
-        temperature: 0.3,
-        response_format: { type: 'json_object' },
-        stream: false,
-      }),
-    });
-    if (!upstream.ok) return send(res, 502, { error: 'O assistente não respondeu agora.' });
-    const data = await upstream.json();
-    const reply = data && data.choices && data.choices[0] && data.choices[0].message
-      && data.choices[0].message.content;
-    if (typeof reply !== 'string' || !reply.trim()) {
-      return send(res, 502, { error: 'O assistente não respondeu agora.' });
-    }
-    return send(res, 200, parseModelOutput(reply));
-  } catch (_) {
-    return send(res, 502, { error: 'O assistente não respondeu agora.' });
-  } finally {
-    clearTimeout(timer);
+  let result = await callDeepSeek(apiKey, messages);
+  if (result.error) {
+    console.error('deepseek_attempt_1_failed', result.error);
+    result = await callDeepSeek(apiKey, messages);
   }
+  if (result.error) {
+    console.error('deepseek_attempt_2_failed', result.error);
+    return send(res, 502, { error: 'O assistente não respondeu agora.' });
+  }
+  return send(res, 200, parseModelOutput(result.reply));
 };
 
 module.exports._resetRateLimit = () => hits.clear();
+module.exports._toUpstreamMessages = toUpstreamMessages;
 module.exports._parseModelOutput = parseModelOutput;
 module.exports.CARD_IDS = CARD_IDS;
