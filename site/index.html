@@ -520,6 +520,170 @@
         .chat-lightbox__btn:hover { background: rgba(255,255,255,.22); }
         .chat-lightbox__close { position: absolute; top: 16px; right: 16px; }
         @media (max-width: 639px) { .chat-lightbox__prev, .chat-lightbox__next { position: absolute; bottom: 20px; } .chat-lightbox__prev { left: calc(50% - 56px); } .chat-lightbox__next { right: calc(50% - 56px); } }
+        /* ===== Detalhes do portfólio (hero, projetos, navegação, avisos) ===== */
+        .hero-name {
+            background: linear-gradient(90deg, #1e3a5f, #386293 55%, #5b84b5);
+            -webkit-background-clip: text; background-clip: text; color: transparent;
+        }
+        .dark .hero-name { background-image: linear-gradient(90deg, #ffffff, #b9cde3 60%, #8fadcf); }
+        .hero-highlight {
+            background-image: linear-gradient(transparent 66%, rgba(91,132,181,.22) 66%, rgba(91,132,181,.22) 90%, transparent 90%);
+            background-repeat: no-repeat; background-size: 0% 100%;
+            animation: heroHighlight 1s .7s var(--ease-snappy) forwards;
+        }
+        .dark .hero-highlight { background-image: linear-gradient(transparent 62%, rgba(91,132,181,.45) 62%, rgba(91,132,181,.45) 92%, transparent 92%); }
+        @keyframes heroHighlight { to { background-size: 100% 100%; } }
+        .wave { display: inline-block; transform-origin: 70% 70%; animation: wave 2.4s 1s ease-in-out 2; }
+        @keyframes wave { 0%, 60%, 100% { transform: rotate(0); } 10%, 30% { transform: rotate(14deg); } 20% { transform: rotate(-8deg); } 40% { transform: rotate(-4deg); } 50% { transform: rotate(10deg); } }
+
+        .social-btn {
+            position: relative; width: 40px; height: 40px; border-radius: 12px;
+            display: inline-flex; align-items: center; justify-content: center;
+            color: #1e3a5f; background: #fff; border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 2px rgba(16,30,51,.06);
+            transition: transform var(--dur-instant) var(--ease-snappy), border-color var(--dur-quick), color var(--dur-quick), background-color var(--dur-quick);
+        }
+        .social-btn:hover { transform: translateY(-2px); border-color: #8fadcf; background: #f0f4f9; }
+        .dark .social-btn { color: #dce6f1; background: #162945; border-color: #2b3f5e; }
+        .dark .social-btn:hover { background: #1e3a5f; border-color: #5b84b5; }
+        .social-btn[data-tip]::after {
+            content: attr(data-tip); position: absolute; bottom: calc(100% + 8px); left: 50%;
+            transform: translate(-50%, 4px); opacity: 0; pointer-events: none; white-space: nowrap;
+            padding: 4px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; color: #fff; background: #101e33;
+            transition: opacity var(--dur-quick), transform var(--dur-quick);
+        }
+        .social-btn:hover::after, .social-btn:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+
+        .hero-showcase { display: block; max-width: 460px; margin: 0 auto; perspective: 1200px; }
+        .hero-showcase__stage { position: relative; height: 430px; transform-style: preserve-3d; transition: transform .25s ease-out; }
+        .hero-phone {
+            position: absolute; top: 50%; left: 50%; width: 178px; aspect-ratio: 9 / 18.5;
+            border-radius: 30px; padding: 7px; background: #101e33;
+            box-shadow: 0 30px 60px -20px rgba(16,30,51,.45), 0 0 0 1px rgba(255,255,255,.06) inset;
+            overflow: hidden;
+        }
+        .hero-phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 23px; background: #f8fafc; }
+        .hero-phone--center { transform: translate(-50%, -50%); z-index: 3; animation: phoneFloat 6s ease-in-out infinite; }
+        .hero-phone--left { transform: translate(-118%, -46%) rotate(-9deg) scale(.88); z-index: 1; opacity: .95; animation: phoneFloatL 7s ease-in-out infinite; }
+        .hero-phone--right { transform: translate(18%, -44%) rotate(9deg) scale(.88); z-index: 2; opacity: .95; animation: phoneFloatR 7.5s ease-in-out infinite; }
+        @keyframes phoneFloat { 0%, 100% { transform: translate(-50%, -50%); } 50% { transform: translate(-50%, -53%); } }
+        @keyframes phoneFloatL { 0%, 100% { transform: translate(-118%, -46%) rotate(-9deg) scale(.88); } 50% { transform: translate(-118%, -43%) rotate(-8deg) scale(.88); } }
+        @keyframes phoneFloatR { 0%, 100% { transform: translate(18%, -44%) rotate(9deg) scale(.88); } 50% { transform: translate(18%, -47%) rotate(10deg) scale(.88); } }
+        .hero-chip {
+            position: absolute; z-index: 4; display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 12px; border-radius: 9999px; font-size: 12px; font-weight: 700; color: #1e3a5f;
+            background: rgba(255,255,255,.92); border: 1px solid #dce6f1; backdrop-filter: blur(8px);
+            box-shadow: 0 12px 24px -12px rgba(16,30,51,.35); white-space: nowrap;
+        }
+        .dark .hero-chip { color: #dce6f1; background: rgba(22,41,69,.92); border-color: #2b3f5e; }
+        .hero-chip--top { top: 30px; right: -6px; animation: chipFloat 5s ease-in-out infinite; }
+        .hero-chip--bottom { bottom: 34px; left: -6px; animation: chipFloat 5.5s .8s ease-in-out infinite; }
+        .hero-chip svg { color: #10b981; }
+        @keyframes chipFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+        @media (max-width: 639px) {
+            .hero-showcase__stage { height: 330px; }
+            .hero-phone { width: 136px; border-radius: 24px; padding: 5px; }
+            .hero-phone img { border-radius: 19px; }
+            .hero-chip { font-size: 11px; padding: 6px 10px; }
+            .hero-chip--top { top: 12px; right: 0; }
+            .hero-chip--bottom { bottom: 16px; left: 0; }
+        }
+        .hero-showcase__caption { margin-top: 8px; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+        .hero-showcase:hover .icon-shift { transform: translateX(3px); }
+
+        .project-media {
+            display: block; margin: -1.5rem -1.5rem 1.25rem; aspect-ratio: 2 / 1; overflow: hidden;
+            border-bottom: 1px solid #e2e8f0; border-radius: 1rem 1rem 0 0; background: #f0f4f9;
+        }
+        @media (min-width: 768px) { .project-media { margin: -1.75rem -1.75rem 1.5rem; } }
+        .dark .project-media { border-color: #2b3f5e; background: #101e33; }
+        .project-media img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .5s var(--ease-snappy); }
+        .group:hover .project-media img { transform: scale(1.04); }
+        .project-media--strip { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; padding: 14px 14px 0; aspect-ratio: auto; height: 210px; }
+        .project-media--strip img { border-radius: 14px 14px 0 0; box-shadow: 0 8px 20px -10px rgba(16,30,51,.4); }
+        .group:hover .project-media--strip img { transform: translateY(-6px); }
+        .project-media--strip img:nth-child(2) { transition-delay: 30ms; } .project-media--strip img:nth-child(3) { transition-delay: 60ms; }
+        .project-media--strip img:nth-child(4) { transition-delay: 90ms; } .project-media--strip img:nth-child(5) { transition-delay: 120ms; }
+        .project-media--strip img:nth-child(6) { transition-delay: 150ms; }
+        @media (max-width: 639px) { .project-media--strip { grid-template-columns: repeat(3, minmax(0, 1fr)); } .project-media--strip img:nth-child(n+4) { display: none; } }
+
+        /* Destaque que segue o mouse nos cartões */
+        .card-hover:hover { background-image: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(56,98,147,.07), transparent 60%); }
+        .dark .card-hover:hover { background-image: radial-gradient(380px circle at var(--mx, 50%) var(--my, 0%), rgba(143,173,207,.10), transparent 60%); }
+
+        /* Menu: seção atual */
+        .nav-active { color: #101e33 !important; background: #f0f4f9; font-weight: 700; }
+        .dark .nav-active { color: #fff !important; background: rgba(30,58,95,.8); }
+
+        .copy-pill {
+            margin-left: auto; flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px;
+            padding: 4px 9px; border-radius: 8px; font-size: 11px; font-weight: 600;
+            color: #274e78; background: #f0f4f9; border: 1px solid #dce6f1;
+        }
+        .copy-pill:hover { background: #dce6f1; }
+        .dark .copy-pill { color: #dce6f1; background: #101e33; border-color: #2b3f5e; }
+
+        .footer-link { transition: color var(--dur-quick); }
+        .footer-link:hover { color: #1e3a5f; text-decoration: underline; text-underline-offset: 3px; }
+        .dark .footer-link:hover { color: #fff; }
+
+        .back-to-top {
+            position: fixed; right: 20px; bottom: 20px; z-index: 60; width: 48px; height: 48px; border-radius: 9999px;
+            display: flex; align-items: center; justify-content: center; color: #fff; background: #1e3a5f;
+            box-shadow: 0 12px 24px -10px rgba(16,30,51,.6);
+            opacity: 0; transform: translateY(12px) scale(.9); pointer-events: none;
+            transition: opacity var(--dur-standard) var(--ease-snappy), transform var(--dur-standard) var(--ease-snappy), background-color var(--dur-quick);
+        }
+        .back-to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+        .back-to-top:hover { background: #274e78; }
+        .back-to-top .back-to-top__svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+        .back-to-top__track { fill: none; stroke: rgba(255,255,255,.15); stroke-width: 3; }
+        .back-to-top__ring { fill: none; stroke: #8fadcf; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 131.95; stroke-dashoffset: 131.95; }
+
+        .toast {
+            position: fixed; left: 50%; bottom: 24px; z-index: 300; transform: translate(-50%, 16px);
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 12px;
+            font-size: 13px; font-weight: 600; color: #fff; background: #101e33; box-shadow: 0 16px 32px -12px rgba(0,0,0,.5);
+            opacity: 0; pointer-events: none; transition: opacity var(--dur-standard) var(--ease-snappy), transform var(--dur-standard) var(--ease-snappy);
+        }
+        .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+        .toast::before { content: "✓"; display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 9999px; background: #10b981; font-size: 11px; }
+
+        /* Chat: painel lateral e atalhos iniciais */
+        .chat-section-glow { position: absolute; inset: 10% -10% auto; height: 70%; pointer-events: none; background: radial-gradient(50% 60% at 50% 40%, rgba(56,98,147,.10), transparent 70%); }
+        .dark .chat-section-glow { background: radial-gradient(50% 60% at 50% 40%, rgba(91,132,181,.14), transparent 70%); }
+        .chat-prompt {
+            display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left;
+            padding: 10px 12px; border-radius: 14px; font-size: 13px; font-weight: 600; line-height: 1.35;
+            color: #1e3a5f; background: #f8fafc; border: 1px solid #e2e8f0;
+            transition: background-color var(--dur-quick), border-color var(--dur-quick), transform var(--dur-instant);
+        }
+        .chat-prompt svg { flex-shrink: 0; margin-top: 1px; color: #5b84b5; }
+        .chat-prompt:hover { background: #f0f4f9; border-color: #b9cde3; transform: translateX(3px); }
+        .dark .chat-prompt { color: #dce6f1; background: #101e33; border-color: #2b3f5e; }
+        .dark .chat-prompt:hover { background: #1e3a5f; border-color: #386293; }
+        .chat-side--cta { background: linear-gradient(140deg, #1e3a5f, #386293); box-shadow: 0 18px 40px -18px rgba(16,30,51,.5); }
+        .chat-side__btn {
+            flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 9px 10px; border-radius: 12px; font-size: 12px; font-weight: 700; color: #1e3a5f; background: #fff;
+            transition: transform var(--dur-instant) var(--ease-snappy), background-color var(--dur-quick);
+        }
+        .chat-side__btn:hover { transform: translateY(-2px); background: #f0f4f9; }
+        .chat-starters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-left: 40px; max-width: 560px; }
+        .chat-starter {
+            display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 16px; text-align: left;
+            background: #fff; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(16,30,51,.05);
+            transition: transform var(--dur-instant) var(--ease-snappy), border-color var(--dur-quick), box-shadow var(--dur-quick);
+        }
+        .chat-starter:hover { transform: translateY(-2px); border-color: #b9cde3; box-shadow: 0 10px 20px -12px rgba(16,30,51,.35); }
+        .dark .chat-starter { background: #162945; border-color: #1e3a5f; }
+        .dark .chat-starter:hover { border-color: #386293; }
+        .chat-starter__icon { width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; background: linear-gradient(135deg, #1e3a5f, #386293); }
+        .chat-starter__title { display: block; font-size: 13px; font-weight: 700; color: #101e33; }
+        .dark .chat-starter__title { color: #fff; }
+        .chat-starter__sub { display: block; font-size: 11.5px; color: #64748b; margin-top: 1px; }
+        .dark .chat-starter__sub { color: #8fadcf; }
+        @media (max-width: 479px) { .chat-starters { grid-template-columns: 1fr; margin-left: 0; } }
         #terminal-screen::-webkit-scrollbar { width: 8px; }
         #terminal-screen::-webkit-scrollbar-track { background: transparent; }
         #terminal-screen::-webkit-scrollbar-thumb { background: #b9cde3; border-radius: 4px; }
@@ -541,6 +705,9 @@
                 transition: none !important;
             }
             .pulse-dot,
+            .hero-phone,
+            .hero-chip,
+            .wave,
             .chat-typing span,
             .chat-caret,
             .chat-pop,
@@ -563,6 +730,10 @@
             [data-parallax] {
                 transform: none !important;
             }
+            .hero-highlight { background-size: 100% 100% !important; }
+            .hero-phone--center { transform: translate(-50%, -50%) !important; }
+            .hero-phone--left { transform: translate(-118%, -46%) rotate(-9deg) scale(.88) !important; }
+            .hero-phone--right { transform: translate(18%, -44%) rotate(9deg) scale(.88) !important; }
         }
     </style>
 
@@ -670,30 +841,35 @@
             <div class="ambient-glow-2 absolute top-1/3 -right-20 w-96 h-96 rounded-full bg-blue-400/10 dark:bg-blue-500/10 blur-3xl pointer-events-none"></div>
         </div>
 
-        <div class="max-w-5xl mx-auto text-center relative z-10">
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="grid lg:grid-cols-[1.12fr_.88fr] gap-12 lg:gap-8 items-center">
+            <div class="text-center lg:text-left">
             <div class="motion-reveal stagger-1 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-6 shadow-sm">
                 <span class="w-2 h-2 rounded-full bg-emerald-600 pulse-dot"></span>
                 Disponível para oportunidades em Administração e Tecnologia
             </div>
 
-            <p class="motion-reveal stagger-2 text-sm sm:text-base font-semibold text-navy-700 dark:text-navy-200 mb-3">
-                Talyson Marques · Analista Administrativo com foco em automação e processos
+            <p class="motion-reveal stagger-2 font-display text-lg sm:text-xl font-bold text-navy-800 dark:text-white">
+                Olá, eu sou <span class="hero-name">Talyson Marques</span> <span class="wave" aria-hidden="true">👋</span>
+            </p>
+            <p class="motion-reveal stagger-2 text-sm sm:text-base font-semibold text-navy-600 dark:text-navy-200 mt-1 mb-4">
+                Analista Administrativo com foco em automação e processos
             </p>
 
-            <h1 class="motion-reveal stagger-2 text-4xl sm:text-5xl md:text-6xl font-display font-extrabold tracking-tight mb-6 text-navy-800 dark:text-white leading-tight">
-                Administração e Tecnologia,<br class="hidden sm:block"> com organização e eficiência
+            <h1 class="motion-reveal stagger-2 text-4xl sm:text-5xl lg:text-[3.1rem] xl:text-[3.5rem] font-display font-extrabold tracking-tight mb-6 text-navy-800 dark:text-white leading-[1.08]">
+                Administração e Tecnologia, com <span class="hero-highlight">organização e eficiência</span>
             </h1>
 
-            <p class="motion-reveal stagger-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed mb-10">
+            <p class="motion-reveal stagger-3 text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto lg:mx-0 leading-relaxed mb-8">
                 Sou formado em <strong class="text-navy-700 dark:text-white font-semibold">Redes de Computadores</strong> pelo SENAC-SP e trabalho há mais de
-                <strong class="text-navy-700 dark:text-white font-semibold">5 anos na Accenture Brasil</strong>. Atuo com
+                <strong class="text-navy-700 dark:text-white font-semibold"><span data-years-since="2020-12">5</span> anos na Accenture Brasil</strong>. Atuo com
                 <strong class="text-navy-700 dark:text-white font-semibold">Administração</strong> e
                 <strong class="text-navy-700 dark:text-white font-semibold">Tecnologia</strong> no mesmo nível:
                 analiso documentos, organizo planilhas e dados, acompanho prazos e SLAs — e uso
                 <strong class="font-semibold">Python e inteligência artificial</strong> para automatizar tarefas repetitivas.
             </p>
 
-            <div class="motion-reveal stagger-4 flex flex-col sm:flex-row gap-3.5 justify-center items-center">
+            <div class="motion-reveal stagger-4 flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start items-center">
                 <a href="#projetos" class="btn-motion w-full sm:w-auto px-7 py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm tracking-wide shadow-sm hover:shadow flex items-center justify-center gap-2 group">
                     <i data-lucide="folder-open" class="w-4 h-4 icon-bounce"></i> Ver projetos
                 </a>
@@ -701,14 +877,40 @@
                     <i data-lucide="download" class="w-4 h-4 icon-bounce"></i> Baixar currículo (PDF)
                 </a>
             </div>
+
+            <div class="motion-reveal stagger-4 mt-6 flex flex-wrap items-center justify-center lg:justify-start gap-2.5" aria-label="Redes e contato">
+                <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn" data-tip="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub" data-tip="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+                <a href="https://wa.me/5511982378928?text=Ol%C3%A1%2C%20Talyson!%20Vi%20seu%20portf%C3%B3lio." target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="WhatsApp" data-tip="WhatsApp"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+                <button type="button" class="social-btn" data-copy-email="talyson14marques@hotmail.com" aria-label="Copiar e-mail" data-tip="Copiar e-mail"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                <span class="hidden sm:inline-flex items-center gap-1.5 ml-2 text-xs text-slate-600 dark:text-slate-400"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Praia Grande – SP · Remoto, híbrido ou presencial</span>
+            </div>
+            <p class="sm:hidden motion-reveal stagger-4 mt-3 text-xs text-slate-600 dark:text-slate-400 inline-flex items-center gap-1.5">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Praia Grande – SP · Remoto, híbrido ou presencial
+            </p>
             <p class="motion-reveal stagger-4 mt-5 text-sm text-slate-700 dark:text-slate-300">
                 Quer contratar um <strong class="font-semibold">site, sistema ou automação</strong>?
                 <a href="#sob-encomenda" class="font-semibold text-navy-700 dark:text-navy-200 underline underline-offset-2 hover:text-navy-600">Veja o que posso fazer pelo seu negócio</a>
                 ou <a href="#contato" onclick="setContactTopic('projeto')" class="font-semibold text-navy-700 dark:text-navy-200 underline underline-offset-2 hover:text-navy-600">conte sua ideia</a>.
             </p>
-            <p class="motion-reveal stagger-4 mt-3 text-xs text-slate-600 dark:text-slate-400 inline-flex items-center gap-1.5">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> Praia Grande – SP · Remoto, híbrido ou presencial
-            </p>
+            </div>
+
+            <!-- Vitrine: telas reais do estudo de caso (dados fictícios) -->
+            <a href="caso-tapioca-delegusty.html" class="hero-showcase motion-reveal-scale stagger-3" aria-label="Ver o estudo de caso Tapioca Delegusty">
+                <div class="hero-showcase__stage" data-tilt>
+                    <div class="hero-phone hero-phone--left"><img src="assets/tapioca-delegusty/pix.webp" alt="Tela de pagamento por PIX com QR Code (dados fictícios)" decoding="async"></div>
+                    <div class="hero-phone hero-phone--right"><img src="assets/tapioca-delegusty/rastreio.webp" alt="Rastreio do pedido com as etapas de preparo (dados fictícios)" decoding="async"></div>
+                    <div class="hero-phone hero-phone--center"><img src="assets/tapioca-delegusty/cardapio.webp" alt="Cardápio digital no celular (dados fictícios)" decoding="async"></div>
+                    <div class="hero-chip hero-chip--top"><i data-lucide="zap" class="w-3.5 h-3.5"></i> PIX com confirmação automática</div>
+                    <div class="hero-chip hero-chip--bottom"><i data-lucide="bot" class="w-3.5 h-3.5"></i> Atendente virtual no WhatsApp</div>
+                </div>
+                <div class="hero-showcase__caption">
+                    <span class="font-semibold text-navy-800 dark:text-white">Estudo de caso · Tapioca Delegusty</span>
+                    <span class="inline-flex items-center gap-1 font-semibold text-navy-700 dark:text-navy-200">Ver como foi feito <i data-lucide="arrow-right" class="w-3.5 h-3.5 icon-shift"></i></span>
+                </div>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1 text-center">Telas do sistema com dados fictícios.</p>
+            </a>
+            </div>
 
             <!-- Resumo de pontos fortes (Administração + Tecnologia com peso igual) -->
             <div class="motion-reveal stagger-5 grid grid-cols-2 md:grid-cols-4 gap-4 mt-14 text-left">
@@ -809,7 +1011,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 mt-8 card card-hover rounded-2xl p-5">
                         <div class="group">
-                            <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display stat-count" data-target="5" data-prefix="+" data-suffix=" anos">+5 anos</div>
+                            <div class="text-2xl font-extrabold text-navy-800 dark:text-white font-display stat-count" data-target="5" data-years-target="2020-12" data-prefix="+" data-suffix=" anos">+5 anos</div>
                             <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">Na Accenture Brasil (desde nov/2020)</div>
                         </div>
                         <div class="group">
@@ -834,7 +1036,7 @@
                     <i data-lucide="briefcase" class="w-3.5 h-3.5 icon-bounce"></i> TRAJETÓRIA
                 </div>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Experiência e formação</h2>
-                <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">Mais de 5 anos na Accenture Brasil, graduação em Redes de Computadores e cursos complementares.</p>
+                <p class="text-slate-600 dark:text-slate-400 mt-3 max-w-xl mx-auto text-sm">Mais de <span data-years-since="2020-12">5</span> anos na Accenture Brasil, graduação em Redes de Computadores e cursos complementares.</p>
             </div>
 
             <div class="relative border-l-2 border-slate-200 dark:border-navy-700 ml-3 md:ml-24 pl-8 space-y-10">
@@ -932,9 +1134,12 @@
             <div class="grid md:grid-cols-2 gap-6">
                 <!-- Publicado: Assistente de consulta a documentos (RAG) -->
                 <div class="card card-hover motion-reveal stagger-1 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                    <div class="absolute z-10 top-5 right-5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 pulse-dot"></span> PUBLICADO
                     </div>
+                    <a href="https://github.com/SandyMarques/Assistente-IA-com-RAG" target="_blank" rel="noopener noreferrer" class="project-media" aria-label="Abrir o repositório do Assistente de consulta a documentos no GitHub">
+                        <img src="assets/chat/Assistente-IA-com-RAG.webp" alt="Prévia do repositório Assistente-IA-com-RAG no GitHub" loading="lazy" decoding="async">
+                    </a>
                     <div>
                         <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105 shadow-sm">
                             <i data-lucide="book-open-text" class="w-5 h-5 text-white icon-bounce"></i>
@@ -958,9 +1163,12 @@
                 </div>
                 <!-- Publicado: Automatizador de planilhas por comandos em português -->
                 <div class="card card-hover motion-reveal stagger-2 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                    <div class="absolute z-10 top-5 right-5 text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 border border-emerald-200 dark:border-emerald-800 px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 pulse-dot"></span> PUBLICADO
                     </div>
+                    <a href="https://github.com/SandyMarques/Automatizador-de-Planilhas-com-IA" target="_blank" rel="noopener noreferrer" class="project-media" aria-label="Abrir o repositório do Automatizador de planilhas no GitHub">
+                        <img src="assets/chat/Automatizador-de-Planilhas-com-IA.webp" alt="Prévia do repositório Automatizador-de-Planilhas-com-IA no GitHub" loading="lazy" decoding="async">
+                    </a>
                     <div>
                         <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105 shadow-sm">
                             <i data-lucide="file-spreadsheet" class="w-5 h-5 text-white icon-bounce"></i>
@@ -984,9 +1192,17 @@
                 </div>
                 <!-- Estudo de caso: Tapioca Delegusty (repositório privado: sem link de código) -->
                 <div class="card card-hover motion-reveal stagger-3 md:col-span-2 rounded-2xl p-6 md:p-7 flex flex-col justify-between relative group">
-                    <div class="absolute top-5 right-5 text-xs font-bold text-navy-700 dark:text-navy-200 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-700 px-2.5 py-1 rounded-full inline-flex items-center gap-1.5">
+                    <div class="absolute z-10 top-5 right-5 text-xs font-bold text-navy-700 dark:text-navy-200 bg-navy-50 dark:bg-navy-900 border border-navy-200 dark:border-navy-700 px-2.5 py-1 rounded-full inline-flex items-center gap-1.5">
                         <i data-lucide="briefcase" class="w-3 h-3"></i> ESTUDO DE CASO
                     </div>
+                    <a href="caso-tapioca-delegusty.html" class="project-media project-media--strip" aria-label="Ver o estudo de caso Tapioca Delegusty">
+                        <img src="assets/tapioca-delegusty/cardapio.webp" alt="Cardápio digital (dados fictícios)" loading="lazy" decoding="async">
+                        <img src="assets/tapioca-delegusty/sacola.webp" alt="Sacola com opções de entrega (dados fictícios)" loading="lazy" decoding="async">
+                        <img src="assets/tapioca-delegusty/pix.webp" alt="Pagamento por PIX (dados fictícios)" loading="lazy" decoding="async">
+                        <img src="assets/tapioca-delegusty/painel.webp" alt="Painel da loja (dados fictícios)" loading="lazy" decoding="async">
+                        <img src="assets/tapioca-delegusty/cozinha.webp" alt="Tela da cozinha (dados fictícios)" loading="lazy" decoding="async">
+                        <img src="assets/tapioca-delegusty/motoboy.webp" alt="App do entregador (dados fictícios)" loading="lazy" decoding="async">
+                    </a>
                     <div>
                         <div class="w-11 h-11 rounded-xl bg-navy-700 flex items-center justify-center mb-5 transition-transform duration-200 group-hover:scale-105 shadow-sm">
                             <i data-lucide="store" class="w-5 h-5 text-white icon-bounce"></i>
@@ -1183,9 +1399,15 @@
             <p class="text-center text-xs text-slate-600 dark:text-slate-400 mt-3">Telas do estudo de caso, com dados fictícios.</p>
 
             <div class="motion-reveal text-center mt-10">
-                <a href="#contato" onclick="setContactTopic('projeto')" class="btn-motion inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm shadow-sm">
+                <div class="flex flex-col sm:flex-row gap-3 justify-center items-center">
+                <a href="#contato" onclick="setContactTopic('projeto')" class="btn-motion w-full sm:w-auto justify-center inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-navy-700 hover:bg-navy-600 text-white font-bold text-sm shadow-sm">
                     <i data-lucide="message-square-plus" class="w-4 h-4"></i> Conte sua ideia
                 </a>
+                <a href="https://wa.me/5511982378928?text=Ol%C3%A1%2C%20Talyson!%20Vi%20seu%20portf%C3%B3lio%20e%20quero%20conversar%20sobre%20um%20projeto." target="_blank" rel="noopener noreferrer" class="btn-motion w-full sm:w-auto justify-center inline-flex items-center gap-2 px-7 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow-sm">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i> Chamar no WhatsApp
+                </a>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-3">Conversa sem compromisso: me conte o que precisa e eu respondo pessoalmente.</p>
             </div>
         </div>
     </section>
@@ -1257,61 +1479,97 @@
     </section>
 
     <!-- SECTION: ATENDIMENTO VIRTUAL (chat com IA) -->
-    <section id="terminal" class="py-16 px-4">
-        <div class="max-w-3xl mx-auto">
+    <section id="terminal" class="py-20 px-4 relative overflow-hidden">
+        <div class="chat-section-glow" aria-hidden="true"></div>
+        <div class="max-w-6xl mx-auto relative">
             <div class="text-center mb-10 motion-reveal">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-100 dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-4">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5 icon-bounce"></i> ATENDIMENTO VIRTUAL
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-slate-200 text-xs font-semibold mb-4">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5 icon-bounce"></i> ATENDIMENTO VIRTUAL COM IA
                 </div>
-                <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Tire suas dúvidas</h2>
-                <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm max-w-xl mx-auto">Pergunte sobre experiência, formação, projetos ou disponibilidade. Um assistente de IA responde com base no meu currículo.</p>
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-navy-800 dark:text-white">Pergunte qualquer coisa sobre mim</h2>
+                <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm md:text-base max-w-2xl mx-auto">Um assistente de IA responde na hora, com base no meu currículo, e mostra projetos, telas e links. Experimente.</p>
             </div>
 
-            <div class="chat-shell motion-reveal stagger-1 rounded-3xl overflow-hidden flex flex-col bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700">
-                <!-- Cabeçalho -->
-                <div class="chat-header px-5 py-4 flex items-center gap-3">
-                    <div class="relative shrink-0">
-                        <div class="w-11 h-11 rounded-full bg-white/15 ring-1 ring-white/30 flex items-center justify-center font-display font-bold text-white text-sm">TM</div>
-                        <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-navy-700"></span>
-                    </div>
-                    <div class="min-w-0 flex-grow">
-                        <div class="text-sm font-bold text-white leading-tight">Assistente do Talyson</div>
-                        <div class="text-xs text-navy-100 flex items-center gap-1.5 mt-0.5">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span> <span id="chat-status">Online · IA com base no currículo</span>
+            <div class="grid lg:grid-cols-[300px_1fr] gap-6 items-stretch">
+                <!-- Painel lateral (desktop) -->
+                <aside class="hidden lg:flex flex-col gap-4 motion-reveal stagger-1">
+                    <div class="chat-side card rounded-3xl p-5">
+                        <div class="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">Experimente perguntar</div>
+                        <div class="flex flex-col gap-2">
+                            <button type="button" onclick="runCommand('Ele já fez um projeto para uma tapiocaria?')" class="chat-prompt btn-motion"><i data-lucide="store" class="w-4 h-4"></i><span>Ele já fez um projeto para uma tapiocaria?</span></button>
+                            <button type="button" onclick="runCommand('Ele já trabalhou com automação em Python?')" class="chat-prompt btn-motion"><i data-lucide="cpu" class="w-4 h-4"></i><span>Ele já trabalhou com automação em Python?</span></button>
+                            <button type="button" onclick="runCommand('Qual é a formação e as certificações dele?')" class="chat-prompt btn-motion"><i data-lucide="graduation-cap" class="w-4 h-4"></i><span>Qual é a formação e as certificações dele?</span></button>
+                            <button type="button" onclick="runCommand('Ele faz sites e sistemas sob encomenda?')" class="chat-prompt btn-motion"><i data-lucide="layout-template" class="w-4 h-4"></i><span>Ele faz sites e sistemas sob encomenda?</span></button>
                         </div>
                     </div>
-                    <button type="button" onclick="runCommand('limpar')" aria-label="Limpar conversa" title="Limpar conversa" class="btn-motion w-9 h-9 rounded-full text-white/80 hover:text-white hover:bg-white/10 flex items-center justify-center">
-                        <i data-lucide="rotate-ccw" class="w-4 h-4 icon-bounce"></i>
-                    </button>
-                </div>
-
-                <!-- Mensagens -->
-                <div id="terminal-screen" class="chat-body px-4 sm:px-6 py-6 overflow-y-auto h-[480px] sm:h-[560px] space-y-4 text-sm" aria-live="polite"></div>
-
-                <!-- Sugestões -->
-                <div class="px-4 sm:px-6 pt-3 pb-1 border-t border-slate-100 dark:border-navy-800">
-                    <div class="chat-chips flex gap-2 overflow-x-auto pb-2" role="group" aria-label="Sugestões">
-                        <button type="button" onclick="runCommand('Ele já fez um projeto para uma tapiocaria?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Projeto da tapiocaria</button>
-                        <button type="button" onclick="runCommand('Ele já trabalhou com automação em Python?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Automação com Python?</button>
-                        <button type="button" onclick="runCommand('sobre')" class="chat-chip btn-motion"><i data-lucide="user" class="w-3.5 h-3.5"></i>Sobre</button>
-                        <button type="button" onclick="runCommand('projetos')" class="chat-chip btn-motion"><i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i>Projetos</button>
-                        <button type="button" onclick="runCommand('habilidades')" class="chat-chip btn-motion"><i data-lucide="wrench" class="w-3.5 h-3.5"></i>Habilidades</button>
-                        <button type="button" onclick="runCommand('status')" class="chat-chip btn-motion"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>Disponibilidade</button>
-                        <button type="button" onclick="runCommand('contato')" class="chat-chip btn-motion"><i data-lucide="mail" class="w-3.5 h-3.5"></i>Contato</button>
-                        <button type="button" onclick="runCommand('blog')" class="chat-chip btn-motion"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>Blog</button>
+                    <div class="chat-side card rounded-3xl p-5">
+                        <div class="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">Atalhos rápidos</div>
+                        <div class="flex flex-wrap gap-2">
+                            <button type="button" onclick="runCommand('sobre')" class="chat-chip btn-motion"><i data-lucide="user" class="w-3.5 h-3.5"></i>Sobre</button>
+                            <button type="button" onclick="runCommand('projetos')" class="chat-chip btn-motion"><i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i>Projetos</button>
+                            <button type="button" onclick="runCommand('habilidades')" class="chat-chip btn-motion"><i data-lucide="wrench" class="w-3.5 h-3.5"></i>Habilidades</button>
+                            <button type="button" onclick="runCommand('status')" class="chat-chip btn-motion"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>Disponibilidade</button>
+                            <button type="button" onclick="runCommand('contato')" class="chat-chip btn-motion"><i data-lucide="mail" class="w-3.5 h-3.5"></i>Contato</button>
+                            <button type="button" onclick="runCommand('blog')" class="chat-chip btn-motion"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>Blog</button>
+                        </div>
                     </div>
-                </div>
+                    <div class="chat-side chat-side--cta rounded-3xl p-5 mt-auto">
+                        <div class="font-display font-bold text-white text-base">Prefere falar direto?</div>
+                        <p class="text-navy-100 text-xs mt-1 leading-relaxed">Respondo pessoalmente por WhatsApp, e-mail ou LinkedIn.</p>
+                        <div class="flex gap-2 mt-4">
+                            <a href="https://wa.me/5511982378928?text=Ol%C3%A1%2C%20Talyson!%20Vi%20seu%20portf%C3%B3lio." target="_blank" rel="noopener noreferrer" class="chat-side__btn" aria-label="WhatsApp"><i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp</a>
+                            <a href="#contato" class="chat-side__btn" aria-label="Ir para o contato"><i data-lucide="mail" class="w-4 h-4"></i> E-mail</a>
+                        </div>
+                    </div>
+                </aside>
 
-                <!-- Entrada -->
-                <form id="terminal-form" onsubmit="handleFormSubmit(event)" class="px-4 sm:px-6 pb-4 pt-1">
-                    <div class="chat-input flex items-center gap-2 rounded-full bg-slate-100 dark:bg-navy-800 border border-transparent pl-5 pr-1.5 py-1.5">
-                        <input id="terminal-input" type="text" autocomplete="off" placeholder="Escreva sua pergunta..." maxlength="500" aria-label="Pergunta para o atendimento virtual" class="bg-transparent border-none outline-none flex-grow min-w-0 text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500 py-2">
-                        <button id="terminal-send" type="submit" aria-label="Enviar pergunta" class="btn-motion shrink-0 w-10 h-10 rounded-full bg-navy-700 text-white flex items-center justify-center hover:bg-navy-600 disabled:opacity-50">
-                            <i data-lucide="send" class="w-4 h-4 icon-bounce"></i>
+                <div class="chat-shell motion-reveal stagger-2 rounded-3xl overflow-hidden flex flex-col bg-white dark:bg-navy-900 border border-slate-200 dark:border-navy-700">
+                    <!-- Cabeçalho -->
+                    <div class="chat-header px-5 sm:px-6 py-4 flex items-center gap-3">
+                        <div class="relative shrink-0">
+                            <div class="w-11 h-11 rounded-full bg-white/15 ring-1 ring-white/30 flex items-center justify-center font-display font-bold text-white text-sm">TM</div>
+                            <span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-emerald-400 ring-2 ring-navy-700"></span>
+                        </div>
+                        <div class="min-w-0 flex-grow">
+                            <div class="text-sm sm:text-base font-bold text-white leading-tight">Assistente do Talyson</div>
+                            <div class="text-xs text-navy-100 flex items-center gap-1.5 mt-0.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span> <span id="chat-status">Online · IA com base no currículo</span>
+                            </div>
+                        </div>
+                        <span class="hidden sm:inline-flex items-center gap-1 text-[11px] font-semibold text-navy-100 bg-white/10 rounded-full px-2.5 py-1 mr-1"><i data-lucide="sparkles" class="w-3 h-3"></i> DeepSeek</span>
+                        <button type="button" onclick="runCommand('limpar')" aria-label="Limpar conversa" title="Limpar conversa" class="btn-motion w-9 h-9 rounded-full text-white/80 hover:text-white hover:bg-white/10 flex items-center justify-center">
+                            <i data-lucide="rotate-ccw" class="w-4 h-4 icon-bounce"></i>
                         </button>
                     </div>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 text-center mt-2.5">Respostas geradas por IA (DeepSeek) podem conter imprecisões. Para assuntos importantes, use o <a href="#contato" class="underline hover:text-navy-700 dark:hover:text-white">contato direto</a>.</p>
-                </form>
+
+                    <!-- Mensagens -->
+                    <div id="terminal-screen" class="chat-body px-4 sm:px-7 py-6 overflow-y-auto h-[560px] sm:h-[620px] space-y-5 text-sm sm:text-[15px]" aria-live="polite"></div>
+
+                    <!-- Sugestões (celular e tablet) -->
+                    <div class="lg:hidden px-4 sm:px-6 pt-3 pb-1 border-t border-slate-100 dark:border-navy-800">
+                        <div class="chat-chips flex gap-2 overflow-x-auto pb-2" role="group" aria-label="Sugestões">
+                            <button type="button" onclick="runCommand('Ele já fez um projeto para uma tapiocaria?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Projeto da tapiocaria</button>
+                            <button type="button" onclick="runCommand('Ele já trabalhou com automação em Python?')" class="chat-chip chat-chip--ai btn-motion"><i data-lucide="sparkles" class="w-3.5 h-3.5"></i>Automação com Python?</button>
+                            <button type="button" onclick="runCommand('sobre')" class="chat-chip btn-motion"><i data-lucide="user" class="w-3.5 h-3.5"></i>Sobre</button>
+                            <button type="button" onclick="runCommand('projetos')" class="chat-chip btn-motion"><i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i>Projetos</button>
+                            <button type="button" onclick="runCommand('habilidades')" class="chat-chip btn-motion"><i data-lucide="wrench" class="w-3.5 h-3.5"></i>Habilidades</button>
+                            <button type="button" onclick="runCommand('status')" class="chat-chip btn-motion"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i>Disponibilidade</button>
+                            <button type="button" onclick="runCommand('contato')" class="chat-chip btn-motion"><i data-lucide="mail" class="w-3.5 h-3.5"></i>Contato</button>
+                            <button type="button" onclick="runCommand('blog')" class="chat-chip btn-motion"><i data-lucide="book-open" class="w-3.5 h-3.5"></i>Blog</button>
+                        </div>
+                    </div>
+
+                    <!-- Entrada -->
+                    <form id="terminal-form" onsubmit="handleFormSubmit(event)" class="px-4 sm:px-7 pb-4 pt-3 lg:border-t lg:border-slate-100 lg:dark:border-navy-800">
+                        <div class="chat-input flex items-center gap-2 rounded-2xl bg-slate-100 dark:bg-navy-800 border border-transparent pl-5 pr-1.5 py-1.5">
+                            <input id="terminal-input" type="text" autocomplete="off" placeholder="Escreva sua pergunta..." maxlength="500" aria-label="Pergunta para o atendimento virtual" class="bg-transparent border-none outline-none flex-grow min-w-0 text-slate-800 dark:text-slate-100 text-sm sm:text-[15px] placeholder-slate-400 dark:placeholder-slate-500 py-2.5">
+                            <button id="terminal-send" type="submit" aria-label="Enviar pergunta" class="btn-motion shrink-0 w-11 h-11 rounded-xl bg-navy-700 text-white flex items-center justify-center hover:bg-navy-600 disabled:opacity-50">
+                                <i data-lucide="send" class="w-4 h-4 icon-bounce"></i>
+                            </button>
+                        </div>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 text-center mt-2.5">Respostas geradas por IA (DeepSeek) podem conter imprecisões. Para assuntos importantes, use o <a href="#contato" class="underline hover:text-navy-700 dark:hover:text-white">contato direto</a>.</p>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -1339,6 +1597,7 @@
                                     <i data-lucide="mail" class="w-4 h-4 icon-bounce"></i>
                                 </div>
                                 <a href="mailto:talyson14marques@hotmail.com" class="hover:underline break-all transition-colors hover:text-navy-700 dark:hover:text-navy-300">talyson14marques@hotmail.com</a>
+                                <button type="button" data-copy-email="talyson14marques@hotmail.com" class="copy-pill btn-motion" aria-label="Copiar e-mail"><i data-lucide="copy" class="w-3.5 h-3.5"></i> Copiar</button>
                             </div>
                             <div class="flex items-center gap-3 min-w-0 text-slate-700 dark:text-slate-200 text-sm group">
                                 <div class="w-9 h-9 shrink-0 rounded-xl bg-slate-100 dark:bg-navy-800 flex items-center justify-center border border-slate-200 dark:border-navy-700 text-navy-700 dark:text-navy-200">
@@ -1396,20 +1655,62 @@
     </section>
 
     <!-- Footer -->
-    <footer class="text-center py-10 text-slate-600 dark:text-slate-400 text-xs">
-        <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p>© 2026 TALYSON MARQUES. TODOS OS DIREITOS RESERVADOS.</p>
-            <div class="flex items-center gap-4">
-                <a href="blog.html" class="btn-motion hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium">Mini Blog</a>
-                <span aria-hidden="true">•</span>
-                <a href="curriculo-talyson-marques.pdf" download="Curriculo-Talyson-Marques.pdf" class="btn-motion hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium">Currículo (PDF)</a>
-                <span aria-hidden="true">•</span>
-                <a href="#inicio" class="btn-motion hover:text-navy-700 dark:hover:text-white transition-colors underline font-medium inline-flex items-center gap-1 group">
+    <footer class="border-t border-slate-200 dark:border-navy-800 bg-white/60 dark:bg-navy-900/40">
+        <div class="max-w-6xl mx-auto px-4 py-10 grid gap-8 md:grid-cols-[1.4fr_1fr_1fr] text-sm">
+            <div>
+                <a href="#inicio" class="inline-flex items-center gap-3 group" aria-label="Voltar ao início">
+                    <span class="w-10 h-10 rounded-xl bg-navy-700 text-white font-display font-bold flex items-center justify-center group-hover:scale-105 transition-transform">T</span>
+                    <span>
+                        <span class="block font-display font-bold text-navy-800 dark:text-white">Talyson Marques</span>
+                        <span class="block text-[11px] tracking-widest uppercase text-slate-500 dark:text-slate-400">Administração • Tecnologia</span>
+                    </span>
+                </a>
+                <p class="mt-4 text-slate-600 dark:text-slate-400 text-sm leading-relaxed max-w-sm">Organização, prazos e dados com automação em Python e IA. Aberto a oportunidades e a projetos sob encomenda.</p>
+                <div class="mt-4 flex gap-2">
+                    <a href="https://www.linkedin.com/in/talysonmarques/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn" data-tip="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+                    <a href="https://github.com/SandyMarques" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="GitHub" data-tip="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="w-4 h-4"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg></a>
+                    <a href="https://wa.me/5511982378928?text=Ol%C3%A1%2C%20Talyson!%20Vi%20seu%20portf%C3%B3lio." target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="WhatsApp" data-tip="WhatsApp"><i data-lucide="message-circle" class="w-4 h-4"></i></a>
+                    <button type="button" class="social-btn" data-copy-email="talyson14marques@hotmail.com" aria-label="Copiar e-mail" data-tip="Copiar e-mail"><i data-lucide="mail" class="w-4 h-4"></i></button>
+                </div>
+            </div>
+            <nav aria-label="Navegação do rodapé">
+                <div class="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">Navegação</div>
+                <ul class="space-y-2 text-slate-700 dark:text-slate-300">
+                    <li><a href="#sobre" class="footer-link">Sobre</a></li>
+                    <li><a href="#experiencia" class="footer-link">Trajetória</a></li>
+                    <li><a href="#projetos" class="footer-link">Projetos</a></li>
+                    <li><a href="#sob-encomenda" class="footer-link">Sob encomenda</a></li>
+                    <li><a href="#terminal" class="footer-link">Atendimento com IA</a></li>
+                </ul>
+            </nav>
+            <div>
+                <div class="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-3">Materiais</div>
+                <ul class="space-y-2 text-slate-700 dark:text-slate-300">
+                    <li><a href="curriculo-talyson-marques.pdf" download="Curriculo-Talyson-Marques.pdf" class="footer-link">Currículo (PDF)</a></li>
+                    <li><a href="blog.html" class="footer-link">Mini blog</a></li>
+                    <li><a href="caso-tapioca-delegusty.html" class="footer-link">Estudo de caso</a></li>
+                    <li><a href="projeto-detalhe.html" class="footer-link">Projetos em desenvolvimento</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-slate-200 dark:border-navy-800">
+            <div class="max-w-6xl mx-auto px-4 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400">
+                <p>© <span data-current-year>2026</span> Talyson Marques. Todos os direitos reservados.</p>
+                <a href="#inicio" class="btn-motion hover:text-navy-700 dark:hover:text-white transition-colors font-medium inline-flex items-center gap-1 group">
                     Voltar ao topo <i data-lucide="arrow-up" class="w-3.5 h-3.5 icon-bounce"></i>
                 </a>
             </div>
         </div>
     </footer>
+
+    <!-- Botão flutuante: voltar ao topo com progresso -->
+    <a href="#inicio" id="back-to-top" class="back-to-top" aria-label="Voltar ao topo">
+        <svg class="back-to-top__svg" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21" class="back-to-top__track"/><circle cx="24" cy="24" r="21" class="back-to-top__ring" id="back-to-top-ring"/></svg>
+        <i data-lucide="arrow-up" class="w-4 h-4"></i>
+    </a>
+
+    <!-- Aviso (toast) -->
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
     <!-- Scripting for interactivity and motion choreography -->
     <script>
@@ -2032,7 +2333,7 @@
 
         // ---------- mensagens ----------
         function addUserMessage(text) {
-            terminalScreen.querySelectorAll('.chat-followups').forEach((n) => n.remove());
+            terminalScreen.querySelectorAll('.chat-followups, .chat-starters').forEach((n) => n.remove());
             const row = el('div', 'flex justify-end terminal-msg-enter');
             row.appendChild(el('div', 'chat-bubble chat-bubble--user', text));
             terminalScreen.appendChild(row);
@@ -2058,6 +2359,29 @@
             terminalScreen.innerHTML = '';
             addBotMessage(text || `<p>Olá! 👋 Sou o assistente virtual do portfólio do <strong>Talyson</strong>.</p>
 <p class="mt-1.5">Pergunte o que quiser sobre experiência, formação, projetos ou disponibilidade. Eu mostro links, telas dos projetos e atalhos para continuar a conversa.</p>`);
+            if (!text) {
+                const starters = el('div', 'chat-starters chat-pop');
+                [
+                    ['store', 'Projeto da tapiocaria', 'Telas e como funciona', 'Ele já fez um projeto para uma tapiocaria?'],
+                    ['folder-git-2', 'Projetos no GitHub', 'Código publicado', 'projetos'],
+                    ['briefcase', 'Experiência', 'Accenture e formação', 'sobre'],
+                    ['mail', 'Como falar com ele', 'E-mail, WhatsApp, LinkedIn', 'contato'],
+                ].forEach(([icon, title, sub, query]) => {
+                    const btn = el('button', 'chat-starter');
+                    btn.type = 'button';
+                    const ic = el('span', 'chat-starter__icon');
+                    ic.appendChild(iconNode(icon, 'w-4 h-4'));
+                    btn.appendChild(ic);
+                    const txt = el('span', 'min-w-0');
+                    txt.appendChild(el('span', 'chat-starter__title', title));
+                    txt.appendChild(el('span', 'chat-starter__sub', sub));
+                    btn.appendChild(txt);
+                    btn.addEventListener('click', () => { starters.remove(); runCommand(query); });
+                    starters.appendChild(btn);
+                });
+                terminalScreen.appendChild(starters);
+                refreshIcons();
+            }
         }
 
         async function runCommand(rawInput) {
@@ -2193,6 +2517,114 @@
 
             e.target.reset();
         }
+
+        // ===== Detalhes do portfólio =====
+        (function () {
+            const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // Anos completos desde uma data (AAAA-MM), para não desatualizar o texto
+            function yearsSince(ym) {
+                const [y, m] = ym.split('-').map(Number);
+                const now = new Date();
+                let years = now.getFullYear() - y;
+                if (now.getMonth() + 1 < m) years -= 1;
+                return Math.max(0, years);
+            }
+            document.querySelectorAll('[data-years-since]').forEach((node) => {
+                node.textContent = String(yearsSince(node.dataset.yearsSince));
+            });
+            document.querySelectorAll('[data-years-target]').forEach((node) => {
+                const years = yearsSince(node.dataset.yearsTarget);
+                node.dataset.target = String(years);
+                node.textContent = (node.dataset.prefix || '') + years + (node.dataset.suffix || '');
+            });
+            document.querySelectorAll('[data-current-year]').forEach((node) => { node.textContent = String(new Date().getFullYear()); });
+
+            // Aviso (toast)
+            const toast = document.getElementById('toast');
+            let toastTimer = null;
+            window.showToast = function (message) {
+                if (!toast) return;
+                toast.textContent = message;
+                toast.classList.add('is-visible');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 2200);
+            };
+
+            // Copiar e-mail
+            document.querySelectorAll('[data-copy-email]').forEach((btn) => {
+                btn.addEventListener('click', async () => {
+                    const email = btn.dataset.copyEmail;
+                    try {
+                        await navigator.clipboard.writeText(email);
+                        window.showToast('E-mail copiado: ' + email);
+                    } catch (_) {
+                        window.location.href = 'mailto:' + email;
+                    }
+                });
+            });
+
+            // Destaque que segue o mouse nos cartões
+            if (!reduce && window.matchMedia('(hover: hover)').matches) {
+                document.addEventListener('pointermove', (e) => {
+                    const card = e.target.closest && e.target.closest('.card-hover');
+                    if (!card) return;
+                    const r = card.getBoundingClientRect();
+                    card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+                    card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+                }, { passive: true });
+
+                // Inclinação 3D suave da vitrine do topo
+                document.querySelectorAll('[data-tilt]').forEach((stage) => {
+                    const host = stage.parentElement;
+                    host.addEventListener('pointermove', (e) => {
+                        const r = host.getBoundingClientRect();
+                        const x = (e.clientX - r.left) / r.width - 0.5;
+                        const y = (e.clientY - r.top) / r.height - 0.5;
+                        stage.style.transform = `rotateY(${x * 10}deg) rotateX(${-y * 8}deg)`;
+                    });
+                    host.addEventListener('pointerleave', () => { stage.style.transform = ''; });
+                });
+            }
+
+            // Menu: marca a seção visível
+            const navLinks = Array.from(document.querySelectorAll('header nav a[href^="#"]'))
+                .filter((a) => !['#', '#inicio', '#contato'].includes(a.getAttribute('href')) && document.querySelector(a.getAttribute('href')));
+            const sections = Array.from(new Set(navLinks.map((a) => document.querySelector(a.getAttribute('href')))));
+            if ('IntersectionObserver' in window && sections.length) {
+                const visible = new Map();
+                const spy = new IntersectionObserver((entries) => {
+                    entries.forEach((en) => visible.set(en.target, en.isIntersecting ? en.intersectionRatio : 0));
+                    let best = null; let bestRatio = 0;
+                    visible.forEach((ratio, sec) => { if (ratio > bestRatio) { best = sec; bestRatio = ratio; } });
+                    navLinks.forEach((a) => a.classList.toggle('nav-active', !!best && a.getAttribute('href') === '#' + best.id));
+                }, { threshold: [0, 0.15, 0.3, 0.5, 0.75], rootMargin: '-90px 0px -35% 0px' });
+                sections.forEach((sec) => spy.observe(sec));
+            }
+
+            // Botão flutuante: voltar ao topo com anel de progresso
+            const backBtn = document.getElementById('back-to-top');
+            const ring = document.getElementById('back-to-top-ring');
+            if (backBtn && ring) {
+                const LEN = 131.95;
+                let ticking = false;
+                const update = () => {
+                    ticking = false;
+                    const total = document.documentElement.scrollHeight - window.innerHeight;
+                    const progress = total > 0 ? Math.min(1, window.scrollY / total) : 0;
+                    ring.style.strokeDashoffset = String(LEN * (1 - progress));
+                    backBtn.classList.toggle('is-visible', window.scrollY > window.innerHeight * 0.8);
+                };
+                window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
+                update();
+            }
+
+            // Para quem abre o console
+            try {
+                console.log('%cOlá! 👋', 'font-size:18px;font-weight:700;color:#1e3a5f');
+                console.log('Curioso com o código? Os projetos estão em https://github.com/SandyMarques. Vamos conversar: talyson14marques@hotmail.com');
+            } catch (_) { /* sem console */ }
+        })();
 
         // Inicializa observador de motion e animações de entrada
         document.addEventListener('DOMContentLoaded', () => {
