@@ -1133,7 +1133,7 @@
                     <i data-lucide="message-square" class="w-3.5 h-3.5 icon-bounce"></i> ATENDIMENTO VIRTUAL
                 </div>
                 <h2 class="text-3xl md:text-4xl font-display font-bold text-navy-800 dark:text-white">Consulta rápida</h2>
-                <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm">Use os botões ou digite um comando simples para conhecer meu perfil profissional.</p>
+                <p class="text-slate-600 dark:text-slate-400 mt-3 text-sm">Use os botões, digite um comando simples ou faça uma pergunta em texto livre sobre o meu perfil profissional (respondida por IA).</p>
             </div>
 
             <div class="card motion-reveal stagger-1 rounded-2xl overflow-hidden flex flex-col min-h-[440px] shadow-sm">
@@ -1161,13 +1161,14 @@
                 <div id="terminal-screen" class="p-6 text-sm overflow-y-auto max-h-[320px] flex-grow space-y-4 text-slate-700 dark:text-slate-200 bg-white dark:bg-navy-900" aria-live="polite">
                     <div class="space-y-1 terminal-msg-enter">
                         <p class="font-semibold text-navy-800 dark:text-white">Olá! Sou o atendimento virtual do portfólio do Talyson.</p>
-                        <p class="text-slate-600 dark:text-slate-400">Digite <span class="font-bold text-navy-700 dark:text-white">ajuda</span> para ver as opções disponíveis.</p>
+                        <p class="text-slate-600 dark:text-slate-400">Digite <span class="font-bold text-navy-700 dark:text-white">ajuda</span> para ver as opções ou faça uma pergunta.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Perguntas em texto livre são respondidas por uma IA (DeepSeek) com base no currículo; ela pode errar. Em caso de dúvida, fale direto com o Talyson.</p>
                     </div>
                 </div>
 
                 <form id="terminal-form" onsubmit="handleFormSubmit(event)" class="bg-slate-50 dark:bg-navy-800/60 border-t border-slate-200 dark:border-navy-700 p-4 flex items-center gap-3">
                     <span class="text-navy-700 dark:text-slate-200 font-bold text-sm select-none">&gt;</span>
-                    <input id="terminal-input" type="text" autocomplete="off" placeholder="Digite: sobre, projetos, blog, habilidades, contato..." aria-label="Campo de consulta do atendimento virtual" class="input-motion bg-transparent border-none outline-none flex-grow text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500 px-2 py-1 rounded-lg">
+                    <input id="terminal-input" type="text" autocomplete="off" placeholder="Pergunte algo ou digite: sobre, projetos, contato..." maxlength="500" aria-label="Campo de consulta do atendimento virtual" class="input-motion bg-transparent border-none outline-none flex-grow text-slate-800 dark:text-slate-100 text-sm placeholder-slate-400 dark:placeholder-slate-500 px-2 py-1 rounded-lg">
                     <button type="submit" aria-label="Enviar consulta" class="btn-motion w-9 h-9 rounded-lg bg-navy-700 text-white flex items-center justify-center hover:bg-navy-600">
                         <i data-lucide="corner-down-left" class="w-4 h-4 icon-bounce"></i>
                     </button>
@@ -1562,17 +1563,66 @@ Use o formulário na seção de contato ou envie uma mensagem direta.`,
             } else if (resolved.startsWith('ping')) {
                 resultLine.innerHTML = `Serviço de atendimento disponível. Tempo de resposta imediato.<br>Use <strong>ajuda</strong> para ver as opções.`;
             } else {
-                resultLine.innerHTML = `Não encontrei "<strong>${safeCmd}</strong>". Digite <strong>ajuda</strong> para ver as opções.`;
+                terminalScreen.appendChild(resultLine);
+                askAssistant(cmdString, resultLine);
+                return;
             }
 
             terminalScreen.appendChild(resultLine);
             terminalScreen.scrollTo({ top: terminalScreen.scrollHeight, behavior: 'smooth' });
         }
 
+        // --- IA (DeepSeek via proxy serverless na Vercel; a chave nunca fica no navegador) ---
+        const CHAT_API_URL = 'https://talyson-chat-proxy.vercel.app/api/chat';
+        const CHAT_HISTORY_LIMIT = 6;
+        const chatHistory = [];
+        let chatBusy = false;
+
+        async function askAssistant(question, resultLine) {
+            if (chatBusy) {
+                resultLine.textContent = 'Aguarde a resposta anterior antes de enviar outra pergunta.';
+                return;
+            }
+            chatBusy = true;
+            terminalInput.disabled = true;
+            resultLine.textContent = 'Consultando o assistente de IA...';
+
+            const controller = new AbortController();
+            const timer = setTimeout(() => controller.abort(), 25000);
+            try {
+                const messages = chatHistory.concat([{ role: 'user', content: question }]).slice(-CHAT_HISTORY_LIMIT);
+                const response = await fetch(CHAT_API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ messages }),
+                    signal: controller.signal,
+                });
+                const data = await response.json().catch(() => ({}));
+                if (!response.ok || typeof data.reply !== 'string') {
+                    throw new Error(data.error || 'falha');
+                }
+                chatHistory.push({ role: 'user', content: question }, { role: 'assistant', content: data.reply });
+                while (chatHistory.length > CHAT_HISTORY_LIMIT) chatHistory.shift();
+                resultLine.textContent = data.reply;
+                const tag = document.createElement('div');
+                tag.className = 'mt-1 text-[11px] text-slate-500 dark:text-slate-400';
+                tag.textContent = 'Resposta gerada por IA, pode conter imprecisões.';
+                resultLine.appendChild(tag);
+            } catch (err) {
+                resultLine.innerHTML = 'Não consegui consultar o assistente de IA agora. Digite <strong>ajuda</strong> para ver as opções ou use o <strong>contato</strong>.';
+            } finally {
+                clearTimeout(timer);
+                chatBusy = false;
+                terminalInput.disabled = false;
+                terminalInput.focus();
+                terminalScreen.scrollTo({ top: terminalScreen.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
         function handleFormSubmit(e) {
             e.preventDefault();
             const val = terminalInput.value;
-            if (val.trim()) {
+            if (val.trim() && !chatBusy) {
                 runCommand(val);
                 terminalInput.value = '';
             }

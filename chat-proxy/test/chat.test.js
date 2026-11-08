@@ -1,0 +1,110 @@
+'use strict';
+
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const handler = require('../api/chat.js');
+
+const ORIGIN = 'https://sandymarques.github.io';
+
+function makeRes() {
+  return {
+    statusCode: 0,
+    headers: {},
+    body: '',
+    setHeader(k, v) { this.headers[k.toLowerCase()] = v; },
+    end(b) { this.body = b || ''; },
+    json() { return JSON.parse(this.body); },
+  };
+}
+
+function makeReq({ method = 'POST', origin = ORIGIN, body, ip = '1.1.1.1' } = {}) {
+  return { method, headers: { origin, 'x-forwarded-for': ip }, body, socket: {} };
+}
+
+test.beforeEach(() => {
+  handler._resetRateLimit();
+  process.env.DEEPSEEK_API_KEY = 'test-key';
+  delete process.env.ALLOWED_ORIGINS;
+});
+
+test('OPTIONS de origem permitida retorna 204 com CORS', async () => {
+  const res = makeRes();
+  await handler(makeReq({ method: 'OPTIONS' }), res);
+  assert.equal(res.statusCode, 204);
+  assert.equal(res.headers['access-control-allow-origin'], ORIGIN);
+});
+
+test('origem não permitida é bloqueada', async () => {
+  const res = makeRes();
+  await handler(makeReq({ origin: 'https://evil.example', body: { messages: [{ role: 'user', content: 'oi' }] } }), res);
+  assert.equal(res.statusCode, 403);
+  assert.equal(res.headers['access-control-allow-origin'], undefined);
+});
+
+test('sem chave configurada retorna 503', async () => {
+  delete process.env.DEEPSEEK_API_KEY;
+  const res = makeRes();
+  await handler(makeReq({ body: { messages: [{ role: 'user', content: 'oi' }] } }), res);
+  assert.equal(res.statusCode, 503);
+});
+
+test('corpo inválido retorna 400', async () => {
+  for (const body of [{}, { messages: [] }, { messages: [{ role: 'system', content: 'x' }] },
+    { messages: [{ role: 'assistant', content: 'x' }] }, { messages: [{ role: 'user', content: '  ' }] }]) {
+    const res = makeRes();
+    await handler(makeReq({ body }), res);
+    assert.equal(res.statusCode, 400);
+  }
+});
+
+test('resposta válida usa a chave só no servidor e limita o contexto', async () => {
+  const original = global.fetch;
+  let captured;
+  global.fetch = async (url, opts) => {
+    captured = { url, opts };
+    return { ok: true, json: async () => ({ choices: [{ message: { content: ' Olá! ' } }] }) };
+  };
+  try {
+    const long = 'a'.repeat(2000);
+    const res = makeRes();
+    await handler(makeReq({ body: { messages: [{ role: 'user', content: long }] } }), res);
+    assert.equal(res.statusCode, 200);
+    assert.equal(res.json().reply, 'Olá!');
+    assert.equal(captured.url, 'https://api.deepseek.com/chat/completions');
+    assert.equal(captured.opts.headers.Authorization, 'Bearer test-key');
+    const sent = JSON.parse(captured.opts.body);
+    assert.equal(sent.messages[0].role, 'system');
+    assert.equal(sent.messages[1].content.length, 500);
+    assert.ok(sent.max_tokens <= 400);
+    assert.ok(!res.body.includes('test-key'));
+  } finally {
+    global.fetch = original;
+  }
+});
+
+test('falha do DeepSeek retorna 502 sem vazar detalhes', async () => {
+  const original = global.fetch;
+  global.fetch = async () => ({ ok: false, status: 401, json: async () => ({}) });
+  try {
+    const res = makeRes();
+    await handler(makeReq({ body: { messages: [{ role: 'user', content: 'oi' }] } }), res);
+    assert.equal(res.statusCode, 502);
+  } finally {
+    global.fetch = original;
+  }
+});
+
+test('rate limit por IP retorna 429', async () => {
+  const original = global.fetch;
+  global.fetch = async () => ({ ok: true, json: async () => ({ choices: [{ message: { content: 'ok' } }] }) });
+  try {
+    let last;
+    for (let i = 0; i < 9; i += 1) {
+      last = makeRes();
+      await handler(makeReq({ body: { messages: [{ role: 'user', content: 'oi' }] }, ip: '9.9.9.9' }), last);
+    }
+    assert.equal(last.statusCode, 429);
+  } finally {
+    global.fetch = original;
+  }
+});
