@@ -143,3 +143,58 @@ test('resposta JSON completa chega ao cliente', async () => {
     global.fetch = original;
   }
 });
+
+test('histórico do assistente é reenviado em JSON ao DeepSeek', async () => {
+  const original = global.fetch;
+  let sent;
+  global.fetch = async (url, opts) => {
+    sent = JSON.parse(opts.body);
+    return { ok: true, json: async () => ({ choices: [{ message: { content: JSON.stringify({ text: 'ok' }) } }] }) };
+  };
+  try {
+    const res = makeRes();
+    await handler(makeReq({ body: { messages: [
+      { role: 'user', content: 'oi' },
+      { role: 'assistant', content: 'Olá! Resposta antiga em texto puro.' },
+      { role: 'user', content: 'e agora?' },
+    ] } }), res);
+    assert.equal(res.statusCode, 200);
+    const assistant = sent.messages.find((m) => m.role === 'assistant');
+    assert.deepEqual(JSON.parse(assistant.content), { text: 'Olá! Resposta antiga em texto puro.', cards: [], suggestions: [] });
+  } finally {
+    global.fetch = original;
+  }
+});
+
+test('conteúdo vazio do modelo: tenta de novo e usa a segunda resposta', async () => {
+  const original = global.fetch;
+  let calls = 0;
+  global.fetch = async () => {
+    calls += 1;
+    const content = calls === 1 ? '' : JSON.stringify({ text: 'Agora foi.', cards: ['blog'] });
+    return { ok: true, json: async () => ({ choices: [{ message: { content } }] }) };
+  };
+  const origErr = console.error; console.error = () => {};
+  try {
+    const res = makeRes();
+    await handler(makeReq({ body: { messages: [{ role: 'user', content: 'oi' }] } }), res);
+    assert.equal(calls, 2);
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(res.json().cards, ['blog']);
+  } finally {
+    global.fetch = original; console.error = origErr;
+  }
+});
+
+test('falha nas duas tentativas retorna 502', async () => {
+  const original = global.fetch;
+  global.fetch = async () => ({ ok: false, status: 500, json: async () => ({}) });
+  const origErr = console.error; console.error = () => {};
+  try {
+    const res = makeRes();
+    await handler(makeReq({ body: { messages: [{ role: 'user', content: 'oi' }] } }), res);
+    assert.equal(res.statusCode, 502);
+  } finally {
+    global.fetch = original; console.error = origErr;
+  }
+});
