@@ -486,7 +486,9 @@ document.addEventListener('DOMContentLoaded', () => {
             '"': '&quot;',
             "'": '&#039;'
         };
-        return text.replace(/[&<>"']/g, m => map[m]);
+        // Aceita números (ex.: chunks_count, execution_time_ms): sem o String(), o .replace
+        // lançava TypeError e a lista de documentos e o rodapé da resposta não renderizavam.
+        return String(text ?? '').replace(/[&<>"']/g, m => map[m]);
     }
 
     function formatMarkdown(text) {

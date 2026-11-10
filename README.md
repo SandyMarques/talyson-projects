@@ -21,7 +21,7 @@ Repositório central de portfólio profissional e projetos de Inteligência Arti
 | `.github/workflows/static.yml` | Workflow de deploy do portfólio no GitHub Pages. |
 | `.github/workflows/tests.yml` | CI: roda o `pytest` dos dois projetos e checa o `site/` a cada push. |
 | `scripts/check_site.py` | Checagem do portfólio: HTML bem formado, `node --check` no JS embutido, links internos e versão/SRI dos CDNs. |
-| `perfil-github/` | README do perfil do GitHub (para o repositório `SandyMarques/SandyMarques`) e [guia de ajustes manuais](perfil-github/GUIA.md). |
+| `perfil-github/` | [Guia de ajustes manuais](perfil-github/GUIA.md) do perfil do GitHub. O README do perfil fica no repositório `SandyMarques/SandyMarques`. |
 
 > Os dois projetos possuem repositórios dedicados no GitHub e também são versionados nesta pasta.
 

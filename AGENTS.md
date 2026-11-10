@@ -14,7 +14,7 @@ Este arquivo define diretrizes e protocolos permanentes que o agente de IA DEVE 
 | `Assistente-IA-com-RAG/` | Backend FastAPI + LangChain + ChromaDB. | `pytest` |
 | `Automatizador-de-Planilhas-com-IA/` | App Streamlit + Pandas + DeepSeek. | `pytest` |
 | `motion-design/` | Skill de referência de motion design (sem build/testes). | Inspeção |
-| `perfil-github/` | README do perfil do GitHub (copiado para o repositório `SandyMarques/SandyMarques`) e guia de ajustes manuais. | Veracidade do conteúdo, links |
+| `perfil-github/` | Guia de ajustes manuais do perfil do GitHub. O README do perfil fica no repositório `SandyMarques/SandyMarques`. | Veracidade do conteúdo, links |
 | `.github/workflows/tests.yml` | CI: `pytest` nos dois projetos Python e checagem do `site/` a cada push. | GitHub Actions |
 
 ---
