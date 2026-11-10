@@ -10,6 +10,11 @@
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![Licença: MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-green)](LICENSE)
 
+<p align="center">
+  <img src="docs/interface.jpg" width="100%" alt="Interface do Assistente IA com RAG, com um documento de exemplo indexado">
+  <br><sub>Interface web do projeto, com um documento de exemplo indexado.</sub>
+</p>
+
 ---
 
 ## 📋 Sumário

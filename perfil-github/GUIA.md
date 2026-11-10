@@ -6,13 +6,9 @@ Tempo estimado: 15 a 20 minutos.
 
 ---
 
-## 1. README do perfil (o item de maior impacto)
+## 1. README do perfil (feito)
 
-1. Crie um repositório **público** chamado exatamente **`SandyMarques`** (em <https://github.com/new>). O GitHub avisa que é um repositório especial.
-2. Marque "Add a README file" e crie.
-3. Edite o `README.md` e cole o conteúdo de [`perfil-github/README.md`](README.md).
-
-O README aparece no topo de <https://github.com/SandyMarques>, antes dos pins.
+O README do perfil já está publicado e é mantido no repositório [`SandyMarques/SandyMarques`](https://github.com/SandyMarques/SandyMarques), junto com o banner, os ícones e as capturas de tela. Para alterar o perfil, edite o `README.md` de lá.
 
 ---
 

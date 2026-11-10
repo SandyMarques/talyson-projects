@@ -9,6 +9,11 @@
 [![DeepSeek](https://img.shields.io/badge/LLM-DeepSeek-0066FF)](https://www.deepseek.com/)
 [![Licença: MIT](https://img.shields.io/badge/licen%C3%A7a-MIT-green)](LICENSE)
 
+<p align="center">
+  <img src="docs/interface.jpg" width="100%" alt="Interface do Automatizador de Planilhas com a base de demonstração carregada">
+  <br><sub>Interface do projeto, com a base de demonstração carregada.</sub>
+</p>
+
 ---
 
 ## 🎯 O problema
